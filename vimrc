@@ -46,12 +46,6 @@ let g:lightline = {'colorscheme' : 'sonokai'}
 let g:preview_markdown_parser = 'mdcat'
 let g:preview_markdown_auto_update = 1
 
-let g:UltiSnipsExpandTrigger="<C-y>"
-let g:UltiSnipsListSnippets="<c-m>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-v>"
-let g:UltiSnipsEditSplit="vertical"
-
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
@@ -401,34 +395,64 @@ map <c-h> <c-w>h
 map <c-j> <c-w>j
 map <c-k> <c-w>k
 
-"              This is CoC menu selection stuff
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[:col - 1]  =~# "^\\s*$"
-endfunction
-inoremap <silent><expr> <tab>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ "\<c-x><c-p>"
+"====================================================================================== 
+"=========================== UltiSnips and other Tab Section ==========================
+"======================================================================================
 
-nnoremap <Esc>[Z <CMD>call Bracket_check()<CR>
-inoremap <silent><expr> <Esc>[Z <SID>shift_tab_fix()
-snoremap <silent><expr> <Esc>[Z <SID>shift_tab_fix()
-function! s:shift_tab_fix() abort
-    if pumvisible()
-        return "\<C-p>"
-    else
-        return "\<CMD>call Bracket_check()\<CR>"
-    endif
-endfunction
+        let g:UltiSnipsExpandTrigger="<C-y>"
+        let g:UltiSnipsJumpForwardTrigger="<nop>"
+        let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+        let g:UltiSnipsEditSplit="vertical"
+        let g:UltiSnipesRemoveSelectModeMappings = 0
+        let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 
-function! Bracket_check() abort
-    let l:aft = searchpos('[<>{}()\[\]`''"]','cnz',line('.'))
-    call cursor(l:aft[0], l:aft[1]+1)
-    startinsert
-endfunction
+        let g:ulti_expand_or_jump_res = 0
+        function! Ulti_ExpandOrJump_Res() abort
+            if pumvisible()
+                return 0 "Sloppy Workaround for out of order operations
+            endif
+            call UltiSnips#ExpandSnippetOrJump()
+            return g:ulti_expand_or_jump_res
+        endfunction
 
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
+        function! Tab_Completion() abort
+        if pumvisible() 
+            return "\<c-n>"
+        elseif Check_back_space()
+            return "\<TAB>"
+        else
+            return "\<c-x>\<c-p>"
+        endif
+        endfunction
+
+        function! Check_back_space() abort
+            let col = col('.') - 1
+            return !col || getline('.')[:col - 1]  =~# "^\\s*$"
+        endfunction
+        inoremap <silent> <tab> <C-R>=(Ulti_ExpandOrJump_Res() > 0) ? "" : Tab_Completion()<CR>
+        snoremap <silent> <tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<cr>
+        vmap <tab> <C-y>
 
 
+
+        nnoremap <Esc>[Z <CMD>call Bracket_check()<CR>
+        inoremap <silent><expr> <Esc>[Z <SID>shift_tab_fix()
+
+        function! s:shift_tab_fix() abort
+            if pumvisible()
+                return "\<C-p>"
+            else
+                return "\<CMD>call Bracket_check()\<CR>"
+            endif
+        endfunction
+
+        function! Bracket_check() abort
+            let l:aft = searchpos('[{}()\[\]`''"]','cnz',line('.'))
+            call cursor(l:aft[0], l:aft[1]+1)
+            startinsert
+        endfunction
+
+        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
+
+"======================================================================================
 
