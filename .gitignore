@@ -1,0 +1,9 @@
+UltiSnips/**
+plugged/
+.*/
+.*
+!.gitignore
+settings/viminfo
+thesaurus/
+!UltiSnips/c.snippets
+!UltiSnips/python.snippets
