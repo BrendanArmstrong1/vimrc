@@ -23,11 +23,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'sheerun/vim-polyglot'
     Plug 'vim-syntastic/syntastic'
 
-    Plug 'tpope/vim-surround'
     Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-repeat'
+    Plug 'rhysd/git-messenger.vim'
 
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-surround'
     Plug 'michaeljsmith/vim-indent-object'
+
     Plug 'skanehira/preview-markdown.vim'
 
     Plug 'SirVer/ultisnips'
@@ -199,17 +201,19 @@ let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.95 } }
 let g:fzf_commands_expect = 'enter'
 
 " Find files with fzf
+nmap <leader>/   :BLines<CR>
+nmap <leader>?   :Rg<CR>
 nmap <leader>pf  :Files<CR>
-nmap <leader>pbl :BLines<CR>
 nmap <leader>pl  :Lines<CR>
 nmap <leader>pt  :Tags<CR>
-nmap <leader>pbt :BTags<CR>
 nmap <leader>pm  :Marks<CR>
-nmap <leader>pw  :Windows<CR>
 nmap <leader>pL  :Locate ""<left>
-nmap <leader>pc  :Commits<CR>
-nmap <leader>pbc :BCommits<CR>
-nmap <leader>pC  :Commands<CR>
+nmap cm :Commits<CR>
+nmap <leader>gm :GitMessenger<CR>
+" Copy the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
+vmap <leader>gb :'<,'>GBrowse!<CR>
+" Navigate to the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
+vmap <leader>gB :'<,'>GBrowse<CR>
 
 
 " Shows Git history for the current buffer
