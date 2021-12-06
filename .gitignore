@@ -1,5 +1,6 @@
 UltiSnips/**
 plugged/
+autoload/
 .*/
 .*
 !.gitignore
