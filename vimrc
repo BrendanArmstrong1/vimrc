@@ -47,8 +47,9 @@ let g:preview_markdown_parser = 'mdcat'
 let g:preview_markdown_auto_update = 1
 
 let g:UltiSnipsExpandTrigger="<C-y>"
+let g:UltiSnipsListSnippets="<c-m>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsJumpBackwardTrigger="<c-v>"
 let g:UltiSnipsEditSplit="vertical"
 
 
@@ -393,6 +394,12 @@ nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
 vnoremap < <gv
 vnoremap > >gv
+imap <c-x><c-k> <c-x><c-k>
+imap <c-x><c-l> <c-x><c-l>
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+map <c-j> <c-w>j
+map <c-k> <c-w>k
 
 "              This is CoC menu selection stuff
 function! s:check_back_space() abort
@@ -402,7 +409,7 @@ endfunction
 inoremap <silent><expr> <tab>
     \ pumvisible() ? "\<C-n>" :
     \ <SID>check_back_space() ? "\<TAB>" :
-    \ "\<C-x>\<C-p>"
+    \ "\<c-x><c-p>"
 
 nnoremap <Esc>[Z <CMD>call Bracket_check()<CR>
 inoremap <silent><expr> <Esc>[Z <SID>shift_tab_fix()
