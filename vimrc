@@ -208,12 +208,12 @@ nmap <leader>pl  :Lines<CR>
 nmap <leader>pt  :Tags<CR>
 nmap <leader>pm  :Marks<CR>
 nmap <leader>pL  :Locate ""<left>
-nmap cm :Commits<CR>
-nmap <leader>gm :GitMessenger<CR>
+nmap <leader>cm  :Commits<CR>
+nmap <leader>gm  :GitMessenger<CR>
 " Copy the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
-vmap <leader>gb :'<,'>GBrowse!<CR>
+vmap <leader>gb  :'<,'>GBrowse!<CR>
 " Navigate to the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
-vmap <leader>gB :'<,'>GBrowse<CR>
+vmap <leader>gB  :'<,'>GBrowse<CR>
 
 
 " Shows Git history for the current buffer
