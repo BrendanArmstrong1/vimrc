@@ -65,13 +65,17 @@ set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
 "           + save/restore buffer list
 
 
-"set lazyredraw " NoNoNo, Just No
-
-"set noshowmode "This is for lightline disabling
 set laststatus=2
 
+"Ensure files open the way that i want
+autocmd BufRead,BufNewFile *.tex set filetype=tex
+command! MakeTags !ctags -R . " Tag Jumping with ctags
 
 
+
+"set lazyredraw " NoNoNo, Just No
+"set noshowmode "This is for lightline disabling
+"set number relativenumber "This is local in each files after plug
 set ruler
 set showmatch
 set cpoptions+=>
@@ -79,11 +83,11 @@ set noswapfile
 set noerrorbells
 set title
 set splitbelow splitright
-set number relativenumber
 set updatetime=500
 set hidden
 let &titleold="Terminal"
 set complete+=i,kspell
+set signcolumn=number
 
 "Line wrapping
 set nowrap
@@ -136,8 +140,6 @@ set wildmode=longest,list,full
 set complete-=i
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-"Ensure files open the way that i want
-autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 function! CloseTerm() abort
     w
@@ -333,35 +335,6 @@ endfunction
 inoremap <expr><silent> <BS> <SID>bs_delete()
 
 
-" Tag Jumping
-command! MakeTags !ctags -R .
-
-" LaTeX stuff
-autocmd FileType tex inoremap ,st \documentclass{article}<CR><CR><CR>\begin{document}<CR><CR><CR>\end{document}<Esc>kki
-autocmd FileType tex inoremap ,tt <Esc>/\\begin{document}<CR>o\maketitle<Esc>ggo\title{}<Esc>T{i
-autocmd FileType tex inoremap ,ta <Esc>ggo\author{}<Esc>T{i
-
-" HTML scriptsj
-autocmd FileType html inoremap ,tag <Esc>yiwdawi<space><<Esc>"0pa></<Esc>"0pa><Esc>T>i
-
-" Making suckless stuff
-autocmd BufWritePost ~/.config/dwmblocks/config.h !cd
-      \ ~/.config/dwmblocks/;
-      \ sudo make install &&
-      \ { killall -q dwmblocks;setsid dwmblocks & }
-autocmd BufWritePost ~/.config/st/config.h !cd ~/.config/st/; sudo make install
-autocmd BufWritePost ~/.config/surf/config.h !cd ~/.config/surf/; sudo make install
-
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
 
 "Highlighting groups for match macros
 highlight MyWhiteTrails ctermbg=82
@@ -371,14 +344,7 @@ nnoremap <silent> <leader>mn :match none<CR>
 nnoremap <silent> <leader>ic "ayiw :%s/\<<c-r>a\>//gn<CR>
 nnoremap <silent> <leader>es :UltiSnipsEdit<CR>
 nnoremap <silent> <leader>er :e $MYVIMRC<CR>
-map <leader>gb <C-^>
-
-" Remap keys for gotos
-nmap gf :edit <cfile><CR>
-nmap <silent> [b :bprevious<CR>
-nmap <silent> ]b :bnext<CR>
-nmap <silent> ]B :bNext<CR>
-nnoremap <silent> <leader>f :call ToggleNetrw()<CR>
+nnoremap <silent> <leader>n :call ToggleNetrw()<CR>
 nnoremap <silent> <leader>b <CMD>call ExecuteScript('right')<CR>
 nnoremap <silent> <leader>v <CMD>call ExecuteScript('bot')<CR>
 nnoremap <silent> <leader>c <CMD>call CloseTerm()<CR>
@@ -386,8 +352,13 @@ nnoremap <silent> <leader>q <CMD>call Quitout()<CR>
 nnoremap <silent> <leader>w <CMD>call SaveQuitout()<CR>
 nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
-vnoremap < <gv
-vnoremap > >gv
+xnoremap < <gv
+xnoremap > >gv
+nmap gf :edit <cfile><CR>
+nmap <leader>gb <C-^>
+nmap <silent> [b :bprevious<CR>
+nmap <silent> ]b :bnext<CR>
+nmap <silent> ]B :bNext<CR>
 imap <c-x><c-k> <c-x><c-k>
 imap <c-x><c-l> <c-x><c-l>
 map <c-l> <c-w>l
@@ -431,7 +402,7 @@ map <c-k> <c-w>k
         endfunction
         inoremap <silent> <tab> <C-R>=(Ulti_ExpandOrJump_Res() > 0) ? "" : Tab_Completion()<CR>
         snoremap <silent> <tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<cr>
-        vmap <tab> <C-y>
+        xmap <tab> <C-y>
 
 
 
