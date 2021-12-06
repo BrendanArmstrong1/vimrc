@@ -215,7 +215,6 @@ vmap <leader>gb  :'<,'>GBrowse!<CR>
 " Navigate to the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
 vmap <leader>gB  :'<,'>GBrowse<CR>
 
-
 " Shows Git history for the current buffer
 command! FileHistory execute ":BCommits"
 "============================================================================
