@@ -1,12 +1,10 @@
-setlocal number relativenumber
-setlocal signcolumn=number
 set include=^\\s*\\(from\\\|import\\)\\s*\\zs\\(\\S\\+\\s\\{-}\\)*\\ze\\($\\\|\ as\\)
 "from http.server import HTTPServer, BaseHTTPRequestHandler (2)
 "http/server/HTTPServer.py http/server.py
 "import cgi (1)
 "cgi.py
 function! PyInclude(fname)
-    let parts = split(a:fname, ' import ') 
+    let parts = split(a:fname, ' import ')
     let l = parts[0]
     if len(parts) > 1
         let r = parts[1]
