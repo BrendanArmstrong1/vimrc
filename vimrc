@@ -7,11 +7,14 @@
 "|
 "==============================
 
-
-"Initial shit and colors
 set nocompatible
-filetype plugin indent on
-syntax enable
+
+let need_to_install_plugins = 0
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    let need_to_install_plugins = 1
+endif
 
 call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -36,6 +39,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
 call plug#end()
+
+filetype plugin indent on
+syntax enable
+
+if need_to_install_plugins == 1
+    echo "Installing plugins..."
+    silent! PlugInstall
+    echo "Done!"
+    q
+endif
 
 source /home/brendan/.vim/settings/bracketed-paste.vim
 source /home/brendan/.vim/settings/Functions.vim
