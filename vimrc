@@ -24,6 +24,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-syntastic/syntastic'
 
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/git-messenger.vim'
 
     Plug 'tpope/vim-repeat'
@@ -49,6 +50,8 @@ let g:lightline = {'colorscheme' : 'sonokai'}
 let g:preview_markdown_parser = 'mdcat'
 let g:preview_markdown_auto_update = 1
 
+let g:git_messenger_always_into_popup=v:true
+let g:git_messenger_include_diff="current"
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
@@ -214,7 +217,6 @@ nmap <leader>gm  :GitMessenger<CR>
 vmap <leader>gb  :'<,'>GBrowse!<CR>
 " Navigate to the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
 vmap <leader>gB  :'<,'>GBrowse<CR>
-
 " Shows Git history for the current buffer
 command! FileHistory execute ":BCommits"
 "============================================================================
