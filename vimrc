@@ -1,11 +1,11 @@
-""============================
-""       _                    
-""__   _(_)_ __ ___  _ __ ___ 
-""\ \ / / | '_ ` _ \| '__/ __|
-"" \ V /| | | | | | | | | (__ 
-""  \_/ |_|_| |_| |_|_|  \___|
-""                            
-""============================
+"==============================
+"|        _
+"| __   _(_)_ __ ___  _ __ ___
+"| \ \ / / | '_ ` _ \| '__/ __|
+"|  \ V /| | | | | | | | | (__
+"|   \_/ |_|_| |_| |_|_|  \___|
+"|
+"==============================
 
 
 "Initial shit and colors
@@ -35,6 +35,7 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 
 source /home/brendan/.vim/settings/bracketed-paste.vim
+source /home/brendan/.vim/settings/Functions.vim
 
 "set termguicolors
 let g:sonokai_enable_italic = 1
@@ -49,11 +50,13 @@ let g:preview_markdown_auto_update = 1
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
-let mapleader="\<space>"
 set encoding=utf-8
 set backspace=indent,eol,start
-set clipboard=unnamedplus
-
+if has("macunix") || has('win32')
+  set clipboard=unnamed
+elseif has("unix")
+  set clipboard=unnamedplus
+endif
 
 set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
 "           | |    |    |   |    | + viminfo file path
@@ -67,15 +70,49 @@ set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
 
 set laststatus=2
 
-"Ensure files open the way that i want
-autocmd BufRead,BufNewFile *.tex set filetype=tex
-command! MakeTags !ctags -R . " Tag Jumping with ctags
+highlight MyWhiteTrails ctermbg=red guibg=red
+augroup standard_group
+    autocmd!
+    autocmd BufEnter * match MyWhiteTrails /\s\+$/
+    autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
+    autocmd InsertLeave * match MyWhiteTrails /\s\+$/
+
+    "Ensure files open the way that i want
+    autocmd BufRead,BufNewFile *.tex set filetype=tex
+    autocmd BufRead,BufNewFile *.json setfiletype json
+    autocmd BufRead,BufNewFile *.json.* setfiletype json
+    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+    autocmd BufNewFile,BufReadPost *.dockerfile set filetype=Dockerfile
+    autocmd BufNewFile,BufReadPost *.jenkinsfile set filetype=groovy
+
+    " Don't fold automatically https://stackoverflow.com/a/8316817
+    autocmd BufRead * normal zR
+
+    " Open Ggrep results in a quickfix window
+    autocmd QuickFixCmdPost *grep* cwindow
+
+    " Disable line numbers in :term
+    " https://stackoverflow.com/a/63908546
+    autocmd terminalopen * setlocal nonumber norelativenumber
+
+    " Resize splits in all tabs upon window resize
+    " https://vi.stackexchange.com/a/206
+    autocmd VimResized * Tabdo wincmd =
+
+    " Reload file on focus/enter. This seems to break in Windows.
+    " https://stackoverflow.com/a/20418591
+    if !has("win32")
+        autocmd FocusGained,BufEnter * :silent! !
+    endif
+augroup END
 
 
+
+let mapleader="\<space>"
 
 "set lazyredraw " NoNoNo, Just No
 "set noshowmode "This is for lightline disabling
-"set number relativenumber "This is local in each files after plug
+set number relativenumber
 set ruler
 set showmatch
 set cpoptions+=>
@@ -101,21 +138,14 @@ set undofile
 set undolevels=10000
 
 "Tab stuff
-set tabstop=4
-set expandtab
-set softtabstop=4
+set tabstop=4 expandtab softtabstop=4
 
 "Shift stuff
-set shiftwidth=4
-set shiftround
+set shiftwidth=4 shiftround
 
 "Indentation
-set autoindent
-set smartindent
-set smarttab
-set smartcase
-set incsearch
-set ignorecase
+set autoindent smartindent smarttab
+set incsearch ignorecase smartcase
 
 "File Browsing
 set path+=.,**
@@ -140,110 +170,52 @@ set wildmode=longest,list,full
 set complete-=i
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
+"==========================================================================
+"|  _____                       __     __   _____ _           _
+"| |  ___|   _ _________   _   / _|___/ _| |  ___(_)_ __   __| | ___ _ __
+"| | |_ | | | |_  /_  / | | | | ||_  / |_  | |_  | | '_ \ / _` |/ _ \ '__|
+"| |  _|| |_| |/ / / /| |_| | |  _/ /|  _| |  _| | | | | | (_| |  __/ |
+"| |_|   \__,_/___/___|\__, | |_|/___|_|   |_|   |_|_| |_|\__,_|\___|_|
+"|                     |___/
+"==========================================================================
 
-function! CloseTerm() abort
-    w
-    let i = bufnr("$")
-    while (i >= 1)
-        if (bufexists(i))
-            if (getbufvar(i, "&buftype") == "terminal")
-                silent exe "bwipeout! " . i
-            endif
-        endif
-        let i-=1
-    endwhile
-    let g:markdown_preview = 0
-endfunction
+command! MakeTags !ctags -R . " Tag Jumping with ctags
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!.git/*"'
+if has('win32') " Disable preview on Windows since it doesn't really work
+  let g:fzf_preview_window = ''
+else
+  " Show file previews
+  command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+  " Show mark previews
+  " https://github.com/junegunn/fzf.vim/issues/184#issuecomment-575571950
+  command! -bang -nargs=? Marks
+    \ call fzf#vim#marks({'options': ['--preview', 'cat -n {-1} | egrep --color=always -C 10 ^[[:space:]]*{2}[[:space:]]']})
+endif
 
-function! SaveQuitout() abort
-    w
-    execute "%bd!\|q!"
-endfunction
+let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.95 } }
 
-function! Quitout() abort
-    execute "%bd!\|q!"
-endfunction
+" https://github.com/junegunn/fzf.vim/issues/162
+let g:fzf_commands_expect = 'enter'
 
-function! ExecuteScript(location) abort
-    w
-    let l:name=expand('%:p')
-    let l:exte=expand('%:e')
-    if l:exte == 'md'
-        if g:markdown_preview == 1
-            return
-        else
-            call SetMarkdown(a:location)
-            if a:location == 'right'
-                call feedkeys("\<C-w>h")
-            else
-                call feedkeys("\<C-w>k")
-            endif
-            return
-        endif
-    endif
-    if !term_list()->len()
-        if l:exte == 'tex' || l:exte == 'html' || l:exte == 'css'
-            ter ++hidden
-        else
-            if a:location == 'right'
-                vert ter
-            else
-                ter
-            endif
-            call feedkeys("\<C-w>h")
-        endif
-    endif
-    call term_sendkeys(term_list()[0], "clear && compiler " . Quoterepl(l:name) . "\<CR>")
-endfunction
+" Find files with fzf
+nmap <leader>pf  :Files<CR>
+nmap <leader>pbl :BLines<CR>
+nmap <leader>pl  :Lines<CR>
+nmap <leader>pt  :Tags<CR>
+nmap <leader>pbt :BTags<CR>
+nmap <leader>pm  :Marks<CR>
+nmap <leader>pw  :Windows<CR>
+nmap <leader>pL  :Locate ""<left>
+nmap <leader>pc  :Commits<CR>
+nmap <leader>pbc :BCommits<CR>
+nmap <leader>pC  :Commands<CR>
 
-let g:markdown_preview = 0
-function! SetMarkdown(loc) abort
-    let g:markdown_preview = 1
-    if a:loc == 'right'
-        PreviewMarkdown right
-    else
-        PreviewMarkdown bottom
-    endif
-endfunction
 
-function! Quoterepl(name) abort
-    let l:len=len(a:name)
-    for i in range(l:len)
-        if a:name[i] == "\'"
-            return strpart(a:name,0,i) . "\\" . strpart(a:name, i,l:len)
-        endif
-    endfor
-    return a:name
-endfunction
-
-function! Resize_Execution_Term(amount) abort
-    if term_list()->len()
-        let l:size=term_getsize(term_list()[0])
-        call term_setsize(term_list()[0],l:size[0],l:size[1] + a:amount)
-    endif
-endfunction
-
-function! ToggleNetrw() abort
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
-    else
-        let g:NetrwIsOpen=1
-        silent Lexplore
-    endif
-endfunction
-
-function! Bracket_check() abort
-    let l:aft = searchpos('[<>{}()\[\]`''"]','cnz',line('.'))
-    call cursor(l:aft[0], l:aft[1]+1)
-    startinsert
-endfunction
+" Shows Git history for the current buffer
+command! FileHistory execute ":BCommits"
+"============================================================================
+"============================================================================
 
 
 "Auto Pair stuff
@@ -274,7 +246,7 @@ function! s:bracket_pairing(name) abort
         elseif a:name == "'"
             if l:line[col('.')-2] =~ '[A-Z]'
                 return a:name
-                echon l:line[col('.')-1] 
+                echon l:line[col('.')-1]
             endif
             if l:line[i] == a:name && l:line[i-1] !~ '[A-Z\\]'
                 if l:count
@@ -304,7 +276,7 @@ inoremap <expr><silent> " <SID>bracket_pairing("\"")
 inoremap <expr><silent> ' <SID>bracket_pairing("'")
 
 
-"Auto backspace after an autopair 
+"Auto backspace after an autopair
 function! s:bs_delete() abort
     let l:line = getline('.')
     let l:before = l:line[col(".")-2]
@@ -336,20 +308,17 @@ inoremap <expr><silent> <BS> <SID>bs_delete()
 
 
 "======================================================
-" ____                                  _             
-"|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _ 
+" ____                                  _
+"|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
 "| |_) / _ \ '_ ` _ \ / _` | '_ \| '_ \| | '_ \ / _` |
 "|  _ <  __/ | | | | | (_| | |_) | |_) | | | | | (_| |
 "|_| \_\___|_| |_| |_|\__,_| .__/| .__/|_|_| |_|\__, |
-"                          |_|   |_|            |___/ 
+"                          |_|   |_|            |___/
 "======================================================
 
 "Highlighting groups for match macros
-highlight MyWhiteTrails ctermbg=82
 nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<CR>
-nnoremap <silent> <leader>mw :match MyWhiteTrails /\s\+$/<CR>
-nnoremap <silent> <leader>mn :match none<CR>
-nnoremap <silent> <leader>ic "ayiw :%s/\<<c-r>a\>//gn<CR>
+nnoremap <silent> <leader>ic :%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <silent> <leader>es :UltiSnipsEdit<CR>
 nnoremap <silent> <leader>er :e $MYVIMRC<CR>
 nnoremap <silent> <leader>n :call ToggleNetrw()<CR>
@@ -362,6 +331,7 @@ nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
 xnoremap < <gv
 xnoremap > >gv
+nmap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nmap gf :edit <cfile><CR>
 nmap <leader>gb <C-^>
 nmap <silent> [b :bprevious<CR>
@@ -400,7 +370,7 @@ map <c-k> <c-w>k
         endfunction
 
         function! Tab_Completion() abort
-        if pumvisible() 
+        if pumvisible()
             return "\<c-n>"
         elseif Check_back_space()
             return "\<TAB>"
