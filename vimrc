@@ -207,10 +207,6 @@ else
   " Show file previews
   command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-  " Show mark previews
-  " https://github.com/junegunn/fzf.vim/issues/184#issuecomment-575571950
-  command! -bang -nargs=? Marks
-    \ call fzf#vim#marks({'options': ['--preview', 'cat -n {-1} | egrep --color=always -C 10 ^[[:space:]]*{2}[[:space:]]']})
 endif
 
 let g:fzf_action = {
@@ -224,14 +220,12 @@ let g:fzf_layout = { 'down': '20%' }
 let g:fzf_commands_expect = 'enter'
 
 " Find files with fzf
-nmap <leader>/   :BLines<CR>
 nmap <leader>?   :Rg<CR>
 nmap <leader>pf  :Files<CR>
+nmap <leader>pg  :GFiles<CR>
 nmap <leader>pl  :Lines<CR>
 nmap <leader>pt  :Tags<CR>
-nmap <leader>pm  :Marks<CR>
 nmap <leader>pL  :Locate ""<left>
-nmap <leader>cm  :Commits<CR>
 nmap <leader>gm  :GitMessenger<CR>
 " Copy the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
 vmap <leader>gb  :'<,'>GBrowse!<CR>
