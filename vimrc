@@ -360,6 +360,10 @@ map <c-l> <c-w>l
 map <c-h> <c-w>h
 map <c-j> <c-w>j
 map <c-k> <c-w>k
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
 
 "========================================================================================
 "====================  _   _ _ _   _      ____        _            ======================
