@@ -1,4 +1,3 @@
-UltiSnips/**
 plugged/
 autoload/
 .*/
@@ -6,5 +5,3 @@ autoload/
 !.gitignore
 settings/viminfo
 thesaurus/
-!UltiSnips/c.snippets
-!UltiSnips/python.snippets
