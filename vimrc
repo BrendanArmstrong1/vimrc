@@ -65,6 +65,8 @@ let g:preview_markdown_auto_update = 1
 
 let g:git_messenger_always_into_popup=v:true
 let g:git_messenger_include_diff="current"
+let g:git_messenger_floating_win_opts = { 'border': 'single' }
+let g:git_messenger_popup_content_margins = v:false
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
@@ -212,18 +214,11 @@ else
 endif
 
 let g:fzf_action = {
-    \ 'ctrl-t': 'tab split',
     \ 'ctrl-x': 'split',
     \ 'ctrl-v': 'vsplit' }
 
 " - down / up / left / right
-let g:fzf_layout = { 'down': '40%' }
-
-" - Window using a Vim command
-"let g:fzf_layout = { 'window': 'enew' }
-"let g:fzf_layout = { 'window': '-tabnew' }
-"let g:fzf_layout = { 'window': '10new' }
-"let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.95 } }
+let g:fzf_layout = { 'down': '20%' }
 
 " https://github.com/junegunn/fzf.vim/issues/162
 let g:fzf_commands_expect = 'enter'
@@ -363,7 +358,6 @@ xnoremap < <gv
 xnoremap > >gv
 nmap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nmap gf :edit <cfile><CR>
-nmap <leader>gb <C-^>
 nmap <silent> [b :bprevious<CR>
 nmap <silent> ]b :bnext<CR>
 nmap <silent> ]B :bNext<CR>
