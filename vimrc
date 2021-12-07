@@ -6,9 +6,7 @@
 "|   \_/ |_|_| |_| |_|_|  \___|
 "|
 "==============================
-
 set nocompatible
-
 let need_to_install_plugins = 0
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -30,14 +28,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/git-messenger.vim'
 
+    Plug 'justinmk/vim-sneak'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
     Plug 'michaeljsmith/vim-indent-object'
 
     Plug 'skanehira/preview-markdown.vim'
 
-    Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
+    Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 call plug#end()
 
 filetype plugin indent on
@@ -49,24 +47,6 @@ if need_to_install_plugins == 1
     echo "Done!"
     q
 endif
-
-source /home/brendan/.vim/settings/bracketed-paste.vim
-source /home/brendan/.vim/settings/Functions.vim
-
-"set termguicolors
-let g:sonokai_enable_italic = 1
-let g:sonokai_disable_italic_comment = 1
-let g:sonokai_transparent_background = 1 "This has to appear before the colorscheme assignment
-let g:sonokai_menu_selection_background = 'red'
-colorscheme sonokai
-let g:lightline = {'colorscheme' : 'sonokai'}
-let g:preview_markdown_parser = 'mdcat'
-let g:preview_markdown_auto_update = 1
-
-let g:git_messenger_always_into_popup=v:true
-let g:git_messenger_include_diff="current"
-let g:git_messenger_floating_win_opts = { 'border': 'single' }
-let g:git_messenger_popup_content_margins = v:false
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
@@ -86,6 +66,25 @@ set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
 "           | |    + files marks saved
 "           | + lines saved each register (old name for <, vi6.2)
 "           + save/restore buffer list
+
+source /home/brendan/.vim/settings/bracketed-paste.vim
+source /home/brendan/.vim/settings/Functions.vim
+
+"set termguicolors
+let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
+let g:sonokai_transparent_background = 1 "This has to appear before the colorscheme assignment
+let g:sonokai_menu_selection_background = 'red'
+colorscheme sonokai
+let g:lightline = {'colorscheme' : 'sonokai'}
+let g:preview_markdown_parser = 'mdcat'
+let g:preview_markdown_auto_update = 1
+
+let g:git_messenger_always_into_popup=v:true
+let g:git_messenger_include_diff="current"
+let g:git_messenger_floating_win_opts = { 'border': 'single' }
+let g:git_messenger_popup_content_margins = v:false
+
 
 
 set laststatus=2
