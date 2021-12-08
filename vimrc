@@ -361,6 +361,7 @@ nnoremap <silent> <leader>v <CMD>call ExecuteScript('bot')<CR>
 nnoremap <silent> <leader>c <CMD>call CloseTerm()<CR>
 nnoremap <silent> <leader>q <CMD>call Quitout()<CR>
 nnoremap <silent> <leader>w <CMD>call SaveQuitout()<CR>
+nnoremap <silent> <leader>W <CMD>wq!<CR>
 nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
 nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
