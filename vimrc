@@ -364,6 +364,7 @@ nnoremap <silent> <leader>w <CMD>call SaveQuitout()<CR>
 nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
 nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
+nnoremap <silent> <leader>gs <CMD>G<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <leader>rs :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 xnoremap < <gv
