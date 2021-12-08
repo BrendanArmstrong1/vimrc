@@ -230,8 +230,7 @@ let g:fzf_action = {
     \ 'ctrl-v': 'vsplit' }
 
 " - down / up / left / right
-let g:fzf_layout = { 'right': '30%' }
-
+let g:fzf_layout = { 'bot': '20%' }
 " https://github.com/junegunn/fzf.vim/issues/162
 let g:fzf_commands_expect = 'enter'
 
