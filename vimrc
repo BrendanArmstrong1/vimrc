@@ -27,10 +27,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/git-messenger.vim'
+    Plug 'mhinz/vim-signify'
 
     Plug 'justinmk/vim-sneak'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-unimpaired'
     Plug 'michaeljsmith/vim-indent-object'
 
     Plug 'skanehira/preview-markdown.vim'
@@ -47,25 +49,6 @@ if need_to_install_plugins == 1
     echo "Done!"
     q
 endif
-
-nnoremap Q !!sh<CR>
-nnoremap <space> <NOP>
-set encoding=utf-8
-set backspace=indent,eol,start
-if has("macunix") || has('win32')
-  set clipboard=unnamed
-elseif has("unix")
-  set clipboard=unnamedplus
-endif
-
-set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
-"           | |    |    |   |    | + viminfo file path
-"           | |    |    |   |    + disable 'hlsearch' loading viminfo
-"           | |    |    |   + command-line history saved
-"           | |    |    + search history saved
-"           | |    + files marks saved
-"           | + lines saved each register (old name for <, vi6.2)
-"           + save/restore buffer list
 
 source /home/brendan/.vim/settings/bracketed-paste.vim
 source /home/brendan/.vim/settings/Functions.vim
@@ -85,9 +68,13 @@ let g:git_messenger_include_diff="current"
 let g:git_messenger_floating_win_opts = { 'border': 'single' }
 let g:git_messenger_popup_content_margins = v:false
 
-
-
-set laststatus=2
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+let g:signify_sign_change_delete     = g:signify_sign_change . g:signify_sign_delete_first_line
+let g:signify_sign_show_count = 0
+let g:signify_sign_show_text = 1
 
 highlight MyWhiteTrails ctermbg=red guibg=red
 augroup standard_group
@@ -107,7 +94,7 @@ augroup standard_group
     " Don't fold automatically https://stackoverflow.com/a/8316817
     autocmd BufRead * normal zR
 
-    " Open Ggrep results in a quickfix window
+    " Open Ggrep results in a quickfix window (Suggested by tpope)
     autocmd QuickFixCmdPost *grep* cwindow
 
     " Disable line numbers in :term
@@ -116,7 +103,7 @@ augroup standard_group
 
     " Resize splits in all tabs upon window resize
     " https://vi.stackexchange.com/a/206
-    autocmd VimResized * Tabdo wincmd =
+    autocmd VimResized * tabdo wincmd =
 
     " Reload file on focus/enter. This seems to break in Windows.
     " https://stackoverflow.com/a/20418591
@@ -125,12 +112,29 @@ augroup standard_group
     endif
 augroup END
 
-
-
+nnoremap Q !!sh<CR>
+nnoremap <space> <NOP>
 let mapleader="\<space>"
+set encoding=utf-8
+set backspace=indent,eol,start
+set laststatus=2
+if has("macunix") || has('win32')
+  set clipboard=unnamed
+elseif has("unix")
+  set clipboard=unnamedplus
+endif
+
+set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
+"           | |    |    |   |    | + viminfo file path
+"           | |    |    |   |    + disable 'hlsearch' loading viminfo
+"           | |    |    |   + command-line history saved
+"           | |    |    + search history saved
+"           | |    + files marks saved
+"           | + lines saved each register (old name for <, vi6.2)
+"           + save/restore buffer list
+
 
 "set lazyredraw " NoNoNo, Just No
-"set noshowmode "This is for lightline disabling
 set number relativenumber
 set ruler
 set showmatch
@@ -139,11 +143,12 @@ set noswapfile
 set noerrorbells
 set title
 set splitbelow splitright
-set updatetime=500
+set updatetime=100
 set hidden
 let &titleold="Terminal"
-set complete+=i,kspell
-set signcolumn=number
+set complete+=kspell,d
+set shortmess+=c
+set signcolumn=yes
 
 "Line wrapping
 set nowrap
@@ -186,7 +191,6 @@ set thesaurus=~/.vim/thesaurus/english.txt
 "Wild Menu
 set wildmenu
 set wildmode=longest,list,full
-set complete-=i
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "==========================================================================
@@ -199,13 +203,26 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 "==========================================================================
 
 command! MakeTags !ctags -R . " Tag Jumping with ctags
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!.git/*"'
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden
+            \    --glob "!.git/*" --glob "!H/" --glob "!.cache/" --glob "!.local"
+            \    --glob "!.git/*" --glob "!.config/*"
+            \    ~/'
 if has('win32') " Disable preview on Windows since it doesn't really work
   let g:fzf_preview_window = ''
 else
-  " Show file previews
-  command! -bang -nargs=? -complete=dir Files
+    " Show file previews
+    command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+    function! RipgrepFzf(query, fullscreen)
+        let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+        let initial_command = printf(command_fmt, shellescape(a:query))
+        let reload_command = printf(command_fmt, '{q}')
+        let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+    endfunction
+
+    command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 endif
 
 let g:fzf_action = {
@@ -213,18 +230,18 @@ let g:fzf_action = {
     \ 'ctrl-v': 'vsplit' }
 
 " - down / up / left / right
-let g:fzf_layout = { 'down': '20%' }
+let g:fzf_layout = { 'right': '30%' }
 
 " https://github.com/junegunn/fzf.vim/issues/162
 let g:fzf_commands_expect = 'enter'
 
 " Find files with fzf
-nmap <leader>?   :Rg<CR>
-nmap <leader>pf  :Files<CR>
-nmap <leader>pg  :GFiles<CR>
-nmap <leader>pl  :Lines<CR>
-nmap <leader>pt  :Tags<CR>
-nmap <leader>pL  :Locate ""<left>
+nmap <leader>?   :RG!<CR>
+nmap <leader>pf  :Files!<CR>
+nmap <leader>pg  :GFiles!<CR>
+nmap <leader>pl  :Lines!<CR>
+nmap <leader>pt  :Tags!<CR>
+nmap <leader>pL  :Locate! ""<left>
 nmap <leader>gm  :GitMessenger<CR>
 " Copy the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
 vmap <leader>gb  :'<,'>GBrowse!<CR>
@@ -335,11 +352,10 @@ inoremap <expr><silent> <BS> <SID>bs_delete()
 "======================================================
 
 "Highlighting groups for match macros
-nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<CR>
-nnoremap <silent> <leader>ic :%s/\<<c-r><c-w>\>//gn<CR>g``
-nnoremap <silent> <leader>es :UltiSnipsEdit<CR>
-nnoremap <silent> <leader>er :e $MYVIMRC<CR>
-nnoremap <silent> <leader>n :call ToggleNetrw()<CR>
+nnoremap <silent> <leader>o <Cmd>setlocal spell! spelllang=en_ca<CR>
+nnoremap <silent> <leader>es <Cmd>UltiSnipsEdit<CR>
+nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
+nnoremap <silent> <leader>n <Cmd>call ToggleNetrw()<CR>
 nnoremap <silent> <leader>b <CMD>call ExecuteScript('right')<CR>
 nnoremap <silent> <leader>v <CMD>call ExecuteScript('bot')<CR>
 nnoremap <silent> <leader>c <CMD>call CloseTerm()<CR>
@@ -347,13 +363,16 @@ nnoremap <silent> <leader>q <CMD>call Quitout()<CR>
 nnoremap <silent> <leader>w <CMD>call SaveQuitout()<CR>
 nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
+nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
+nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
+nnoremap <leader>rs :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 xnoremap < <gv
 xnoremap > >gv
-nmap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nmap gf :edit <cfile><CR>
-nmap <silent> [b :bprevious<CR>
-nmap <silent> ]b :bnext<CR>
-nmap <silent> ]B :bNext<CR>
+nmap <silent> [g <plug>(signify-prev-hunk)
+nmap <silent> [G 9999[g
+nmap <silent> ]g <plug>(signify-next-hunk)
+nmap <silent> ]G 9999]g
 imap <c-x><c-k> <c-x><c-k>
 imap <c-x><c-l> <c-x><c-l>
 map <c-l> <c-w>l
@@ -430,4 +449,3 @@ map T <Plug>Sneak_T
         inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 
 "======================================================================================
-

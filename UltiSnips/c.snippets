@@ -30,28 +30,25 @@ endglobal
 # ==============
 priority -50
 
-snippet def "#define ..."
-#define $1
+snippet #inc "include <>"
+#include <$1>
+$0
 endsnippet
 
-snippet #ifndef "#ifndef ... #define ... #endif"
-#ifndef ${1/([A-Za-z0-9_]+).*/$1/}
-#define ${1:SYMBOL} ${2:value}
-#endif /* ifndef $1 */
+snippet #incl "include  quotes"
+#include "$1"
+$0
 endsnippet
 
-snippet #if "#if #endif" b
-#if ${1:0}
-${VISUAL}$0
-#endif
+snippet FILE "File Inclusion"
+FILE *fd = fopen("$1", "$2");
+$0
+
+fclose(fd);
 endsnippet
 
-snippet mark "#pragma mark (mark)"
-#if 0
-${1:#pragma mark -
-}#pragma mark $2
-#endif
-
+snippet buff "char *buffer"
+char buff[$1];
 $0
 endsnippet
 
@@ -63,6 +60,10 @@ int main(int argc, char **argv)
 
 	return 0;
 }
+endsnippet
+
+snippet def "#define ..."
+#define $1
 endsnippet
 
 snippet for "for int loop (fori)"
@@ -85,6 +86,28 @@ if len(t[1]) > 0:
 	
 	$0
 } /* for ($1; $2; `!p if len(t[1]) > 0: snip.rv = t[1].split('=')[0].split()[-1]`++) */
+endsnippet
+
+
+snippet #ifndef "#ifndef ... #define ... #endif"
+#ifndef ${1/([A-Za-z0-9_]+).*/$1/}
+#define ${1:SYMBOL} ${2:value}
+#endif /* ifndef $1 */
+endsnippet
+
+snippet #if "#if #endif" b
+#if ${1:0}
+${VISUAL}$0
+#endif
+endsnippet
+
+snippet mark "#pragma mark (mark)"
+#if 0
+${1:#pragma mark -
+}#pragma mark $2
+#endif
+
+$0
 endsnippet
 
 snippet once "Include header once only guard"
@@ -114,7 +137,7 @@ else if (${1:/* condition */}) {
 endsnippet
 
 post_jump "printf_expand_args(snip)"
-snippet "printf" "printf with auto-expand args" wr
+snippet "pri?n?t?" "printf with auto-expand args" wr
 printf("$1\n"$2);
 endsnippet
 
