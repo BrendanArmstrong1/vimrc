@@ -58,6 +58,7 @@ let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
 let g:sonokai_transparent_background = 1 "This has to appear before the colorscheme assignment
 let g:sonokai_menu_selection_background = 'red'
+let g:sonokai_better_performance = 1
 colorscheme sonokai
 let g:lightline = {'colorscheme' : 'sonokai'}
 let g:preview_markdown_parser = 'mdcat'
@@ -66,7 +67,7 @@ let g:preview_markdown_auto_update = 1
 let g:git_messenger_always_into_popup=v:true
 let g:git_messenger_include_diff="current"
 let g:git_messenger_floating_win_opts = { 'border': 'single' }
-let g:git_messenger_popup_content_margins = v:false
+let g:git_messenger_popup_content_margins = v:true
 
 let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '_'
