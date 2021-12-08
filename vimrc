@@ -351,7 +351,6 @@ inoremap <expr><silent> <BS> <SID>bs_delete()
 "                          |_|   |_|            |___/
 "======================================================
 
-"Highlighting groups for match macros
 nnoremap <silent> <leader>o <Cmd>setlocal spell! spelllang=en_ca<CR>
 nnoremap <silent> <leader>es <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
