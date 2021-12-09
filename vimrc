@@ -59,8 +59,6 @@ let g:sonokai_disable_italic_comment = 1
 let g:sonokai_transparent_background = 1 "This has to appear before the colorscheme assignment
 let g:sonokai_menu_selection_background = 'red'
 let g:sonokai_better_performance = 1
-colorscheme sonokai
-let g:lightline = {'colorscheme' : 'sonokai'}
 let g:preview_markdown_parser = 'mdcat'
 let g:preview_markdown_auto_update = 1
 
@@ -76,6 +74,33 @@ let g:signify_sign_change            = '~'
 let g:signify_sign_change_delete     = g:signify_sign_change . g:signify_sign_delete_first_line
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
+
+" Force to use underline for spell check results
+augroup SpellUnderline
+  autocmd!
+  autocmd ColorScheme *
+    \ highlight SpellBad
+    \   cterm=Underline,bold
+    \   ctermfg=red
+    \   ctermbg=NONE
+  autocmd ColorScheme *
+    \ highlight SpellCap
+    \   cterm=Underline,bold,italic
+    \   ctermfg=Blue
+    \   ctermbg=NONE
+  autocmd ColorScheme *
+    \ highlight SpellLocal
+    \   cterm=Underline
+    \   ctermfg=Yellow
+    \   ctermbg=NONE
+  autocmd ColorScheme *
+    \ highlight SpellRare
+    \   cterm=Underline,bold
+    \   ctermfg=Magenta
+    \   ctermbg=NONE
+augroup END
+colorscheme sonokai
+let g:lightline = {'colorscheme' : 'sonokai'}
 
 highlight MyWhiteTrails ctermbg=red guibg=red
 augroup standard_group
@@ -219,7 +244,7 @@ else
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
     function! RipgrepFzf(query, fullscreen)
-        let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case -- %s || true'
         let initial_command = printf(command_fmt, shellescape(a:query))
         let reload_command = printf(command_fmt, '{q}')
         let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
