@@ -445,7 +445,7 @@ map T <Plug>Sneak_T
         elseif Check_back_space()
             return "\<TAB>"
         else
-            return "\<c-x>\<c-n>"
+            return "\<c-n>"
         endif
         endfunction
 
