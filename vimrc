@@ -172,6 +172,9 @@ set shiftwidth=4 shiftround
 set autoindent smartindent smarttab
 set incsearch ignorecase smartcase
 
+let &t_SI = "\<Esc>[6 q"
+let &t_EI = "\<Esc>[2 q"
+
 "File Browsing
 set path+=.,**
 set path+="/usr/include"
