@@ -198,6 +198,7 @@ set autoindent smartindent smarttab
 set incsearch ignorecase smartcase
 
 let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 "File Browsing
@@ -444,7 +445,7 @@ map T <Plug>Sneak_T
         elseif Check_back_space()
             return "\<TAB>"
         else
-            return "\<c-x>\<c-p>"
+            return "\<c-x>\<c-n>"
         endif
         endfunction
 
