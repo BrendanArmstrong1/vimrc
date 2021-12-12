@@ -234,7 +234,7 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 command! MakeTags !ctags -R . " Tag Jumping with ctags
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden
-            \    --glob "!.git/*" --glob "!H/" --glob "!.cache/" --glob "!.local"
+            \    --glob "!H/" --glob "!.cache/" --glob "!.local"
             \    --glob "!.git/*" --glob "!.config/*"
             \    ~/'
 if has('win32') " Disable preview on Windows since it doesn't really work
@@ -245,7 +245,7 @@ else
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
     function! RipgrepFzf(query, fullscreen)
-        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case -- %s || true'
+        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case --glob "!.git/*" -- %s || true'
         let initial_command = printf(command_fmt, shellescape(a:query))
         let reload_command = printf(command_fmt, '{q}')
         let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
@@ -260,7 +260,8 @@ let g:fzf_action = {
     \ 'ctrl-v': 'vsplit' }
 
 " - down / up / left / right
-let g:fzf_layout = { 'bot': '20%' }
+"let g:fzf_layout = { 'bot': '20%' }
+let g:fzf_layout = { 'window': '-tabnew' }
 " https://github.com/junegunn/fzf.vim/issues/162
 let g:fzf_commands_expect = 'enter'
 

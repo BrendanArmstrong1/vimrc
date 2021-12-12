@@ -62,6 +62,12 @@ int main(int argc, char **argv)
 }
 endsnippet
 
+snippet if "If statement"
+if($1){
+	${VISUAL}$0
+}
+endsnippet
+
 snippet def "#define ..."
 #define $1
 endsnippet
@@ -99,6 +105,19 @@ snippet #if "#if #endif" b
 #if ${1:0}
 ${VISUAL}$0
 #endif
+endsnippet
+
+snippet do "do while"
+do{
+	${VISUAL}$2
+}while($1);
+$0
+endsnippet
+
+snippet "whi?l?e?" "while loop" wr
+while($1){
+	${VISUAL}$0
+}
 endsnippet
 
 snippet mark "#pragma mark (mark)"
