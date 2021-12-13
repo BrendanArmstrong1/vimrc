@@ -35,8 +35,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-unimpaired'
     Plug 'michaeljsmith/vim-indent-object'
 
-    Plug 'skanehira/preview-markdown.vim'
-
     Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 call plug#end()
 
