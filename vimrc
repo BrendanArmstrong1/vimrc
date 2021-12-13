@@ -32,7 +32,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'justinmk/vim-sneak'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-unimpaired'
     Plug 'michaeljsmith/vim-indent-object'
 
     Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
