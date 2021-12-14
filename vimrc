@@ -88,8 +88,6 @@ augroup standard_group
         \ cterm=Underline ctermfg=Yellow ctermbg=NONE
     autocmd ColorScheme *  highlight SpellRare
         \ cterm=Underline ctermfg=Magenta ctermbg=NONE
-    autocmd ColorScheme *  highlight ColorColumn
-        \ ctermbg=magenta
 
     "Ensure files open the way that i want
     autocmd BufRead,BufNewFile *.tex set filetype=tex
@@ -121,6 +119,7 @@ augroup standard_group
 augroup END
 colorscheme sonokai
 let g:lightline = {'colorscheme' : 'sonokai'}
+highlight ColorColumn ctermbg=magenta
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
