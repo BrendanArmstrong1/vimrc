@@ -53,11 +53,10 @@ source /home/brendan/.vim/settings/Functions.vim
 "set termguicolors
 let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
-let g:sonokai_transparent_background = 1 "This has to appear before the colorscheme assignment
+let g:sonokai_transparent_background = 1 "before the colorscheme assignment
 let g:sonokai_menu_selection_background = 'red'
 let g:sonokai_better_performance = 1
-let g:preview_markdown_parser = 'mdcat'
-let g:preview_markdown_auto_update = 1
+
 
 let g:git_messenger_always_into_popup=v:true
 let g:git_messenger_include_diff="current"
@@ -68,43 +67,29 @@ let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '_'
 let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change            = '~'
-let g:signify_sign_change_delete     = g:signify_sign_change . g:signify_sign_delete_first_line
+let g:signify_sign_change_delete     = g:signify_sign_change .
+    \ g:signify_sign_delete_first_line
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
-
-" Force to use underline for spell check results
-augroup SpellUnderline
-  autocmd!
-  autocmd ColorScheme *
-    \ highlight SpellBad
-    \   cterm=Underline,bold
-    \   ctermfg=red
-    \   ctermbg=NONE
-  autocmd ColorScheme *
-    \ highlight SpellCap
-    \   cterm=Underline,bold,italic
-    \   ctermfg=Blue
-    \   ctermbg=NONE
-  autocmd ColorScheme *
-    \ highlight SpellLocal
-    \   cterm=Underline
-    \   ctermfg=Yellow
-    \   ctermbg=NONE
-  autocmd ColorScheme *
-    \ highlight SpellRare
-    \   cterm=Underline,bold
-    \   ctermfg=Magenta
-    \   ctermbg=NONE
-augroup END
-colorscheme sonokai
-let g:lightline = {'colorscheme' : 'sonokai'}
 
 highlight MyWhiteTrails ctermbg=red guibg=red
 augroup standard_group
     autocmd!
+
     autocmd BufEnter * match MyWhiteTrails /\s\+$/
+    autocmd BufEnter * call matchadd("ColorColumn", '\(\%80v\|\%100v\)')
     autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
     autocmd InsertLeave * match MyWhiteTrails /\s\+$/
+    autocmd ColorScheme *  highlight SpellBad
+        \ cterm=Underline ctermfg=red ctermbg=NONE
+    autocmd ColorScheme *  highlight SpellCap
+        \ cterm=Underline,italic ctermfg=Blue ctermbg=NONE
+    autocmd ColorScheme *  highlight SpellLocal
+        \ cterm=Underline ctermfg=Yellow ctermbg=NONE
+    autocmd ColorScheme *  highlight SpellRare
+        \ cterm=Underline ctermfg=Magenta ctermbg=NONE
+    autocmd ColorScheme *  highlight ColorColumn
+        \ ctermbg=magenta
 
     "Ensure files open the way that i want
     autocmd BufRead,BufNewFile *.tex set filetype=tex
@@ -134,6 +119,8 @@ augroup standard_group
         autocmd FocusGained,BufEnter * :silent! !
     endif
 augroup END
+colorscheme sonokai
+let g:lightline = {'colorscheme' : 'sonokai'}
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
@@ -242,11 +229,14 @@ else
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
     function! RipgrepFzf(query, fullscreen)
-        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case --glob "!.git/*" -- %s || true'
+        let command_fmt = 'rg --column --no-ignore --line-number --no-heading
+            \ --color=always --smart-case --glob "!.git/*" -- %s || true'
         let initial_command = printf(command_fmt, shellescape(a:query))
         let reload_command = printf(command_fmt, '{q}')
-        let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+        let spec = {'options': ['--phony', '--query', a:query, '--bind',
+            \ 'change:reload:'.reload_command]}
+        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec),
+            \ a:fullscreen)
     endfunction
 
     command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
@@ -272,7 +262,7 @@ nmap <leader>pL  :Locate! ""<left>
 nmap <leader>gm  :GitMessenger<CR>
 " Copy the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
 vmap <leader>gb  :'<,'>GBrowse!<CR>
-" Navigate to the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
+" Navigate to the GitHub deeplink (requires Fugitive/Rhubarb)
 vmap <leader>gB  :'<,'>GBrowse<CR>
 " Shows Git history for the current buffer
 command! FileHistory execute ":BCommits"
@@ -397,6 +387,10 @@ nnoremap <leader>rs :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 xnoremap < <gv
 xnoremap > >gv
 nmap gf :edit <cfile><CR>
+nmap <silent> ]b <CMD>bnext<CR>
+nmap <silent> [b <CMD>bprev<CR>
+nmap <silent> ]B <CMD>blast<CR>
+nmap <silent> [B <CMD>bfirst<CR>
 nmap <silent> [g <plug>(signify-prev-hunk)
 nmap <silent> [G 9999[g
 nmap <silent> ]g <plug>(signify-next-hunk)
@@ -412,14 +406,14 @@ map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 
-"========================================================================================
-"====================  _   _ _ _   _      ____        _            ======================
-"==================== | | | | | |_(_)    / ___| _ __ (_)_ __  ___  ======================
-"==================== | | | | | __| |____\___ \| '_ \| | '_ \/ __| ======================
-"==================== | |_| | | |_| |_____|__) | | | | | |_) \__ \ ======================
-"====================  \___/|_|\__|_|    |____/|_| |_|_| .__/|___/ ======================
-"====================                                |_|           ======================
-"========================================================================================
+"=============================================================================
+"====================  _   _ _ _   _      ____        _            ===========
+"==================== | | | | | |_(_)    / ___| _ __ (_)_ __  ___  ===========
+"==================== | | | | | __| |____\___ \| '_ \| | '_ \/ __| ===========
+"==================== | |_| | | |_| |_____|__) | | | | | |_) \__ \ ===========
+"====================  \___/|_|\__|_|    |____/|_| |_|_| .__/|___/ ===========
+"====================                                |_|           ===========
+"=============================================================================
 
         let g:UltiSnipsExpandTrigger="<C-y>"
         let g:UltiSnipsJumpForwardTrigger="<nop>"
@@ -451,7 +445,8 @@ map T <Plug>Sneak_T
             let col = col('.') - 1
             return !col || getline('.')[:col - 1]  =~# "^\\s*$"
         endfunction
-        inoremap <silent> <tab> <C-R>=(Ulti_ExpandOrJump_Res() > 0) ? "" : Tab_Completion()<CR>
+        inoremap <silent> <tab> <C-R>=(Ulti_ExpandOrJump_Res() > 0) ? "" :
+            \ Tab_Completion()<CR>
         snoremap <silent> <tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<cr>
         xmap <tab> <C-y>
 
@@ -476,4 +471,4 @@ map T <Plug>Sneak_T
 
         inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 
-"======================================================================================
+"=============================================================================
