@@ -7,8 +7,8 @@
 global !p
 def printf_expand_args(snip):
 	"""
-	This will look how many placeholders printf has and adds the separated commas
-	at the end.
+	This will look how many placeholders printf has and adds the
+	separated commas at the end.
 	"""
 	
 	# now add so many "," as much as the amount of placeholders
@@ -119,6 +119,12 @@ while($1){
 }
 endsnippet
 
+snippet "typ?e?" "struct typedef" wr
+typedef struct ${1}{
+	${VISUAL}$0
+}$1;
+endsnippet
+
 snippet mark "#pragma mark (mark)"
 #if 0
 ${1:#pragma mark -
@@ -209,7 +215,7 @@ snippet func "Function Header"
 /******************************************************************************
 * Function:         $1
 * Description:      ${4:${VISUAL}}
-* Where:`!p 
+* Where:`!p
 snip.rv = ""
 snip >> 2
 

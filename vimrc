@@ -163,7 +163,6 @@ set signcolumn=yes
 set nowrap
 set linebreak
 set showbreak=+++
-set textwidth=130
 
 "Undo stuff
 set undodir=~/.vim/undodir
