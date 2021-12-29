@@ -97,9 +97,6 @@ augroup standard_group
     autocmd BufNewFile,BufReadPost *.dockerfile set filetype=Dockerfile
     autocmd BufNewFile,BufReadPost *.jenkinsfile set filetype=groovy
 
-    " Don't fold automatically https://stackoverflow.com/a/8316817
-    autocmd BufRead * normal zR
-
     " Open Ggrep results in a quickfix window (Suggested by tpope)
     autocmd QuickFixCmdPost *grep* cwindow
 
@@ -152,17 +149,21 @@ set noswapfile
 set noerrorbells
 set title
 set splitbelow splitright
-set updatetime=100
+set updatetime=1000
+set timeout timeoutlen=1000 ttimeoutlen=50
 set hidden
 let &titleold="Terminal"
-set complete+=kspell,d
-set shortmess+=c
 set signcolumn=yes
-
 "Line wrapping
 set nowrap
 set linebreak
 set showbreak=+++
+
+set completeopt=menuone,popup,noinsert
+set complete+=kspell
+set complete-=i
+set completepopup=height:20,width:70,border:off
+set shortmess+=c
 
 "Undo stuff
 set undodir=~/.vim/undodir
@@ -170,13 +171,12 @@ set undofile
 set undolevels=10000
 
 "Tab stuff
-set tabstop=4 expandtab softtabstop=4
+set tabstop=4 softtabstop=4 expandtab autoindent smartindent smarttab
 
 "Shift stuff
 set shiftwidth=4 shiftround
 
-"Indentation
-set autoindent smartindent smarttab
+"Search stuff
 set incsearch ignorecase smartcase
 
 let &t_SI = "\<Esc>[6 q"
@@ -184,9 +184,7 @@ let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 "File Browsing
-set path+=.,**
-set path+="/usr/include"
-set path+=$VIMRUNTIME
+set path=.,**,,
 let g:netrw_banner=0 "Disable Banner
 let g:netrw_browse_split=4 "open in prior window
 let g:netrw_altv=1 " open splits to the right
@@ -203,7 +201,11 @@ set thesaurus=~/.vim/thesaurus/english.txt
 "Wild Menu
 set wildmenu
 set wildmode=longest,list,full
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd FileType * setlocal
+    \ formatoptions-=c
+    \ formatoptions-=r
+    \ formatoptions-=o
+    \ formatoptions-=l
 
 "==========================================================================
 "|  _____                       __     __   _____ _           _
@@ -381,7 +383,7 @@ nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
 nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
 nnoremap <silent> <leader>gs <CMD>G<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
-nnoremap <leader>rs :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
+nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
 xnoremap < <gv
 xnoremap > >gv
 nmap gf :edit <cfile><CR>
