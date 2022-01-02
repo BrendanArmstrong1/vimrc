@@ -21,6 +21,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'sainnhe/sonokai'
     Plug 'itchyny/lightline.vim'
 
+    Plug 'machakann/vim-highlightedyank' "Guilty pleasure
+    Plug 'svban/YankAssassin.vim'
+
     Plug 'sheerun/vim-polyglot'
     Plug 'vim-syntastic/syntastic'
 
@@ -72,12 +75,17 @@ let g:signify_sign_change_delete     = g:signify_sign_change .
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
 
+let g:highlightedyank_highlight_duration = 400
+let g:yankassassin_use_mappings = 1
+nmap y <Plug>YAMotion
+xmap y <Plug>YAVisual
+nmap yy <Plug>YALine
+
 highlight MyWhiteTrails ctermbg=red guibg=red
 augroup standard_group
     autocmd!
 
     autocmd BufEnter * match MyWhiteTrails /\s\+$/
-    autocmd BufEnter * call matchadd("ColorColumn", '\(\%80v\|\%100v\)')
     autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
     autocmd InsertLeave * match MyWhiteTrails /\s\+$/
     autocmd ColorScheme *  highlight SpellBad
@@ -116,7 +124,7 @@ augroup standard_group
 augroup END
 colorscheme sonokai
 let g:lightline = {'colorscheme' : 'sonokai'}
-highlight ColorColumn ctermbg=magenta
+highlight HighlightedyankRegion cterm=reverse gui=reverse
 
 nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>

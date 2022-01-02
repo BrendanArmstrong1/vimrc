@@ -41,6 +41,18 @@ function! ExecuteScript(location) abort
     if !term_list()->len()
         if l:exte == 'tex' || l:exte == 'html' || l:exte == 'css'
             ter ++hidden
+        elseif l:exte == 'js'
+            let l:path=expand('%:p:h')
+            if glob(l:path . "/index.html") != ""
+                ter ++hidden
+            else
+                if a:location == 'right'
+                    vert ter
+                else
+                    ter
+                endif
+                call feedkeys("\<C-w>h")
+            endif
         else
             if a:location == 'right'
                 vert ter
