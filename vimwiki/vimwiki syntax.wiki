@@ -1,0 +1,21 @@
+= Syntax Formatting =
+
+basic typefacing:
+    * *bold text*
+    * _italic text_
+    * *_bold italic text_*
+    * _*bold italic text*_
+    * ~~strikeout text~~
+    * `code (no syntax) text`
+    * super^script^
+    * sub,,script,,
+
+extra flashy words:
+    * TODO
+    * DONE
+    * STARTED
+    * FIXME
+    * FIXED
+    * XXX
+
+

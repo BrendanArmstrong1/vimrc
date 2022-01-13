@@ -1,3 +1,6 @@
 = VimWiki Index =
 
+=== VimWiki Syntax ===
+[[vimwiki syntax]]
+
 
