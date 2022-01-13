@@ -37,6 +37,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'michaeljsmith/vim-indent-object'
 
+    Plug 'BourgeoisBear/clrzr'
+    Plug 'vimwiki/vimwiki'
     Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 call plug#end()
 
@@ -53,7 +55,10 @@ endif
 source /home/brendan/.vim/settings/bracketed-paste.vim
 source /home/brendan/.vim/settings/Functions.vim
 
-"set termguicolors
+set termguicolors
+let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
+let &t_8b = "\e[48;2;%lu;%lu;%lum" "sets background color (ANSI, true-color mode)
+
 let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
 let g:sonokai_transparent_background = 1 "before the colorscheme assignment
@@ -74,6 +79,8 @@ let g:signify_sign_change_delete     = g:signify_sign_change .
     \ g:signify_sign_delete_first_line
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
+
+let g:vimwiki_list = [{'path': '~/.vim/vimwiki/'}]
 
 let g:highlightedyank_highlight_duration = 400
 let g:yankassassin_use_mappings = 1
@@ -170,7 +177,7 @@ set showbreak=+++
 set completeopt=menuone,popup,noinsert
 set complete+=kspell
 set complete-=i
-set completepopup=height:20,width:70,border:off
+set completepopup=height:20,width:70
 set shortmess+=c
 
 "Undo stuff
@@ -192,7 +199,7 @@ let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 "File Browsing
-set path=.,**,,
+set path=.,./**,,
 let g:netrw_banner=0 "Disable Banner
 let g:netrw_browse_split=4 "open in prior window
 let g:netrw_altv=1 " open splits to the right
@@ -203,7 +210,7 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 let g:NetrwIsOpen=0
 
 " auto-completion
-set omnifunc=syntaxcomplete#Complete
+"set omnifunc=syntaxcomplete#Complete
 set thesaurus=~/.vim/thesaurus/english.txt
 
 "Wild Menu
@@ -379,12 +386,12 @@ inoremap <expr><silent> <BS> <SID>bs_delete()
 nnoremap <silent> <leader>o <Cmd>setlocal spell! spelllang=en_ca<CR>
 nnoremap <silent> <leader>es <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
-nnoremap <silent> <leader>n <Cmd>call ToggleNetrw()<CR>
-nnoremap <silent> <leader>b <CMD>call ExecuteScript('right')<CR>
-nnoremap <silent> <leader>v <CMD>call ExecuteScript('bot')<CR>
+nnoremap <silent> <leader>b <Cmd>call ToggleNetrw()<CR>
+nnoremap <silent> <leader>n <CMD>call ExecuteScript('right')<CR>
+nnoremap <silent> <leader>h <CMD>call ExecuteScript('bot')<CR>
 nnoremap <silent> <leader>c <CMD>call CloseTerm()<CR>
-nnoremap <silent> <leader>q <CMD>call Quitout()<CR>
-nnoremap <silent> <leader>w <CMD>call SaveQuitout()<CR>
+nnoremap <silent> <leader>qq <CMD>call Quitout()<CR>
+nnoremap <silent> <leader>qw <CMD>call SaveQuitout()<CR>
 nnoremap <silent> <leader>W <CMD>wq!<CR>
 nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
@@ -403,6 +410,8 @@ nmap <silent> [g <plug>(signify-prev-hunk)
 nmap <silent> [G 9999[g
 nmap <silent> ]g <plug>(signify-next-hunk)
 nmap <silent> ]G 9999]g
+nmap <expr> j (v:count? 'j' : 'gj')
+nmap <expr> k (v:count? 'k' : 'gk')
 imap <c-x><c-k> <c-x><c-k>
 imap <c-x><c-l> <c-x><c-l>
 map <c-l> <c-w>l
@@ -413,6 +422,7 @@ map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
+
 
 "=============================================================================
 "====================  _   _ _ _   _      ____        _            ===========

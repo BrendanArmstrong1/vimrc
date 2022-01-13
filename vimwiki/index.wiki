@@ -1,0 +1,5 @@
+= VIMWIKI INDEX =
+
+== vimwiki ==
+[[vimwiki]] 
+
