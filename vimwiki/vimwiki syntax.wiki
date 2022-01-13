@@ -1,6 +1,29 @@
 = Syntax Formatting =
 
-basic typefacing:
+===Table of Contents===
+[[#VimWiki-Placeholders]]
+[[#basic-typefacing]]
+[[#extra-flashy-words]]
+[[#Headers]]
+[[#Lists]]
+[[#definitions]]
+[[#Tables]]
+[[#Pre-formatted-text]]
+[[#Blockquotes]]
+[[#Comments]]
+[[#Horizontal-line]]
+[[#Tags]]
+[[#Anchors]]
+
+:VimWiki-Placeholders:
+    various placeholders exist for html conversion.
+
+    %title Title of the page
+    %% %nohtml to stop conversion
+    %% %template to apply a template
+    %date 2022 01 13
+
+:basic-typefacing:
     * *bold text*
     * _italic text_
     * *_bold italic text_*
@@ -10,12 +33,188 @@ basic typefacing:
     * super^script^
     * sub,,script,,
 
-extra flashy words:
+:extra-flashy-words:
     * TODO
     * DONE
     * STARTED
     * FIXME
     * FIXED
     * XXX
+
+:Headers:
+    = header1 =
+    == header2 ==
+    ===header3===
+    ====header4====
+    =====header5=====
+    ======header6======
+    
+:Lists:
+    - Bulleted list
+    - List item number 2
+
+    * List item 1
+    * List item 2
+
+    1. Number list
+    2. List item 2
+    
+    1) another list
+    2) second item
+    
+    a) option letter list
+    b) second item
+    
+    A) capital letter list
+    B) second item
+    
+    i) roman numeral list
+    ii) second item
+    
+    I) capital numeral list
+    II) second item
+    
+    # hashes turn into numbers when turned into HTML
+    # second item
+    # third item
+    
+    Nested Lists:
+        # Bulleted list
+            a) lettered list
+            b) another item
+        # use gll or glh to move a single list item
+        # use gLl or gLh to move an item and its children
+            - use <C-T> to move a list item in insert mode
+        # use <C-D> to move a list item back in insert mode
+            * use gl <symbol> to change item to that symbol
+        # use gL <symbol> to change ALL items to that symbol
+
+        
+:definitions:
+    Term 1:: Definition 1
+    Term 2:: Definition 1
+    :: Definition 2
+    :: Definition 3
+    
+:Tables:
+    | Year | Temperature (low) | Temperature (high) |
+    | ---- | ----------------- | ------------------ |
+    | 1900 | -10               | 25                 |
+    | 1910 | -15               | 30                 |
+    | 1920 | -10               | 32                 |
+    | 1930 | _N/A_             | _N/A_              |
+    | 1940 | -2                | 40                 |
+
+    span cells with > and \/.
+    
+    | a  | b  | c | d |
+    | \/ | e  | > | f |
+    | \/ | \/ | > | g |
+    | h  | >  | > | > |
+    
+:Pre-formatted-text:
+    {{{class="brush: python"
+        stuff goes in here. 
+    }}}
+    options go in the block after the first braces.
+
+:TODO:-Math-explanation-using-mathjax.
+
+:Blockquotes:
+    text that starts with 4 or more spaces is a block quote
+
+    This would be a block quote in Vimwiki. It is not highlighted in Vim but
+    could be styled by CSS in HTML. Block quotes are usually used to quote a
+    long piece of text from another source.
+
+:Comments:
+    lines that start with %% are comments.
+    %% Commented Line!!
+
+:Horizontal-line:
+    ---- 4 or more dashes
+
+:Tags:
+    :tag-example:
+
+    Tags have non-white space characters
+    in between colons. They are also treated
+    as vimwiki anchors.
+
+:Anchors:
+    any header, tag, or *bold* text can be used
+    as an anchor. To jump to it, use;
+        %%[[file#anchor]]
+
+    ex; [[#tag-example|Tag Description]]
+    Press enter and jump, then press backspace to jump back.
+
+:VimWikiReturn:
+    the command :VimWikiReturn # #
+    adjusts list behaviour when pressing enter
+
+    FIRST NUMBER
+    Number │     Before     │    After
+    ======================================
+        1   │ 1. item|       │ 1. item
+            │                │ 2. |
+            │––––––––––––––––––––––––––––––       ← default for <CR>
+            │ 1. item        │ 1. item
+            │    continue|   │    continue
+            │                │    |
+    ======================================
+        2   │ 1. item|       │ 1. item
+            │                │    |
+            │––––––––––––––––––––––––––––––       ← default for <S-CR>
+            │ 1. item        │ 1. item
+            │    continue|   │    continue
+            │                │ 2. |
+    ======================================
+        3   │ 1. item|       │ 1. item
+            │                │ 2. |
+            │––––––––––––––––––––––––––––––
+            │ 1. item        │ 1. item
+            │    continue|   │    continue
+            │                │ 2. |
+    ======================================
+        4   │ 1. item|       │ 1. item
+            │                │    |
+            │––––––––––––––––––––––––––––––
+            │ 1. item        │ 1. item
+            │    continue|   │    continue
+            │                │    |
+
+    SECOND NUMBER
+    Number │     Before     │    After
+    ======================================
+        1   │ 1. |           │ 1.
+            │                │ 2. |
+    ======================================
+        2   │ 1. |           │                    ← default for <S-CR>
+            │                │ 1. |
+    ======================================
+        3   │ 1. |           │ |
+            │                │
+    ======================================
+        4   │ 1. |           │
+            │                │ |
+    ======================================
+        5   │     1. |       │ 1. |
+            │                │
+            │––––––––––––––––––––––––––––––       ← default for <CR>
+            │ 1. |           │ |
+            │                │
+
+:todo-lists:
+    create a todo list by placing [ ] in a list
+    * [X] create a todo list
+    * [.] learn to type
+        * [X] learn layout
+        * [.] practice for speed
+            * [X] 5 days
+            * [ ] 10 days
+            * [ ] 1 month
+        * [ ] repeat for symbols
+    toggle completion with <C-SPACE>
 
 

@@ -37,6 +37,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'michaeljsmith/vim-indent-object'
 
+    Plug 'itchyny/calendar.vim'
     Plug 'BourgeoisBear/clrzr'
     Plug 'vimwiki/vimwiki'
     Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
@@ -58,6 +59,9 @@ source /home/brendan/.vim/settings/Functions.vim
 set termguicolors
 let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
 let &t_8b = "\e[48;2;%lu;%lu;%lum" "sets background color (ANSI, true-color mode)
+let g:clrzr_startup = 0
+
+
 
 let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
@@ -80,7 +84,12 @@ let g:signify_sign_change_delete     = g:signify_sign_change .
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
 
-let g:vimwiki_list = [{'path': '~/.vim/vimwiki/'}]
+let g:vimwiki_use_calendar = 1
+let g:vimwiki_list = [{
+    \ 'path': '~/.vim/vimwiki/',
+    \ 'auto_tags': 1,
+    \ 'auto_generate_links': 1
+    \ }]
 
 let g:highlightedyank_highlight_duration = 400
 let g:yankassassin_use_mappings = 1
