@@ -1,1 +1,16 @@
 =Programming=
+
+==The C Programming Language==
+[[C/index|C]]
+
+==Python==
+[[Python/index|Python]]
+
+==Web Development==
+[[WebCode/index|Web Development]]
+    * Javascript
+    * HTML
+    * CSS
+
+==Shellscript==
+[[ShellScript/index|Shellscript]]

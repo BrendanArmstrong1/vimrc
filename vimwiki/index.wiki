@@ -15,6 +15,9 @@
 ==Spiritual==
 [[Spiritual/index|Spiritual]]
 
+==Diary==
+[[diary/diary|Diary]]
+
 == vimwiki ==
 [[vimwiki syntax|VimWiki]] 
 

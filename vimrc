@@ -15,11 +15,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
-
     Plug 'sainnhe/sonokai'
     Plug 'itchyny/lightline.vim'
+    Plug 'BourgeoisBear/clrzr'
 
     Plug 'machakann/vim-highlightedyank' "Guilty pleasure
     Plug 'svban/YankAssassin.vim'
@@ -37,9 +35,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'michaeljsmith/vim-indent-object'
 
+    Plug 'jremmen/vim-ripgrep'
     Plug 'itchyny/calendar.vim'
-    Plug 'BourgeoisBear/clrzr'
     Plug 'vimwiki/vimwiki'
+
     Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 call plug#end()
 
@@ -62,7 +61,8 @@ let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode
 let &t_8b = "\e[48;2;%lu;%lu;%lum" "sets background color (ANSI, true-color mode)
 let g:clrzr_startup = 0
 
-
+let g:rg_window_hieght = 25
+let g:rg_derive_root = v:true
 
 let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
@@ -225,67 +225,6 @@ autocmd FileType * setlocal
     \ formatoptions-=o
     \ formatoptions-=l
 
-"==========================================================================
-"|  _____                       __     __   _____ _           _
-"| |  ___|   _ _________   _   / _|___/ _| |  ___(_)_ __   __| | ___ _ __
-"| | |_ | | | |_  /_  / | | | | ||_  / |_  | |_  | | '_ \ / _` |/ _ \ '__|
-"| |  _|| |_| |/ / / /| |_| | |  _/ /|  _| |  _| | | | | | (_| |  __/ |
-"| |_|   \__,_/___/___|\__, | |_|/___|_|   |_|   |_|_| |_|\__,_|\___|_|
-"|                     |___/
-"==========================================================================
-
-command! MakeTags !ctags -R . " Tag Jumping with ctags
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden
-            \    --glob "!H/" --glob "!.cache/" --glob "!.local"
-            \    --glob "!.git/*" --glob "!.config/*"
-            \    ~/'
-if has('win32') " Disable preview on Windows since it doesn't really work
-  let g:fzf_preview_window = ''
-else
-    " Show file previews
-    command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-    function! RipgrepFzf(query, fullscreen)
-        let command_fmt = 'rg --column --no-ignore --line-number --no-heading
-            \ --color=always --smart-case --glob "!.git/*" -- %s || true'
-        let initial_command = printf(command_fmt, shellescape(a:query))
-        let reload_command = printf(command_fmt, '{q}')
-        let spec = {'options': ['--phony', '--query', a:query, '--bind',
-            \ 'change:reload:'.reload_command]}
-        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec),
-            \ a:fullscreen)
-    endfunction
-
-    command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-endif
-
-let g:fzf_action = {
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit' }
-
-" - down / up / left / right
-"let g:fzf_layout = { 'bot': '20%' }
-let g:fzf_layout = { 'window': '-tabnew' }
-" https://github.com/junegunn/fzf.vim/issues/162
-let g:fzf_commands_expect = 'enter'
-
-" Find files with fzf
-nmap <leader>?   :RG!<CR>
-nmap <leader>pf  :Files!<CR>
-nmap <leader>pg  :GFiles!<CR>
-nmap <leader>pl  :Lines!<CR>
-nmap <leader>pt  :Tags!<CR>
-nmap <leader>pL  :Locate! ""<left>
-nmap <leader>gm  :GitMessenger<CR>
-" Copy the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
-vmap <leader>gb  :'<,'>GBrowse!<CR>
-" Navigate to the GitHub deeplink (requires Fugitive/Rhubarb)
-vmap <leader>gB  :'<,'>GBrowse<CR>
-" Shows Git history for the current buffer
-command! FileHistory execute ":BCommits"
-"============================================================================
-"============================================================================
 
 
 "Auto Pair stuff
@@ -424,13 +363,13 @@ nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
 nnoremap <silent> <leader>b <Cmd>call ToggleNetrw()<CR>
 nnoremap <silent> <leader>n <CMD>call ExecuteScript('right')<CR>
 nnoremap <silent> <leader>h <CMD>call ExecuteScript('bot')<CR>
-nnoremap <silent> <leader>c <CMD>call CloseTerm()<CR>
+nnoremap <silent> <leader>ct <CMD>call CloseTerm()<CR>
 nnoremap <silent> <leader>qq <CMD>call Quitout()<CR>
 nnoremap <silent> <leader>qw <CMD>call SaveQuitout()<CR>
 nnoremap <silent> <leader>W <CMD>wq!<CR>
 nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
-nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
+nnoremap <silent> <leader>sr <CMD>so$MYVIMRC<CR>
 nnoremap <silent> <leader>gs <CMD>G<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
@@ -447,6 +386,7 @@ nmap <silent> ]g <plug>(signify-next-hunk)
 nmap <silent> ]G 9999]g
 nmap <expr> j (v:count? 'j' : 'gj')
 nmap <expr> k (v:count? 'k' : 'gk')
+nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
 imap <c-x><c-k> <c-x><c-k>
 imap <c-x><c-l> <c-x><c-l>
 map <c-l> <c-w>l

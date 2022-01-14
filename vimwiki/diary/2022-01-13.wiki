@@ -1,3 +1,7 @@
-hello world!!
+First diary entry after switching to vimwiki for my diary.
 
-this is a test for placing another note into my diary
+*Thu Jan 13 09:43:44 PM EST 2022*
+
+After getting my wiki mostly set up, I am excited too fill it with data.
+I do still need to set up some quick scripts so that I can do some 
+efficient diary entering.
