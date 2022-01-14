@@ -150,6 +150,8 @@ let g:signify_sign_change_delete     = g:signify_sign_change .
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
 
+let g:calendar_cache_directory = expand('~/.vim/cache/calendar.vim/')
+
 
 let g:highlightedyank_highlight_duration = 400
 let g:yankassassin_use_mappings = 1
@@ -208,8 +210,6 @@ nmap yy <Plug>YALine
 
 
 
-        nnoremap <Esc>[Z <CMD>call Bracket_check()<CR>
-        inoremap <silent><expr> <Esc>[Z <SID>shift_tab_fix()
 
         function! s:shift_tab_fix() abort
             if pumvisible()
@@ -225,7 +225,6 @@ nmap yy <Plug>YALine
             startinsert
         endfunction
 
-        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 
 "=============================================================================
 

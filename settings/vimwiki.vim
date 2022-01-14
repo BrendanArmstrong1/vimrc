@@ -1,4 +1,4 @@
-let g:vimwiki_use_calendar = 1
+let g:vimwiki_use_calendar = 0
 let g:vimwiki_list = [
         \ {'path': '~/.vim/vimwiki/', 
             \ 'name': 'Main', 

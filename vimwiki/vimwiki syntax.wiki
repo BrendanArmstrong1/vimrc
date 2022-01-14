@@ -22,7 +22,7 @@
     various placeholders exist for html conversion.
 
     %title Title of the page
-    %% %nohtml to stop conversion
+    %nohtml to stop conversion
     %% %template to apply a template
     %date 2022 01 13
 

@@ -1,1 +1,9 @@
 Today is the 14th of January.
+
+I think I have a good amount of work done on my productivity setup. I still want too 
+push it even further though. I would like to get a news app set up to work with my 
+system, probably something like newsboat, but I would like it too be in vim. I will
+have to see what I can get.
+
+Oh, I also need to get a solid todo list setup. I'm hoping that I can use calendar vim
+to make this happen.

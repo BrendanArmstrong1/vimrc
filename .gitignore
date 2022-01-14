@@ -5,3 +5,5 @@ autoload/
 !.gitignore
 settings/viminfo
 thesaurus/
+vimwiki/diary
+cache
