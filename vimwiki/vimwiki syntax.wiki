@@ -1,21 +1,24 @@
 = Syntax Formatting =
 
-===Table of Contents===
-[[#VimWiki-Placeholders]]
-[[#basic-typefacing]]
-[[#extra-flashy-words]]
-[[#Headers]]
-[[#Lists]]
-[[#definitions]]
-[[#Tables]]
-[[#Pre-formatted-text]]
-[[#Blockquotes]]
-[[#Comments]]
-[[#Horizontal-line]]
-[[#Tags]]
-[[#Anchors]]
+= Contents =
+    - [[#Syntax Formatting#VimWiki Placeholders|VimWiki Placeholders]]
+    - [[#Syntax Formatting#Basic Typesetting|Basic Typesetting]]
+    - [[#Syntax Formatting#Extra Flashy Words|Extra Flashy Words]]
+    - [[#Syntax Formatting#Headers|Headers]]
+    - [[#header1#Lists|Lists]]
+        - [[#header1#Lists#VimWiki Return|VimWiki Return]]
+        - [[#header1#Lists#Todo Lists|Todo Lists]]
+    - [[#header1#Definitions|Definitions]]
+    - [[#header1#Tables|Tables]]
+    - [[#header1#Pre Formatted Text|Pre Formatted Text]]
+    - [[#header1#Math with MathJax|Math with MathJax]]
+    - [[#header1#Blockquotes|Blockquotes]]
+    - [[#header1#Comments|Comments]]
+    - [[#header1#Horizontal-line|Horizontal-line]]
+    - [[#header1#Tags|Tags]]
+    - [[#header1#Anchors|Anchors]]
 
-:VimWiki-Placeholders:
+==VimWiki Placeholders==
     various placeholders exist for html conversion.
 
     %title Title of the page
@@ -23,7 +26,7 @@
     %% %template to apply a template
     %date 2022 01 13
 
-:basic-typefacing:
+==Basic Typesetting==
     * *bold text*
     * _italic text_
     * *_bold italic text_*
@@ -33,7 +36,7 @@
     * super^script^
     * sub,,script,,
 
-:extra-flashy-words:
+==Extra Flashy Words==
     * TODO
     * DONE
     * STARTED
@@ -41,7 +44,7 @@
     * FIXED
     * XXX
 
-:Headers:
+==Headers==
     = header1 =
     == header2 ==
     ===header3===
@@ -49,7 +52,7 @@
     =====header5=====
     ======header6======
     
-:Lists:
+==Lists==
     - Bulleted list
     - List item number 2
 
@@ -89,67 +92,7 @@
             * use gl <symbol> to change item to that symbol
         # use gL <symbol> to change ALL items to that symbol
 
-        
-:definitions:
-    Term 1:: Definition 1
-    Term 2:: Definition 1
-    :: Definition 2
-    :: Definition 3
-    
-:Tables:
-    | Year | Temperature (low) | Temperature (high) |
-    | ---- | ----------------- | ------------------ |
-    | 1900 | -10               | 25                 |
-    | 1910 | -15               | 30                 |
-    | 1920 | -10               | 32                 |
-    | 1930 | _N/A_             | _N/A_              |
-    | 1940 | -2                | 40                 |
-
-    span cells with > and \/.
-    
-    | a  | b  | c | d |
-    | \/ | e  | > | f |
-    | \/ | \/ | > | g |
-    | h  | >  | > | > |
-    
-:Pre-formatted-text:
-    {{{class="brush: python"
-        stuff goes in here. 
-    }}}
-    options go in the block after the first braces.
-
-:TODO:-Math-explanation-using-mathjax.
-
-:Blockquotes:
-    text that starts with 4 or more spaces is a block quote
-
-    This would be a block quote in Vimwiki. It is not highlighted in Vim but
-    could be styled by CSS in HTML. Block quotes are usually used to quote a
-    long piece of text from another source.
-
-:Comments:
-    lines that start with %% are comments.
-    %% Commented Line!!
-
-:Horizontal-line:
-    ---- 4 or more dashes
-
-:Tags:
-    :tag-example:
-
-    Tags have non-white space characters
-    in between colons. They are also treated
-    as vimwiki anchors.
-
-:Anchors:
-    any header, tag, or *bold* text can be used
-    as an anchor. To jump to it, use;
-        %%[[file#anchor]]
-
-    ex; [[#tag-example|Tag Description]]
-    Press enter and jump, then press backspace to jump back.
-
-:VimWikiReturn:
+===VimWiki Return===
     the command :VimWikiReturn # #
     adjusts list behaviour when pressing enter
 
@@ -205,7 +148,7 @@
             │ 1. |           │ |
             │                │
 
-:todo-lists:
+===Todo Lists===
     create a todo list by placing [ ] in a list
     * [X] create a todo list
     * [.] learn to type
@@ -216,5 +159,65 @@
             * [ ] 1 month
         * [ ] repeat for symbols
     toggle completion with <C-SPACE>
+        
+==Definitions==
+    Term 1:: Definition 1
+    Term 2:: Definition 1
+    :: Definition 2
+    :: Definition 3
+    
+==Tables==
+    | Year | Temperature (low) | Temperature (high) |
+    | ---- | ----------------- | ------------------ |
+    | 1900 | -10               | 25                 |
+    | 1910 | -15               | 30                 |
+    | 1920 | -10               | 32                 |
+    | 1930 | _N/A_             | _N/A_              |
+    | 1940 | -2                | 40                 |
+
+    span cells with > and \/.
+    
+    | a  | b  | c | d |
+    | \/ | e  | > | f |
+    | \/ | \/ | > | g |
+    | h  | >  | > | > |
+    
+==Pre Formatted Text==
+    {{{class="brush: python"
+        stuff goes in here. 
+    }}}
+    options go in the block after the first braces.
+
+==Math with MathJax==
+
+==Blockquotes==
+    text that starts with 4 or more spaces is a block quote
+
+    This would be a block quote in Vimwiki. It is not highlighted in Vim but
+    could be styled by CSS in HTML. Block quotes are usually used to quote a
+    long piece of text from another source.
+
+==Comments==
+    lines that start with %% are comments.
+    %% Commented Line!!
+
+==Horizontal-line==
+    ---- 4 or more dashes
+
+==Tags==
+    :tag-example:
+
+    Tags have non-white space characters
+    in between colons. They are also treated
+    as vimwiki anchors.
+
+==Anchors==
+    any header, tag, or *bold* text can be used
+    as an anchor. To jump to it, use;
+        %%[[file#anchor]]
+
+    ex; [[#tag-example|Tag Description]]
+    Press enter and jump, then press backspace to jump back.
+
 
 

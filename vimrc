@@ -55,6 +55,7 @@ endif
 
 source /home/brendan/.vim/settings/bracketed-paste.vim
 source /home/brendan/.vim/settings/Functions.vim
+source /home/brendan/.vim/settings/vimwiki.vim
 
 set termguicolors
 let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
@@ -84,12 +85,6 @@ let g:signify_sign_change_delete     = g:signify_sign_change .
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
 
-let g:vimwiki_use_calendar = 1
-let g:vimwiki_list = [{
-    \ 'path': '~/.vim/vimwiki/',
-    \ 'auto_tags': 1,
-    \ 'auto_generate_links': 1
-    \ }]
 
 let g:highlightedyank_highlight_duration = 400
 let g:yankassassin_use_mappings = 1
@@ -221,7 +216,6 @@ let g:NetrwIsOpen=0
 " auto-completion
 "set omnifunc=syntaxcomplete#Complete
 set thesaurus=~/.vim/thesaurus/english.txt
-
 "Wild Menu
 set wildmenu
 set wildmode=longest,list,full
@@ -382,6 +376,38 @@ function! s:bs_delete() abort
 endfunction
 inoremap <expr><silent> <BS> <SID>bs_delete()
 
+function! s:prefix_zero(num) abort
+  if a:num < 10
+    return '0'.a:num
+  endif
+  return a:num
+endfunction
+
+" Callback function for Calendar.vim
+function! DiaryDay(day, month, year, week, dir, wnum) abort
+  let day = s:prefix_zero(a:day)
+  let month = s:prefix_zero(a:month)
+
+  let link = a:year.'-'.month.'-'.day
+  if winnr('#') == 0
+    if a:dir ==? 'V'
+      vsplit
+    else
+      split
+    endif
+  else
+    wincmd p
+    if !&hidden && &modified
+      new
+    endif
+  endif
+
+  call vimwiki#diary#make_note(a:wnum, 0, link)
+endfunction
+
+autocmd FileType calendar nmap <buffer> <CR>
+    \ :call DiaryDay(b:calendar.day().get_day(), b:calendar.day().get_month(),
+    \ b:calendar.day().get_year(), b:calendar.day().week(), "V", v:count1)<CR>
 
 "======================================================
 " ____                                  _
@@ -443,7 +469,7 @@ map T <Plug>Sneak_T
 "=============================================================================
 
         let g:UltiSnipsExpandTrigger="<C-y>"
-        let g:UltiSnipsJumpForwardTrigger="<nop>"
+        let g:UltiSnipsJumpForwardTrigger="<C-f>"
         let g:UltiSnipsJumpBackwardTrigger="<C-b>"
         let g:UltiSnipsEditSplit="vertical"
         let g:UltiSnipesRemoveSelectModeMappings = 0
