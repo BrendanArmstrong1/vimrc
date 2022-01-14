@@ -19,5 +19,5 @@
 [[diary/diary|Diary]]
 
 == vimwiki ==
-[[vimwiki syntax|VimWiki]] 
+[[vimwiki syntax|VimWiki]]
 

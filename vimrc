@@ -25,6 +25,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'sheerun/vim-polyglot'
     Plug 'vim-syntastic/syntastic'
 
+    Plug 'vim-jp/vital.vim'
+
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/git-messenger.vim'
@@ -52,9 +54,72 @@ if need_to_install_plugins == 1
     q
 endif
 
+source /home/brendan/.vim/settings/basic-settings.vim
 source /home/brendan/.vim/settings/bracketed-paste.vim
 source /home/brendan/.vim/settings/Functions.vim
 source /home/brendan/.vim/settings/vimwiki.vim
+
+"======================================================
+" ____                                  _
+"|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
+"| |_) / _ \ '_ ` _ \ / _` | '_ \| '_ \| | '_ \ / _` |
+"|  _ <  __/ | | | | | (_| | |_) | |_) | | | | | (_| |
+"|_| \_\___|_| |_| |_|\__,_| .__/| .__/|_|_| |_|\__, |
+"                          |_|   |_|            |___/
+"======================================================
+
+nnoremap Q !!sh<CR>
+nnoremap <space> <NOP>
+let mapleader="\<space>"
+
+nnoremap <silent> <leader>o <Cmd>setlocal spell! spelllang=en_ca<CR>
+nnoremap <silent> <leader>ec <Cmd>Calendar<CR>
+nnoremap <silent> <leader>es <Cmd>UltiSnipsEdit<CR>
+nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
+nnoremap <silent> <leader>en <CMD>call ExecuteScript('right')<CR>
+nnoremap <silent> <leader>eh <CMD>call ExecuteScript('bot')<CR>
+nnoremap <silent> <leader>b <Cmd>call ToggleNetrw()<CR>
+nnoremap <silent> <leader>ct <CMD>call CloseTerm()<CR>
+nnoremap <silent> <leader>qq <CMD>call Quitout()<CR>
+nnoremap <silent> <leader>qw <CMD>call SaveQuitout()<CR>
+nnoremap <silent> <leader>W <CMD>wq!<CR>
+nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
+nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
+nnoremap <silent> <leader>sr <CMD>so$MYVIMRC<CR>
+nnoremap <silent> <leader>gs <CMD>G<CR>
+nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
+nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
+
+xnoremap < <gv
+xnoremap > >gv
+
+nmap gf :edit <cfile><CR>
+nmap <C-W><C-F> :vsplit <cfile><CR>
+
+nmap <silent> ]b <CMD>bnext<CR>
+nmap <silent> [b <CMD>bprev<CR>
+nmap <silent> ]B <CMD>blast<CR>
+nmap <silent> [B <CMD>bfirst<CR>
+nmap <silent> [g <plug>(signify-prev-hunk)
+nmap <silent> [G 9999[g
+nmap <silent> ]g <plug>(signify-next-hunk)
+nmap <silent> ]G 9999]g
+nmap <expr> j (v:count? 'j' : 'gj')
+nmap <expr> k (v:count? 'k' : 'gk')
+nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
+
+imap <c-x><c-k> <c-x><c-k>
+imap <c-x><c-l> <c-x><c-l>
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+
 
 set termguicolors
 let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
@@ -92,311 +157,9 @@ nmap y <Plug>YAMotion
 xmap y <Plug>YAVisual
 nmap yy <Plug>YALine
 
-highlight MyWhiteTrails ctermbg=red guibg=red
-augroup standard_group
-    autocmd!
-
-    autocmd BufEnter * match MyWhiteTrails /\s\+$/
-    autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
-    autocmd InsertLeave * match MyWhiteTrails /\s\+$/
-    autocmd ColorScheme *  highlight SpellBad
-        \ cterm=Underline ctermfg=red ctermbg=NONE
-    autocmd ColorScheme *  highlight SpellCap
-        \ cterm=Underline,italic ctermfg=Blue ctermbg=NONE
-    autocmd ColorScheme *  highlight SpellLocal
-        \ cterm=Underline ctermfg=Yellow ctermbg=NONE
-    autocmd ColorScheme *  highlight SpellRare
-        \ cterm=Underline ctermfg=Magenta ctermbg=NONE
-
-    "Ensure files open the way that i want
-    autocmd BufRead,BufNewFile *.tex set filetype=tex
-    autocmd BufRead,BufNewFile *.json setfiletype json
-    autocmd BufRead,BufNewFile *.json.* setfiletype json
-    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-    autocmd BufNewFile,BufReadPost *.dockerfile set filetype=Dockerfile
-    autocmd BufNewFile,BufReadPost *.jenkinsfile set filetype=groovy
-
-    " Open Ggrep results in a quickfix window (Suggested by tpope)
-    autocmd QuickFixCmdPost *grep* cwindow
-
-    " Disable line numbers in :term
-    " https://stackoverflow.com/a/63908546
-    autocmd terminalopen * setlocal nonumber norelativenumber
-
-    " Resize splits in all tabs upon window resize
-    " https://vi.stackexchange.com/a/206
-    autocmd VimResized * tabdo wincmd =
-
-    " Reload file on focus/enter. This seems to break in Windows.
-    " https://stackoverflow.com/a/20418591
-    if !has("win32")
-        autocmd FocusGained,BufEnter * :silent! !
-    endif
-augroup END
-colorscheme sonokai
-let g:lightline = {'colorscheme' : 'sonokai'}
-highlight HighlightedyankRegion cterm=reverse gui=reverse
-
-nnoremap Q !!sh<CR>
-nnoremap <space> <NOP>
-let mapleader="\<space>"
-set encoding=utf-8
-set backspace=indent,eol,start
-set laststatus=2
-if has("macunix") || has('win32')
-  set clipboard=unnamed
-elseif has("unix")
-  set clipboard=unnamedplus
-endif
-
-set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
-"           | |    |    |   |    | + viminfo file path
-"           | |    |    |   |    + disable 'hlsearch' loading viminfo
-"           | |    |    |   + command-line history saved
-"           | |    |    + search history saved
-"           | |    + files marks saved
-"           | + lines saved each register (old name for <, vi6.2)
-"           + save/restore buffer list
-
-
-"set lazyredraw " NoNoNo, Just No
-set number relativenumber
-set ruler
-set showmatch
-set cpoptions+=>
-set noswapfile
-set noerrorbells
-set title
-set splitbelow splitright
-set updatetime=1000
-set timeout timeoutlen=1000 ttimeoutlen=50
-set hidden
-let &titleold="Terminal"
-set signcolumn=yes
-"Line wrapping
-set nowrap
-set linebreak
-set showbreak=+++
-
-set completeopt=menuone,popup,noinsert
-set complete+=kspell
-set complete-=i
-set completepopup=height:20,width:70
-set shortmess+=c
-
-"Undo stuff
-set undodir=~/.vim/undodir
-set undofile
-set undolevels=10000
-
-"Tab stuff
-set tabstop=4 softtabstop=4 expandtab autoindent smartindent smarttab
-
-"Shift stuff
-set shiftwidth=4 shiftround
-
-"Search stuff
-set incsearch ignorecase smartcase
-
-let &t_SI = "\<Esc>[6 q"
-let &t_SR = "\<Esc>[4 q"
-let &t_EI = "\<Esc>[2 q"
-
-"File Browsing
-set path=.,./**,,
-let g:netrw_banner=0 "Disable Banner
-let g:netrw_browse_split=4 "open in prior window
-let g:netrw_altv=1 " open splits to the right
-let g:netrw_liststyle=3 " tree view
-let g:netrw_winsize=12 " Window size
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-let g:NetrwIsOpen=0
-
-" auto-completion
-"set omnifunc=syntaxcomplete#Complete
-set thesaurus=~/.vim/thesaurus/english.txt
-"Wild Menu
-set wildmenu
-set wildmode=longest,list,full
-autocmd FileType * setlocal
-    \ formatoptions-=c
-    \ formatoptions-=r
-    \ formatoptions-=o
-    \ formatoptions-=l
 
 
 
-"Auto Pair stuff
-function! s:bracket_pairing(name) abort
-    let l:line = getline('.')
-    let l:len = l:line->len()
-    let l:count = 0
-    if a:name == "("
-        let l:pair = ")"
-    elseif a:name == "["
-        let l:pair = "]"
-    elseif a:name == "{"
-        let l:pair = "}"
-    elseif a:name == "\""
-        let l:pair = "\""
-    elseif a:name == "'"
-        let l:pair = "'"
-    endif
-    for i in range(l:len)
-        if a:name == "\""
-            if l:line[i] == a:name && l:line[i-1] !~ '[\\]'
-                if l:count
-                    let l:count = 0
-                else
-                    let l:count += 1
-                endif
-            endif
-        elseif a:name == "'"
-            if l:line[col('.')-2] =~ '[A-Z]'
-                return a:name
-                echon l:line[col('.')-1]
-            endif
-            if l:line[i] == a:name && l:line[i-1] !~ '[A-Z\\]'
-                if l:count
-                    let l:count = 0
-                else
-                    let l:count += 1
-                endif
-            endif
-        else
-            if l:line[i] == a:name && l:line[i-1] != "\\"
-                let l:count += 1
-            elseif l:line[i] == l:pair && l:line[i-1] != "\\"
-                let l:count -= 1
-            endif
-        endif
-    endfor
-    if l:count
-        return a:name
-    else
-        return a:name . l:pair . "\<left>"
-    endif
-endfunction
-inoremap <expr><silent> ( <SID>bracket_pairing("(")
-inoremap <expr><silent> [ <SID>bracket_pairing("[")
-inoremap <expr><silent> { <SID>bracket_pairing("{")
-inoremap <expr><silent> " <SID>bracket_pairing("\"")
-inoremap <expr><silent> ' <SID>bracket_pairing("'")
-
-
-"Auto backspace after an autopair
-function! s:bs_delete() abort
-    let l:line = getline('.')
-    let l:before = l:line[col(".")-2]
-    let l:after = l:line[col(".")-1]
-    if l:before == "("
-        if l:after == ")"
-            return "\<right>\<BS>\<BS>"
-        endif
-    elseif l:before == "["
-        if l:after == "]"
-            return "\<right>\<BS>\<BS>"
-        endif
-    elseif l:before == "{"
-        if l:after == "}"
-            return "\<right>\<BS>\<BS>"
-        endif
-    elseif l:before == "\""
-        if l:after == "\""
-            return "\<right>\<BS>\<BS>"
-        endif
-    elseif l:before == "'"
-        if l:after == "'"
-            return "\<right>\<BS>\<BS>"
-        endif
-    endif
-    return "\<BS>"
-endfunction
-inoremap <expr><silent> <BS> <SID>bs_delete()
-
-function! s:prefix_zero(num) abort
-  if a:num < 10
-    return '0'.a:num
-  endif
-  return a:num
-endfunction
-
-" Callback function for Calendar.vim
-function! DiaryDay(day, month, year, week, dir, wnum) abort
-  let day = s:prefix_zero(a:day)
-  let month = s:prefix_zero(a:month)
-
-  let link = a:year.'-'.month.'-'.day
-  if winnr('#') == 0
-    if a:dir ==? 'V'
-      vsplit
-    else
-      split
-    endif
-  else
-    wincmd p
-    if !&hidden && &modified
-      new
-    endif
-  endif
-
-  call vimwiki#diary#make_note(a:wnum, 0, link)
-endfunction
-
-autocmd FileType calendar nmap <buffer> <CR>
-    \ :call DiaryDay(b:calendar.day().get_day(), b:calendar.day().get_month(),
-    \ b:calendar.day().get_year(), b:calendar.day().week(), "V", v:count1)<CR>
-
-"======================================================
-" ____                                  _
-"|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
-"| |_) / _ \ '_ ` _ \ / _` | '_ \| '_ \| | '_ \ / _` |
-"|  _ <  __/ | | | | | (_| | |_) | |_) | | | | | (_| |
-"|_| \_\___|_| |_| |_|\__,_| .__/| .__/|_|_| |_|\__, |
-"                          |_|   |_|            |___/
-"======================================================
-
-nnoremap <silent> <leader>o <Cmd>setlocal spell! spelllang=en_ca<CR>
-nnoremap <silent> <leader>es <Cmd>UltiSnipsEdit<CR>
-nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
-nnoremap <silent> <leader>b <Cmd>call ToggleNetrw()<CR>
-nnoremap <silent> <leader>n <CMD>call ExecuteScript('right')<CR>
-nnoremap <silent> <leader>h <CMD>call ExecuteScript('bot')<CR>
-nnoremap <silent> <leader>ct <CMD>call CloseTerm()<CR>
-nnoremap <silent> <leader>qq <CMD>call Quitout()<CR>
-nnoremap <silent> <leader>qw <CMD>call SaveQuitout()<CR>
-nnoremap <silent> <leader>W <CMD>wq!<CR>
-nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
-nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
-nnoremap <silent> <leader>sr <CMD>so$MYVIMRC<CR>
-nnoremap <silent> <leader>gs <CMD>G<CR>
-nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
-nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
-xnoremap < <gv
-xnoremap > >gv
-nmap gf :edit <cfile><CR>
-nmap <silent> ]b <CMD>bnext<CR>
-nmap <silent> [b <CMD>bprev<CR>
-nmap <silent> ]B <CMD>blast<CR>
-nmap <silent> [B <CMD>bfirst<CR>
-nmap <silent> [g <plug>(signify-prev-hunk)
-nmap <silent> [G 9999[g
-nmap <silent> ]g <plug>(signify-next-hunk)
-nmap <silent> ]G 9999]g
-nmap <expr> j (v:count? 'j' : 'gj')
-nmap <expr> k (v:count? 'k' : 'gk')
-nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
-imap <c-x><c-k> <c-x><c-k>
-imap <c-x><c-l> <c-x><c-l>
-map <c-l> <c-w>l
-map <c-h> <c-w>h
-map <c-j> <c-w>j
-map <c-k> <c-w>k
-map f <Plug>Sneak_f
-map F <Plug>Sneak_F
-map t <Plug>Sneak_t
-map T <Plug>Sneak_T
 
 
 "=============================================================================
@@ -465,3 +228,48 @@ map T <Plug>Sneak_T
         inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 
 "=============================================================================
+
+highlight MyWhiteTrails ctermbg=red guibg=red
+augroup standard_group
+    autocmd!
+
+    autocmd BufEnter * match MyWhiteTrails /\s\+$/
+    autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
+    autocmd InsertLeave * match MyWhiteTrails /\s\+$/
+    autocmd ColorScheme *  highlight SpellBad
+        \ cterm=Underline ctermfg=red ctermbg=NONE
+    autocmd ColorScheme *  highlight SpellCap
+        \ cterm=Underline,italic ctermfg=Blue ctermbg=NONE
+    autocmd ColorScheme *  highlight SpellLocal
+        \ cterm=Underline ctermfg=Yellow ctermbg=NONE
+    autocmd ColorScheme *  highlight SpellRare
+        \ cterm=Underline ctermfg=Magenta ctermbg=NONE
+
+    "Ensure files open the way that i want
+    autocmd BufRead,BufNewFile *.tex set filetype=tex
+    autocmd BufRead,BufNewFile *.json setfiletype json
+    autocmd BufRead,BufNewFile *.json.* setfiletype json
+    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+    autocmd BufNewFile,BufReadPost *.dockerfile set filetype=Dockerfile
+    autocmd BufNewFile,BufReadPost *.jenkinsfile set filetype=groovy
+
+    " Open Ggrep results in a quickfix window (Suggested by tpope)
+    autocmd QuickFixCmdPost *grep* cwindow
+
+    " Disable line numbers in :term
+    " https://stackoverflow.com/a/63908546
+    autocmd terminalopen * setlocal nonumber norelativenumber
+
+    " Resize splits in all tabs upon window resize
+    " https://vi.stackexchange.com/a/206
+    autocmd VimResized * tabdo wincmd =
+
+    " Reload file on focus/enter. This seems to break in Windows.
+    " https://stackoverflow.com/a/20418591
+    if !has("win32")
+        autocmd FocusGained,BufEnter * :silent! !
+    endif
+augroup END
+colorscheme sonokai
+let g:lightline = {'colorscheme' : 'sonokai'}
+highlight HighlightedyankRegion cterm=reverse gui=reverse
