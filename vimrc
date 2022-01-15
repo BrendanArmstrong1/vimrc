@@ -57,6 +57,7 @@ endif
 source /home/brendan/.vim/settings/basic-settings.vim
 source /home/brendan/.vim/settings/bracketed-paste.vim
 source /home/brendan/.vim/settings/Functions.vim
+source /home/brendan/.vim/cache/calendar.vim/credentials.vim
 source /home/brendan/.vim/settings/vimwiki.vim
 
 "======================================================
@@ -151,7 +152,8 @@ let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
 
 let g:calendar_cache_directory = expand('~/.vim/cache/calendar.vim/')
-
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
 
 let g:highlightedyank_highlight_duration = 400
 let g:yankassassin_use_mappings = 1
