@@ -1,1 +1,4 @@
 =Academia=
+
+== Mathamatical Physics ==
+[[Math_Phys]]

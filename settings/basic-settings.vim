@@ -7,14 +7,13 @@ elseif has("unix")
   set clipboard=unnamedplus
 endif
 
-set viminfo=%,<800,'100,/50,:100,h,n~/.vim/settings/viminfo
-"           | |    |    |   |    | + viminfo file path
-"           | |    |    |   |    + disable 'hlsearch' loading viminfo
-"           | |    |    |   + command-line history saved
-"           | |    |    + search history saved
-"           | |    + files marks saved
-"           | + lines saved each register (old name for <, vi6.2)
-"           + save/restore buffer list
+set viminfo=<800,'100,/50,:100,h,n~/.vim/settings/viminfo
+"            |    |    |   |    | + viminfo file path
+"            |    |    |   |    + disable 'hlsearch' loading viminfo
+"            |    |    |   + command-line history saved
+"            |    |    + search history saved
+"            |    + files marks saved
+"            + lines saved each register (old name for <, vi6.2)
 
 
 "set lazyredraw " NoNoNo, Just No
@@ -36,11 +35,12 @@ set nowrap
 set linebreak
 set showbreak=+++
 
-set completeopt=menuone,popup,noinsert
+set completeopt=menuone,popup
 set complete+=kspell
 set complete-=i
 set completepopup=height:20,width:70
 set shortmess+=c
+set cmdheight=1
 
 "Undo stuff
 set undodir=~/.vim/undodir
@@ -64,9 +64,7 @@ let &t_EI = "\<Esc>[2 q"
 set path=.,./**,,
 let g:netrw_banner=0 "Disable Banner
 let g:netrw_browse_split=4 "open in prior window
-let g:netrw_altv=1 " open splits to the right
 let g:netrw_liststyle=3 " tree view
-let g:netrw_winsize=20 " Window size
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 let g:NetrwIsOpen=0

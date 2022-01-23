@@ -1,0 +1,28 @@
+= Emacs =
+
+This is what I want from emacs:
+
+    * [ ] vimwiki like notetaking
+        * [ ] cross-linking notes
+        * [ ] categorical awareness
+    * [ ] terminal split code execution
+    * [o] comprehensive file management
+        * [X] fuzzy finding
+        * [ ] ripgrep
+    * [ ] calendar with sync to google calendar
+    * [ ] code snippets
+    * [ ] quick split navigation
+    * [ ] vim like control
+        * [ ] indents-as-objects
+        * [ ] surround
+        * [ ] repeat
+        * [ ] sneak
+        * [ ] yank-highlighting
+        * [ ] bracketed paste
+    * [X] sonokai color-scheme
+
+I will start with doom emacs and see how to modify it's properties.
+
+*Sun Jan 16 03:01:48 PM EST 2022*
+I have given up on my attempt to get emacs working. I simply like vim
+too much. Perhaps I will give it another try later in life.

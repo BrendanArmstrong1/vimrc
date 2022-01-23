@@ -1,0 +1,2 @@
+Functions as a medium by which other programs can be integrated. An extensible program
+can be expanded with arbitrary programs, including user created programs.

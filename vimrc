@@ -36,6 +36,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
     Plug 'michaeljsmith/vim-indent-object'
+    Plug 'mhinz/vim-startify'
 
     Plug 'jremmen/vim-ripgrep'
     Plug 'itchyny/calendar.vim'
@@ -74,7 +75,7 @@ nnoremap <space> <NOP>
 let mapleader="\<space>"
 
 nnoremap <silent> <leader>o <Cmd>setlocal spell! spelllang=en_ca<CR>
-nnoremap <silent> <leader>ec <Cmd>Calendar<CR>
+nnoremap <silent> <leader>ec <Cmd>Calendar -position=tab<CR>
 nnoremap <silent> <leader>es <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
 nnoremap <silent> <leader>en <CMD>call ExecuteScript('right')<CR>
@@ -86,7 +87,10 @@ nnoremap <silent> <leader>qw <CMD>call SaveQuitout()<CR>
 nnoremap <silent> <leader>W <CMD>wq!<CR>
 nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
+
 nnoremap <silent> <leader>sr <CMD>so$MYVIMRC<CR>
+nnoremap <silent> <leader>st <CMD>Startify<CR>
+
 nnoremap <silent> <leader>gs <CMD>G<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
@@ -136,6 +140,22 @@ let g:sonokai_transparent_background = 1 "before the colorscheme assignment
 let g:sonokai_menu_selection_background = 'red'
 let g:sonokai_better_performance = 1
 
+let g:startify_session_persistence = 1
+let g:startify_session_dir = '~/.vim/session'
+let g:startify_update_oldfiles = 1
+let g:startify_change_to_dir = 1
+let g:startify_change_to_vcs_root = 1
+let g:startify_fortune_use_unicode = 1
+let g:startify_padding_left = winwidth(0)/2 - 30
+let g:startify_custom_header =
+          \ 'startify#center(startify#fortune#cowsay())'
+let g:startify_lists = [
+    \ { 'type': 'dir',       'header': startify#center(['MRU '.getcwd()]) },
+    \ { 'type': 'sessions',  'header': startify#center(['Sessions']) },
+    \ { 'type': 'files',     'header': startify#center(['MRU']) },
+    \ { 'type': 'bookmarks', 'header': startify#center(['Bookmarks']) },
+    \ { 'type': 'commands',  'header': startify#center(['Commands']) },
+    \ ]
 
 let g:git_messenger_always_into_popup=v:true
 let g:git_messenger_include_diff="current"
@@ -234,7 +254,6 @@ highlight MyWhiteTrails ctermbg=red guibg=red
 augroup standard_group
     autocmd!
 
-    autocmd BufEnter * match MyWhiteTrails /\s\+$/
     autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
     autocmd InsertLeave * match MyWhiteTrails /\s\+$/
     autocmd ColorScheme *  highlight SpellBad

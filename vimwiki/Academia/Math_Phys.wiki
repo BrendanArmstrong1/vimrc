@@ -1,0 +1,6 @@
+= Mathematical Physics =
+
+Mathematical physics is the study of differential equations, and using them in
+practical solutions.
+
+
