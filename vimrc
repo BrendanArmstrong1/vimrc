@@ -15,11 +15,14 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-    Plug 'sainnhe/sonokai'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+
+    Plug 'romgrk/doom-one.vim'
     Plug 'itchyny/lightline.vim'
     Plug 'BourgeoisBear/clrzr'
 
-    Plug 'machakann/vim-highlightedyank' "Guilty pleasure
+    Plug 'machakann/vim-highlightedyank'
     Plug 'svban/YankAssassin.vim'
 
     Plug 'sheerun/vim-polyglot'
@@ -27,20 +30,26 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'vim-jp/vital.vim'
 
+    "Git stuff
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/git-messenger.vim'
-    Plug 'mhinz/vim-signify'
+    Plug 'airblade/vim-gitgutter'
 
     Plug 'justinmk/vim-sneak'
+    Plug 'easymotion/vim-easymotion'
+    Plug 'tpope/vim-sleuth'
+    Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-commentary'
     Plug 'michaeljsmith/vim-indent-object'
+    Plug 'jiangmiao/auto-pairs'
+
     Plug 'mhinz/vim-startify'
 
-    Plug 'jremmen/vim-ripgrep'
-    Plug 'itchyny/calendar.vim'
     Plug 'vimwiki/vimwiki'
+    Plug 'itchyny/calendar.vim'
 
     Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 call plug#end()
@@ -55,11 +64,11 @@ if need_to_install_plugins == 1
     q
 endif
 
-source /home/brendan/.vim/settings/basic-settings.vim
-source /home/brendan/.vim/settings/bracketed-paste.vim
-source /home/brendan/.vim/settings/Functions.vim
 source /home/brendan/.vim/cache/calendar.vim/credentials.vim
-source /home/brendan/.vim/settings/vimwiki.vim
+
+for rcfile in split(globpath("~/.vim/sources", "*.vim"), "\n")
+    execute('source ' . rcfile)
+endfor
 
 "======================================================
 " ____                                  _
@@ -74,24 +83,28 @@ nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
 let mapleader="\<space>"
 
-nnoremap <silent> <leader>o <Cmd>setlocal spell! spelllang=en_ca<CR>
-nnoremap <silent> <leader>ec <Cmd>Calendar -position=tab<CR>
-nnoremap <silent> <leader>es <Cmd>UltiSnipsEdit<CR>
-nnoremap <silent> <leader>er <Cmd>e $MYVIMRC<CR>
-nnoremap <silent> <leader>en <CMD>call ExecuteScript('right')<CR>
-nnoremap <silent> <leader>eh <CMD>call ExecuteScript('bot')<CR>
-nnoremap <silent> <leader>b <Cmd>call ToggleNetrw()<CR>
-nnoremap <silent> <leader>ct <CMD>call CloseTerm()<CR>
-nnoremap <silent> <leader>qq <CMD>call Quitout()<CR>
-nnoremap <silent> <leader>qw <CMD>call SaveQuitout()<CR>
-nnoremap <silent> <leader>W <CMD>wq!<CR>
-nnoremap <silent> <leader>ih <CMD>call Resize_Execution_Term(20)<CR>
-nnoremap <silent> <leader>il <CMD>call Resize_Execution_Term(-20)<CR>
+nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
+nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteScript('right')<CR>
+nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteScript('bot')<CR>
+nnoremap <silent> <leader>ih <CMD>call myfunc#Resize_Execution_Term(20)<CR>
+nnoremap <silent> <leader>il <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 
-nnoremap <silent> <leader>sr <CMD>so$MYVIMRC<CR>
-nnoremap <silent> <leader>st <CMD>Startify<CR>
+nnoremap <silent> <leader>b <Cmd>call myfunc#ToggleNetrw()<CR>
+nnoremap <silent> <c-x><c-s> <CMD>wq!<CR>
 
-nnoremap <silent> <leader>gs <CMD>G<CR>
+nnoremap <silent> <leader>qq <CMD>call myfunc#Quitout()<CR>
+nnoremap <silent> <leader>qw <CMD>call myfunc#SaveQuitout()<CR>
+nnoremap <silent> <leader>qf <CMD>Startify<CR>
+nnoremap <silent> <leader>qt <CMD>call myfunc#CloseTerm()<CR>
+
+" Toggling stuff
+nnoremap <silent> <leader>ts <Cmd>setlocal spell! spelllang=en_ca<CR>
+
+nnoremap <silent> <leader>S <Cmd>UltiSnipsEdit<CR>
+nnoremap <silent> <leader>R <Cmd>e $MYVIMRC<CR>
+nnoremap <silent> <leader>% <CMD>so$MYVIMRC<CR>
+
+nnoremap <silent> <leader>gg <CMD>G<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
 
@@ -101,17 +114,13 @@ xnoremap > >gv
 nmap gf :edit <cfile><CR>
 nmap <C-W><C-F> :vsplit <cfile><CR>
 
-nmap <silent> ]b <CMD>bnext<CR>
-nmap <silent> [b <CMD>bprev<CR>
-nmap <silent> ]B <CMD>blast<CR>
-nmap <silent> [B <CMD>bfirst<CR>
-nmap <silent> [g <plug>(signify-prev-hunk)
-nmap <silent> [G 9999[g
-nmap <silent> ]g <plug>(signify-next-hunk)
-nmap <silent> ]G 9999]g
+nmap <silent> [g <Plug>(GitGutterPrevHunk)
+nmap <silent> ]g <Plug>(GitGutterNextHunk)
+nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
+nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
+
 nmap <expr> j (v:count? 'j' : 'gj')
 nmap <expr> k (v:count? 'k' : 'gk')
-nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
 
 imap <c-x><c-k> <c-x><c-k>
 imap <c-x><c-l> <c-x><c-l>
@@ -120,176 +129,122 @@ map <c-h> <c-w>h
 map <c-j> <c-w>j
 map <c-k> <c-w>k
 
+let g:sneak#label = 1
 map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 
 
+set encoding=utf-8
+set backspace=indent,eol,start
+set laststatus=2
+if has("macunix") || has('win32')
+  set clipboard=unnamed
+elseif has("unix")
+  set clipboard=unnamedplus
+endif
+
+set viminfo=<800,'100,/50,:100,h,n~/.vim/viminfo
+"            |    |    |   |    | + viminfo file path
+"            |    |    |   |    + disable 'hlsearch' loading viminfo
+"            |    |    |   + command-line history saved
+"            |    |    + search history saved
+"            |    + files marks saved
+"            + lines saved each register (old name for <, vi6.2)
+
+
+"set lazyredraw " NoNoNo, Just No
+set number relativenumber
+set ruler
+set showmatch
+set cpoptions+=>
+set noswapfile
+set noerrorbells
+set title
+set splitbelow splitright
+set updatetime=1000
+set timeout timeoutlen=1000 ttimeoutlen=50
+set hidden
+let &titleold="Terminal"
+set signcolumn=yes
+"Line wrapping
+set nowrap
+set linebreak
+set showbreak=+++
+
+set completeopt=menuone,popup
+set complete+=kspell
+set complete-=i
+set completepopup=height:20,width:70
+set shortmess+=c
+set cmdheight=1
+
+"Undo stuff
+set undodir=~/.vim/undodir
+set undofile
+set undolevels=10000
+
+"Tab stuff
+set tabstop=4 softtabstop=4 expandtab autoindent smartindent smarttab
+
+"Shift stuff
+set shiftwidth=4 shiftround
+
+"Search stuff
+set incsearch ignorecase smartcase
+
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+
+"File Browsing
+set path=.,**,,
+let g:netrw_banner=0 "Disable Banner
+let g:netrw_browse_split=4 "open in prior window
+let g:netrw_liststyle=3 " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+" auto-completion
+"set omnifunc=syntaxcomplete#Complete
+set thesaurus=~/.vim/thesaurus/english.txt
+"Wild Menu
+set wildmenu
+set wildmode=longest,list,full
+autocmd FileType * setlocal
+    \ formatoptions-=c
+    \ formatoptions-=r
+    \ formatoptions-=o
+    \ formatoptions-=l
+
 set termguicolors
 let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
 let &t_8b = "\e[48;2;%lu;%lu;%lum" "sets background color (ANSI, true-color mode)
 let g:clrzr_startup = 0
 
-let g:rg_window_hieght = 25
-let g:rg_derive_root = v:true
-
-let g:sonokai_enable_italic = 1
-let g:sonokai_disable_italic_comment = 1
-let g:sonokai_transparent_background = 1 "before the colorscheme assignment
-let g:sonokai_menu_selection_background = 'red'
-let g:sonokai_better_performance = 1
-
-let g:startify_session_persistence = 1
-let g:startify_session_dir = '~/.vim/session'
-let g:startify_update_oldfiles = 1
-let g:startify_change_to_dir = 1
-let g:startify_change_to_vcs_root = 1
-let g:startify_fortune_use_unicode = 1
-let g:startify_padding_left = winwidth(0)/2 - 30
-let g:startify_custom_header =
-          \ 'startify#center(startify#fortune#cowsay())'
-let g:startify_lists = [
-    \ { 'type': 'dir',       'header': startify#center(['MRU '.getcwd()]) },
-    \ { 'type': 'sessions',  'header': startify#center(['Sessions']) },
-    \ { 'type': 'files',     'header': startify#center(['MRU']) },
-    \ { 'type': 'bookmarks', 'header': startify#center(['Bookmarks']) },
-    \ { 'type': 'commands',  'header': startify#center(['Commands']) },
-    \ ]
-
-let g:git_messenger_always_into_popup=v:true
-let g:git_messenger_include_diff="current"
-let g:git_messenger_floating_win_opts = { 'border': 'single' }
-let g:git_messenger_popup_content_margins = v:true
-
-let g:signify_sign_add               = '+'
-let g:signify_sign_delete            = '_'
-let g:signify_sign_delete_first_line = '‾'
-let g:signify_sign_change            = '~'
-let g:signify_sign_change_delete     = g:signify_sign_change .
-    \ g:signify_sign_delete_first_line
-let g:signify_sign_show_count = 0
-let g:signify_sign_show_text = 1
-
-let g:calendar_cache_directory = expand('~/.vim/cache/calendar.vim/')
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
-
-let g:highlightedyank_highlight_duration = 400
-let g:yankassassin_use_mappings = 1
-nmap y <Plug>YAMotion
-xmap y <Plug>YAVisual
-nmap yy <Plug>YALine
 
 
 
 
+"============================================================================
+"====================  _____ __________ =====================================
+"==================== |  ___|__  /  ___|=====================================
+"==================== | |_    / /| |_   =====================================
+"==================== |  _|  / /_|  _|  =====================================
+"==================== |_|   /____|_|    =====================================
+"====================                   =====================================
+"============================================================================
+let g:fzf_preview_window = ['up:60%:hidden', 'ctrl-/']
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 
-"=============================================================================
-"====================  _   _ _ _   _      ____        _            ===========
-"==================== | | | | | |_(_)    / ___| _ __ (_)_ __  ___  ===========
-"==================== | | | | | __| |____\___ \| '_ \| | '_ \/ __| ===========
-"==================== | |_| | | |_| |_____|__) | | | | | |_) \__ \ ===========
-"====================  \___/|_|\__|_|    |____/|_| |_|_| .__/|___/ ===========
-"====================                                |_|           ===========
-"=============================================================================
-
-        let g:UltiSnipsExpandTrigger="<C-y>"
-        let g:UltiSnipsJumpForwardTrigger="<C-f>"
-        let g:UltiSnipsJumpBackwardTrigger="<C-b>"
-        let g:UltiSnipsEditSplit="vertical"
-        let g:UltiSnipesRemoveSelectModeMappings = 0
-        let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
-
-        let g:ulti_expand_or_jump_res = 0
-        function! Ulti_ExpandOrJump_Res() abort
-            if pumvisible()
-                return 0 "Sloppy Workaround for out of order operations
-            endif
-            call UltiSnips#ExpandSnippetOrJump()
-            return g:ulti_expand_or_jump_res
-        endfunction
-
-        function! Tab_Completion() abort
-        if pumvisible()
-            return "\<c-n>"
-        elseif Check_back_space()
-            return "\<TAB>"
-        else
-            return "\<c-n>"
-        endif
-        endfunction
-
-        function! Check_back_space() abort
-            let col = col('.') - 1
-            return !col || getline('.')[:col - 1]  =~# "^\\s*$"
-        endfunction
-        inoremap <silent> <tab> <C-R>=(Ulti_ExpandOrJump_Res() > 0) ? "" :
-            \ Tab_Completion()<CR>
-        snoremap <silent> <tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<cr>
-        xmap <tab> <C-y>
-
-
-
-
-        function! s:shift_tab_fix() abort
-            if pumvisible()
-                return "\<C-p>"
-            else
-                return "\<CMD>call Bracket_check()\<CR>"
-            endif
-        endfunction
-
-        function! Bracket_check() abort
-            let l:aft = searchpos('[{}()\[\]`''"]','cnz',line('.'))
-            call cursor(l:aft[0], l:aft[1]+1)
-            startinsert
-        endfunction
-
-
-"=============================================================================
-
-highlight MyWhiteTrails ctermbg=red guibg=red
-augroup standard_group
-    autocmd!
-
-    autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
-    autocmd InsertLeave * match MyWhiteTrails /\s\+$/
-    autocmd ColorScheme *  highlight SpellBad
-        \ cterm=Underline ctermfg=red ctermbg=NONE
-    autocmd ColorScheme *  highlight SpellCap
-        \ cterm=Underline,italic ctermfg=Blue ctermbg=NONE
-    autocmd ColorScheme *  highlight SpellLocal
-        \ cterm=Underline ctermfg=Yellow ctermbg=NONE
-    autocmd ColorScheme *  highlight SpellRare
-        \ cterm=Underline ctermfg=Magenta ctermbg=NONE
-
-    "Ensure files open the way that i want
-    autocmd BufRead,BufNewFile *.tex set filetype=tex
-    autocmd BufRead,BufNewFile *.json setfiletype json
-    autocmd BufRead,BufNewFile *.json.* setfiletype json
-    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-    autocmd BufNewFile,BufReadPost *.dockerfile set filetype=Dockerfile
-    autocmd BufNewFile,BufReadPost *.jenkinsfile set filetype=groovy
-
-    " Open Ggrep results in a quickfix window (Suggested by tpope)
-    autocmd QuickFixCmdPost *grep* cwindow
-
-    " Disable line numbers in :term
-    " https://stackoverflow.com/a/63908546
-    autocmd terminalopen * setlocal nonumber norelativenumber
-
-    " Resize splits in all tabs upon window resize
-    " https://vi.stackexchange.com/a/206
-    autocmd VimResized * tabdo wincmd =
-
-    " Reload file on focus/enter. This seems to break in Windows.
-    " https://stackoverflow.com/a/20418591
-    if !has("win32")
-        autocmd FocusGained,BufEnter * :silent! !
-    endif
-augroup END
-colorscheme sonokai
-let g:lightline = {'colorscheme' : 'sonokai'}
-highlight HighlightedyankRegion cterm=reverse gui=reverse
