@@ -11,7 +11,7 @@
 # hlsearch on (H) or off (h):
 ~h
 # Last Search Pattern:
-~MSle0~/MyFuncs
+~MSle0~/push
 
 # Last Substitute Search Pattern:
 ~MSle0&MyFuncs
@@ -21,7 +21,15 @@ $
 
 # Command Line History (newest to oldest):
 :wq
-|2,0,1643944984,,"wq"
+|2,0,1643945310,,"wq"
+:Git push
+|2,0,1643945302,,"Git push"
+:Git pusn
+|2,0,1643945294,,"Git pusn"
+:wq!
+|2,0,1643945220,,"wq!"
+:vsp sources/50-Fuzzy.vim
+|2,0,1643945134,,"vsp sources/50-Fuzzy.vim"
 :vsp sources/50-pluginSettings.vim
 |2,0,1643944723,,"vsp sources/50-pluginSettings.vim"
 :vsp sources/50-autostuff.vim
@@ -168,8 +176,6 @@ $
 |2,0,1643060688,,"e "
 :f
 |2,0,1642855612,,"f"
-:Git push
-|2,0,1642774645,,"Git push"
 :h insert
 |2,0,1642455969,,"h insert"
 :reg
@@ -214,14 +220,10 @@ $
 |2,0,1642240219,,"h windows"
 :Calendar -position=here
 |2,0,1642239697,,"Calendar -position=here"
-:Calendar -position
-|2,0,1642239675,,"Calendar -position"
-:Calendar -position=right
-|2,0,1642214261,,"Calendar -position=right"
-:find NeuralNet.py
-|2,0,1642212033,,"find NeuralNet.py"
 
 # Search String History (newest to oldest):
+?/push
+|2,1,1643945251,47,"push"
 ? @$
 |2,1,1643944250,,"@$"
 ? MyFuncs
@@ -320,8 +322,6 @@ $
 |2,1,1642192488,47,"event"
 ?/wb
 |2,1,1642179207,47,"wb"
-?/jkjjjkk
-|2,1,1642177224,47,"jkjjjkk"
 
 # Expression History (newest to oldest):
 =%
@@ -547,8 +547,47 @@ $
 |3,0,0,1,1,0,1643944254,""
 ""1	LINE	0
 	
-|3,1,1,1,1,0,1643944742,""
+	
+|3,1,1,1,2,0,1643945166,"",""
 "2	LINE	0
+	
+	
+|3,0,2,1,2,0,1643945165,"",""
+"3	LINE	0
+	
+	
+|3,0,3,1,2,0,1643945165,"",""
+"4	LINE	0
+	
+|3,0,4,1,1,0,1643945146,""
+"5	LINE	0
+	"============================================================================
+	"====================  _____ __________ =====================================
+	"==================== |  ___|__  /  ___|=====================================
+	"==================== | |_    / /| |_   =====================================
+	"==================== |  _|  / /_|  _|  =====================================
+	"==================== |_|   /____|_|    =====================================
+	"====================                   =====================================
+	"============================================================================
+	let g:fzf_preview_window = ['up:60%:hidden', 'ctrl-/']
+	
+	function! RipgrepFzf(query, fullscreen)
+	  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+	  let initial_command = printf(command_fmt, shellescape(a:query))
+	  let reload_command = printf(command_fmt, '{q}')
+	  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+	  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+	endfunction
+	
+	command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+	
+|3,0,5,1,20,0,1643945140,"\"============================================================================","\"====================  _____ __________ =====================================","\"==================== |  ___|__  /  ___|=====================================","\"==================== | |_    / /| |_   =====================================","\"==================== |  _|  / /_|  _|  =====================================",>80
+|<"\"==================== |_|   /____|_|    =====================================","\"====================                   =====================================","\"============================================================================","let g:fzf_preview_window = ['up:60%:hidden', 'ctrl-/']","","function! RipgrepFzf(query, fullscreen)","  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'",>67
+|<"  let initial_command = printf(command_fmt, shellescape(a:query))","  let reload_command = printf(command_fmt, '{q}')","  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}","  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)","endfunction","","command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)",""
+"6	LINE	0
+	
+|3,0,6,1,1,0,1643944742,""
+"7	LINE	0
 	let g:calendar_cache_directory = expand('~/.vim/cache/calendar.vim/')
 	let g:calendar_google_calendar = 1
 	let g:calendar_google_task = 1
@@ -558,80 +597,13 @@ $
 	nmap y <Plug>YAMotion
 	xmap y <Plug>YAVisual
 	nmap yy <Plug>YALine
-|3,0,2,1,9,0,1643944740,"let g:calendar_cache_directory = expand('~/.vim/cache/calendar.vim/')","let g:calendar_google_calendar = 1","let g:calendar_google_task = 1","","let g:highlightedyank_highlight_duration = 400","let g:yankassassin_use_mappings = 1","nmap y <Plug>YAMotion","xmap y <Plug>YAVisual","nmap yy <Plug>YALine"
-"3	LINE	0
-	
-|3,0,3,1,1,0,1643944691,""
-"4	LINE	0
-	
-|3,0,4,1,1,0,1643944691,""
-"5	LINE	0
-	"=============================================================================
-|3,0,5,1,1,0,1643944690,"\"============================================================================="
-"6	LINE	0
-	
-|3,0,6,1,1,0,1643944677,""
-"7	LINE	0
-	highlight MyWhiteTrails ctermbg=red guibg=red
-	augroup standard_group
-	    autocmd!
-	
-	    autocmd InsertEnter * match MyWhiteTrails /\s\+\%#\@<!$/
-	    autocmd InsertLeave * match MyWhiteTrails /\s\+$/
-	    autocmd ColorScheme *  highlight SpellBad
-	        \ cterm=Underline ctermfg=red ctermbg=NONE
-	    autocmd ColorScheme *  highlight SpellCap
-	        \ cterm=Underline,italic ctermfg=Blue ctermbg=NONE
-	    autocmd ColorScheme *  highlight SpellLocal
-	        \ cterm=Underline ctermfg=Yellow ctermbg=NONE
-	    autocmd ColorScheme *  highlight SpellRare
-	        \ cterm=Underline ctermfg=Magenta ctermbg=NONE
-	    autocmd ColorScheme * highlight Normal guibg=NONE ctermbg=NONE
-	    autocmd ColorScheme * highlight LineNr guibg=NONE ctermbg=NONE
-	    autocmd ColorScheme * highlight SignColumn guibg=NONE ctermbg=NONE
-	    autocmd ColorScheme * highlight EndOfBuffer guibg=NONE ctermbg=NONE
-	
-	    "Ensure files open the way that i want
-	    autocmd BufRead,BufNewFile *.tex set filetype=tex
-	    autocmd BufRead,BufNewFile *.json setfiletype json
-	    autocmd BufRead,BufNewFile *.json.* setfiletype json
-	    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-	    autocmd BufNewFile,BufReadPost *.dockerfile set filetype=Dockerfile
-	    autocmd BufNewFile,BufReadPost *.jenkinsfile set filetype=groovy
-	
-	    " Open Ggrep results in a quickfix window (Suggested by tpope)
-	    autocmd QuickFixCmdPost *grep* cwindow
-	
-	    "https://github.com/junegunn/fzf.vim/issues/503
-	    autocmd TerminalWinOpen * setlocal nonumber norelativenumber
-	
-	    " Resize splits in all tabs upon window resize
-	    " https://vi.stackexchange.com/a/206
-	    autocmd VimResized * tabdo wincmd =
-	
-	    " Reload file on focus/enter. This seems to break in Windows.
-	    " https://stackoverflow.com/a/20418591
-	    if !has("win32")
-	        autocmd FocusGained,BufEnter * :silent! !
-	    endif
-	augroup END
-	colorscheme doom-one
-	let g:lightline = {'colorscheme' : 'one'}
-	highlight HighlightedyankRegion cterm=reverse gui=reverse
-|3,0,7,1,46,0,1643944674,"highlight MyWhiteTrails ctermbg=red guibg=red","augroup standard_group","    autocmd!","","    autocmd InsertEnter * match MyWhiteTrails /\\s\\+\\%#\\@<!$/","    autocmd InsertLeave * match MyWhiteTrails /\\s\\+$/","    autocmd ColorScheme *  highlight SpellBad","        \\ cterm=Underline ctermfg=red ctermbg=NONE","    autocmd ColorScheme *  highlight SpellCap","        \\ cterm=Underline,italic ctermfg=Blue ctermbg=NONE",>49
-|<"    autocmd ColorScheme *  highlight SpellLocal","        \\ cterm=Underline ctermfg=Yellow ctermbg=NONE","    autocmd ColorScheme *  highlight SpellRare","        \\ cterm=Underline ctermfg=Magenta ctermbg=NONE","    autocmd ColorScheme * highlight Normal guibg=NONE ctermbg=NONE","    autocmd ColorScheme * highlight LineNr guibg=NONE ctermbg=NONE","    autocmd ColorScheme * highlight SignColumn guibg=NONE ctermbg=NONE",>73
-|<"    autocmd ColorScheme * highlight EndOfBuffer guibg=NONE ctermbg=NONE","","    \"Ensure files open the way that i want","    autocmd BufRead,BufNewFile *.tex set filetype=tex","    autocmd BufRead,BufNewFile *.json setfiletype json","    autocmd BufRead,BufNewFile *.json.* setfiletype json","    autocmd BufNewFile,BufReadPost *.md set filetype=markdown","    autocmd BufNewFile,BufReadPost *.dockerfile set filetype=Dockerfile",>70
-|<"    autocmd BufNewFile,BufReadPost *.jenkinsfile set filetype=groovy","","    \" Open Ggrep results in a quickfix window (Suggested by tpope)","    autocmd QuickFixCmdPost *grep* cwindow","","    \"https://github.com/junegunn/fzf.vim/issues/503","    autocmd TerminalWinOpen * setlocal nonumber norelativenumber","","    \" Resize splits in all tabs upon window resize","    \" https://vi.stackexchange.com/a/206","    autocmd VimResized * tabdo wincmd =","",>68
-|<"    \" Reload file on focus/enter. This seems to break in Windows.","    \" https://stackoverflow.com/a/20418591","    if !has(\"win32\")","        autocmd FocusGained,BufEnter * :silent! !","    endif","augroup END","colorscheme doom-one","let g:lightline = {'colorscheme' : 'one'}","highlight HighlightedyankRegion cterm=reverse gui=reverse"
+|3,0,7,1,9,0,1643944740,"let g:calendar_cache_directory = expand('~/.vim/cache/calendar.vim/')","let g:calendar_google_calendar = 1","let g:calendar_google_task = 1","","let g:highlightedyank_highlight_duration = 400","let g:yankassassin_use_mappings = 1","nmap y <Plug>YAMotion","xmap y <Plug>YAVisual","nmap yy <Plug>YALine"
 "8	LINE	0
 	
-|3,0,8,1,1,0,1643944594,""
+|3,0,8,1,1,0,1643944691,""
 "9	LINE	0
-	let g:git_messenger_always_into_popup=v:true
-	let g:git_messenger_include_diff="current"
-	let g:git_messenger_floating_win_opts = { 'border': 'single' }
-	let g:git_messenger_popup_content_margins = v:true
-|3,0,9,1,4,0,1643944591,"let g:git_messenger_always_into_popup=v:true","let g:git_messenger_include_diff=\"current\"","let g:git_messenger_floating_win_opts = { 'border': 'single' }","let g:git_messenger_popup_content_margins = v:true"
+	
+|3,0,9,1,1,0,1643944691,""
 "a	CHAR	0
 	Brave
 |3,0,10,0,1,0,1638492286,"Brave"
@@ -687,30 +659,40 @@ $
 |4,77,1,11,1642019761,"~/.vim/plugged/vimwiki/doc/vimwiki.txt"
 'R  125  47  ~/S/Documents/Employment/Cover_letters/VPI_job_Radio_Frequency_Engineer_105811_v1/Brendan_resume.tex
 |4,82,125,47,1638474911,"~/S/Documents/Employment/Cover_letters/VPI_job_Radio_Frequency_Engineer_105811_v1/Brendan_resume.tex"
-'0  106  0  ~/.vim/vimrc
-|4,48,106,0,1643944984,"~/.vim/vimrc"
-'1  1  0  ~/.vim/sources/Ultisnips.vim
-|4,49,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
-'2  228  0  ~/.vim/vimrc
-|4,50,228,0,1643944264,"~/.vim/vimrc"
-'3  266  0  ~/.vim/vimrc
-|4,51,266,0,1643944264,"~/.vim/vimrc"
-'4  73  0  ~/.vim/vimrc
-|4,52,73,0,1643943042,"~/.vim/vimrc"
-'5  73  0  ~/.vim/vimrc
-|4,53,73,0,1643943042,"~/.vim/vimrc"
-'6  73  0  ~/.vim/vimrc
-|4,54,73,0,1643943042,"~/.vim/vimrc"
-'7  73  0  ~/.vim/vimrc
-|4,55,73,0,1643943042,"~/.vim/vimrc"
-'8  104  0  ~/.vim/vimrc
-|4,56,104,0,1643942543,"~/.vim/vimrc"
-'9  103  0  ~/.vim/vimrc
-|4,57,103,0,1643942543,"~/.vim/vimrc"
+'0  223  0  ~/.vim/vimrc
+|4,48,223,0,1643945310,"~/.vim/vimrc"
+'1  106  0  ~/.vim/vimrc
+|4,49,106,0,1643944984,"~/.vim/vimrc"
+'2  106  0  ~/.vim/vimrc
+|4,50,106,0,1643944984,"~/.vim/vimrc"
+'3  1  0  ~/.vim/sources/Ultisnips.vim
+|4,51,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+'4  225  0  ~/.vim/vimrc
+|4,52,225,0,1643944264,"~/.vim/vimrc"
+'5  240  0  ~/.vim/vimrc
+|4,53,240,0,1643944264,"~/.vim/vimrc"
+'6  228  0  ~/.vim/vimrc
+|4,54,228,0,1643944264,"~/.vim/vimrc"
+'7  266  0  ~/.vim/vimrc
+|4,55,266,0,1643944264,"~/.vim/vimrc"
+'8  73  0  ~/.vim/vimrc
+|4,56,73,0,1643943042,"~/.vim/vimrc"
+'9  73  0  ~/.vim/vimrc
+|4,57,73,0,1643943042,"~/.vim/vimrc"
 
 # Jumplist (newest first):
+-'  223  0  ~/.vim/vimrc
+|4,39,223,0,1643945310,"~/.vim/vimrc"
+-'  216  0  ~/.vim/vimrc
+|4,39,216,0,1643945155,"~/.vim/vimrc"
+-'  1  0  ~/.vim/vimrc
+|4,39,1,0,1643944987,"~/.vim/vimrc"
 -'  106  0  ~/.vim/vimrc
 |4,39,106,0,1643944984,"~/.vim/vimrc"
+-'  106  0  ~/.vim/vimrc
+|4,39,106,0,1643944984,"~/.vim/vimrc"
+-'  225  56  ~/.vim/vimrc
+|4,39,225,56,1643944665,"~/.vim/vimrc"
 -'  251  56  ~/.vim/vimrc
 |4,39,251,56,1643944665,"~/.vim/vimrc"
 -'  1  0  ~/.vim/vimrc
@@ -719,6 +701,12 @@ $
 |4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
 -'  1  0  ~/.vim/sources/Ultisnips.vim
 |4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  1  0  ~/.vim/sources/Ultisnips.vim
+|4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  1  0  ~/.vim/sources/Ultisnips.vim
+|4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  240  0  ~/.vim/vimrc
+|4,39,240,0,1643944264,"~/.vim/vimrc"
 -'  228  0  ~/.vim/vimrc
 |4,39,228,0,1643944264,"~/.vim/vimrc"
 -'  266  0  ~/.vim/vimrc
@@ -739,6 +727,8 @@ $
 |4,39,73,0,1643943042,"~/.vim/vimrc"
 -'  73  0  ~/.vim/vimrc
 |4,39,73,0,1643943042,"~/.vim/vimrc"
+-'  73  0  ~/.vim/vimrc
+|4,39,73,0,1643943042,"~/.vim/vimrc"
 -'  70  0  ~/.vim/vimrc
 |4,39,70,0,1643943037,"~/.vim/vimrc"
 -'  70  0  ~/.vim/vimrc
@@ -749,6 +739,12 @@ $
 |4,39,70,0,1643943037,"~/.vim/vimrc"
 -'  70  0  ~/.vim/vimrc
 |4,39,70,0,1643943037,"~/.vim/vimrc"
+-'  70  0  ~/.vim/vimrc
+|4,39,70,0,1643943037,"~/.vim/vimrc"
+-'  74  0  ~/.vim/vimrc
+|4,39,74,0,1643942810,"~/.vim/vimrc"
+-'  75  0  ~/.vim/vimrc
+|4,39,75,0,1643942810,"~/.vim/vimrc"
 -'  74  0  ~/.vim/vimrc
 |4,39,74,0,1643942810,"~/.vim/vimrc"
 -'  75  0  ~/.vim/vimrc
@@ -885,64 +881,28 @@ $
 |4,39,82,0,1643942809,"~/.vim/vimrc"
 -'  83  0  ~/.vim/vimrc
 |4,39,83,0,1643942809,"~/.vim/vimrc"
--'  84  0  ~/.vim/vimrc
-|4,39,84,0,1643942809,"~/.vim/vimrc"
--'  85  0  ~/.vim/vimrc
-|4,39,85,0,1643942809,"~/.vim/vimrc"
--'  86  0  ~/.vim/vimrc
-|4,39,86,0,1643942809,"~/.vim/vimrc"
--'  87  0  ~/.vim/vimrc
-|4,39,87,0,1643942809,"~/.vim/vimrc"
--'  88  0  ~/.vim/vimrc
-|4,39,88,0,1643942809,"~/.vim/vimrc"
--'  89  0  ~/.vim/vimrc
-|4,39,89,0,1643942809,"~/.vim/vimrc"
--'  90  0  ~/.vim/vimrc
-|4,39,90,0,1643942809,"~/.vim/vimrc"
--'  91  0  ~/.vim/vimrc
-|4,39,91,0,1643942809,"~/.vim/vimrc"
--'  92  0  ~/.vim/vimrc
-|4,39,92,0,1643942809,"~/.vim/vimrc"
--'  93  0  ~/.vim/vimrc
-|4,39,93,0,1643942809,"~/.vim/vimrc"
--'  94  0  ~/.vim/vimrc
-|4,39,94,0,1643942809,"~/.vim/vimrc"
--'  95  0  ~/.vim/vimrc
-|4,39,95,0,1643942809,"~/.vim/vimrc"
 
 # History of marks within files (newest to oldest):
 
 > ~/.vim/vimrc
-	*	1643944983	0
-	"	106	0
+	*	1643945308	0
+	"	223	0
 	^	70	30
-	.	229	0
-	+	229	51
-	+	234	51
-	+	229	0
-	+	237	0
-	+	235	0
-	+	237	0
-	+	235	0
-	+	237	0
-	+	235	0
-	+	236	0
-	+	235	0
-	+	236	0
-	+	235	0
-	+	229	0
-	+	229	25
-	+	251	0
-	+	251	63
-	+	229	0
-	+	251	51
-	+	251	0
-	+	251	50
-	+	235	33
+	.	225	0
+	+	225	51
+	+	225	0
+	+	225	25
+	+	225	0
+	+	225	63
+	+	225	0
+	+	225	51
+	+	225	0
+	+	225	50
+	+	225	33
 	+	117	40
 	+	118	0
 	+	121	0
-	+	228	0
+	+	225	0
 	+	221	0
 	+	15	0
 	+	221	0
@@ -955,7 +915,7 @@ $
 	+	87	0
 	+	33	13
 	+	139	0
-	+	226	0
+	+	225	0
 	+	121	0
 	+	86	0
 	+	121	21
@@ -1011,12 +971,18 @@ $
 	+	71	5
 	+	70	29
 	+	72	0
-	+	251	0
-	+	227	0
-	+	228	0
-	+	251	0
-	+	229	0
+	+	225	0
 	i	119	0
+
+> ~/.vim/plugged/vim-fugitive/doc/fugitive.txt
+	*	1643945285	0
+	"	427	55
+
+> ~/.vim/sources/50-Fuzzy.vim
+	*	1643945161	0
+	"	1	0
+	.	1	0
+	+	1	0
 
 > ~/.vim/sources/50-pluginSettings.vim
 	*	1643944968	0
@@ -1069,10 +1035,6 @@ $
 	+	1	0
 	+	1	11
 	+	1	0
-
-> ~/.vim/plugged/vim-fugitive/doc/fugitive.txt
-	*	1643941541	0
-	"	300	0
 
 > ~/.vim/autoload/myfunc.vim
 	*	1643940453	0
@@ -2235,7 +2197,3 @@ $
 	+	1	0
 	+	2	0
 	+	1	0
-
-> ~/.vim/vimwiki/diary/2022-02-21.wiki
-	*	1642210515	0
-	"	1	0
