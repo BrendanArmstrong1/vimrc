@@ -128,6 +128,7 @@ nmap <silent> [g <Plug>(GitGutterPrevHunk)
 nmap <silent> ]g <Plug>(GitGutterNextHunk)
 nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
 nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
+nmap <leader>gp <CMD>Git push<CR>
 
 nmap <expr> j (v:count? 'j' : 'gj')
 nmap <expr> k (v:count? 'k' : 'gk')
