@@ -36,8 +36,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/git-messenger.vim'
     Plug 'airblade/vim-gitgutter'
 
-    Plug 'justinmk/vim-sneak'
     Plug 'easymotion/vim-easymotion'
+    Plug 'haya14busa/incsearch.vim'
+    Plug 'haya14busa/incsearch-fuzzy.vim'
+    Plug 'haya14busa/incsearch-easymotion.vim'
+    Plug 'haya14busa/vim-asterisk'
+
+    Plug 'justinmk/vim-sneak'
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-repeat'
@@ -64,14 +69,13 @@ if need_to_install_plugins == 1
     q
 endif
 
-source ./cache/calendar.vim/credentials.vim
-source ./sources/50-bracketed-paste.vim
-source ./sources/50-vimwiki.vim
-source ./sources/50-Signify.vim
-source ./sources/50-autostuff.vim
-source ./sources/50-pluginSettings.vim
-source ./sources/50-basic-settings.vim
-source ./sources/50-git.vim
+source $HOME/.vim/cache/calendar.vim/credentials.vim
+source $HOME/.vim/sources/50-bracketed-paste.vim
+source $HOME/.vim/sources/50-Signify.vim
+source $HOME/.vim/sources/50-pluginSettings.vim
+source $HOME/.vim/sources/50-basic-settings.vim
+source $HOME/.vim/sources/50-git.vim
+source $HOME/.vim/sources/50-autostuff.vim
 
 
 
@@ -140,6 +144,66 @@ map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
+
+" Inc search stuff
+set hlsearch
+let g:incsearch#consistent_n_direction = 1
+let g:incsearch#auto_nohlsearch = 1
+let g:incsearch#separate_highlight = 1
+function! s:config_easyfuzzymotion(...) abort
+  return extend(copy({
+  \   'converters': [incsearch#config#fuzzyspell#converter()],
+  \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+  \   'is_expr': 0,
+  \   'is_stay': 1
+  \ }), get(a:, 1, {}))
+endfunction
+
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+let g:asterisk#keeppos = 1
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *   <Plug>(incsearch-nohl)<Plug>(asterisk-*)
+map g*  <Plug>(incsearch-nohl)<Plug>(asterisk-g*)
+map #   <Plug>(incsearch-nohl)<Plug>(asterisk-#)
+map g#  <Plug>(incsearch-nohl)<Plug>(asterisk-g#)
+map z*  <Plug>(incsearch-nohl0)<Plug>(asterisk-z*)
+map gz* <Plug>(incsearch-nohl0)<Plug>(asterisk-gz*)
+map z#  <Plug>(incsearch-nohl0)<Plug>(asterisk-z#)
+map gz# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
+
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_startofline = 0 " keep cursor colum JK motion
+nmap <silent><expr> gs<Space> incsearch#go(<SID>config_easyfuzzymotion())
+nmap gss <Plug>(easymotion-overwin-f2)
+nmap gsb <Plug>(easymotion-overwin-line)
+map gw <Plug>(easymotion-bd-wl)
+map ge <Plug>(easymotion-bd-el)
+map gsw <Plug>(easymotion-iskeyword-w)
+map gsW <Plug>(easymotion-bd-W)
+map gse <Plug>(easymotion-iskeyword-e)
+map gsE <Plug>(easymotion-bd-E)
+map gsn <Plug>(easymotion-bd-n)
+map gst <Plug>(easymotion-bd-t)
+map gsf <Plug>(easymotion-s)
+map gsj <Plug>(easymotion-j)
+map gsk <Plug>(easymotion-k)
+map gsJ <Plug>(easymotion-sol-j)
+map gsK <Plug>(easymotion-sol-k)
+map gs. <Plug>(easymotion-repeat)
+nmap s <Plug>(easymotion-s2)
+xmap s <Plug>(easymotion-s2)
+omap z <Plug>(easymotion-s2)
+nmap <Leader>s <Plug>(easymotion-sn)
+xmap <Leader>s <Plug>(easymotion-sn)
+omap <Leader>z <Plug>(easymotion-sn)
+
+
+
 
 "=============================================================================
 "====================  _   _ _ _   _      ____        _            ===========

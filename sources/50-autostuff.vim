@@ -17,6 +17,14 @@ augroup standard_group
     autocmd ColorScheme * highlight SignColumn guibg=NONE ctermbg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE ctermbg=NONE
 
+    "Inc-Search stuff
+    autocmd ColorScheme * highlight IncSearchMatch guibg=NONE guibg=#666699 guifg=#d1d1e0
+    autocmd ColorScheme * highlight Search guibg=NONE guibg=#666699 guifg=#d1d1e0
+    autocmd ColorScheme * highlight IncSearch guibg=NONE guibg=#666699 guifg=#d1d1e0
+    autocmd ColorScheme * highlight IncSearchMatchReverse guibg=#b3b3cc guifg=#3d3d5c
+    autocmd ColorScheme * highlight IncSearchOnCursor guibg=#52527a guifg=#3d3d5c
+    autocmd ColorScheme * highlight IncSearchCursor guibg=#6600cc guifg=#cc99ff
+
     "Ensure files open the way that i want
     autocmd BufRead,BufNewFile *.tex set filetype=tex
     autocmd BufRead,BufNewFile *.json setfiletype json
