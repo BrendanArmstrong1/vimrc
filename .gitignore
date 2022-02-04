@@ -1,5 +1,5 @@
 plugged/
-autoload/
+autoload/plug.vim
 .*/
 .*
 !.gitignore

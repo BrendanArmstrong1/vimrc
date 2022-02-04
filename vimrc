@@ -64,11 +64,17 @@ if need_to_install_plugins == 1
     q
 endif
 
-source /home/brendan/.vim/cache/calendar.vim/credentials.vim
+source ./cache/calendar.vim/credentials.vim
+source ./sources/50-bracketed-paste.vim
+source ./sources/50-vimwiki.vim
+source ./sources/50-Signify.vim
+source ./sources/50-autostuff.vim
+source ./sources/50-pluginSettings.vim
+source ./sources/50-basic-settings.vim
+source ./sources/50-git.vim
 
-for rcfile in split(globpath("~/.vim/sources", "*.vim"), "\n")
-    execute('source ' . rcfile)
-endfor
+
+
 
 "======================================================
 " ____                                  _
@@ -90,7 +96,7 @@ nnoremap <silent> <leader>ih <CMD>call myfunc#Resize_Execution_Term(20)<CR>
 nnoremap <silent> <leader>il <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 
 nnoremap <silent> <leader>b <Cmd>call myfunc#ToggleNetrw()<CR>
-nnoremap <silent> <c-x><c-s> <CMD>wq!<CR>
+nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
 
 nnoremap <silent> <leader>qq <CMD>call myfunc#Quitout()<CR>
 nnoremap <silent> <leader>qw <CMD>call myfunc#SaveQuitout()<CR>
@@ -135,90 +141,85 @@ map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 
+"=============================================================================
+"====================  _   _ _ _   _      ____        _            ===========
+"==================== | | | | | |_(_)    / ___| _ __ (_)_ __  ___  ===========
+"==================== | | | | | __| |____\___ \| '_ \| | '_ \/ __| ===========
+"==================== | |_| | | |_| |_____|__) | | | | | |_) \__ \ ===========
+"====================  \___/|_|\__|_|    |____/|_| |_|_| .__/|___/ ===========
+"====================                                |_|           ===========
+"=============================================================================
 
-set encoding=utf-8
-set backspace=indent,eol,start
-set laststatus=2
-if has("macunix") || has('win32')
-  set clipboard=unnamed
-elseif has("unix")
-  set clipboard=unnamedplus
-endif
+        let g:UltiSnipsExpandTrigger="<C-y>"
+        let g:UltiSnipsJumpForwardTrigger="<C-f>"
+        let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+        let g:UltiSnipsEditSplit="vertical"
+        let g:UltiSnipesRemoveSelectModeMappings = 0
+        let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 
-set viminfo=<800,'100,/50,:100,h,n~/.vim/viminfo
-"            |    |    |   |    | + viminfo file path
-"            |    |    |   |    + disable 'hlsearch' loading viminfo
-"            |    |    |   + command-line history saved
-"            |    |    + search history saved
-"            |    + files marks saved
-"            + lines saved each register (old name for <, vi6.2)
+        let g:ulti_expand_or_jump_res = 0
+        function! Ulti_ExpandOrJump_Res() abort
+            if pumvisible()
+                return 0 "Sloppy Workaround for out of order operations
+            endif
+            call UltiSnips#ExpandSnippetOrJump()
+            return g:ulti_expand_or_jump_res
+        endfunction
+
+        function! Tab_Completion() abort
+        if pumvisible()
+            return "\<c-n>"
+        elseif Check_back_space()
+            return "\<TAB>"
+        else
+            return "\<c-n>"
+        endif
+        endfunction
+
+        function! Check_back_space() abort
+            let col = col('.') - 1
+            return !col || getline('.')[:col - 1]  =~# "^\\s*$"
+        endfunction
+        inoremap <silent> <tab> <C-R>=(Ulti_ExpandOrJump_Res() > 0) ? "" :
+            \ Tab_Completion()<CR>
+        snoremap <silent> <tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<cr>
+        xmap <tab> <C-y>
 
 
-"set lazyredraw " NoNoNo, Just No
-set number relativenumber
-set ruler
-set showmatch
-set cpoptions+=>
-set noswapfile
-set noerrorbells
-set title
-set splitbelow splitright
-set updatetime=1000
-set timeout timeoutlen=1000 ttimeoutlen=50
-set hidden
-let &titleold="Terminal"
-set signcolumn=yes
-"Line wrapping
-set nowrap
-set linebreak
-set showbreak=+++
 
-set completeopt=menuone,popup
-set complete+=kspell
-set complete-=i
-set completepopup=height:20,width:70
-set shortmess+=c
-set cmdheight=1
 
-"Undo stuff
-set undodir=~/.vim/undodir
-set undofile
-set undolevels=10000
+        function! s:shift_tab_fix() abort
+            if pumvisible()
+                return "\<C-p>"
+            else
+                return "\<CMD>call Bracket_check()\<CR>"
+            endif
+        endfunction
 
-"Tab stuff
-set tabstop=4 softtabstop=4 expandtab autoindent smartindent smarttab
+        function! Bracket_check() abort
+            let l:aft = searchpos('[{}()\[\]`''"]','cnz',line('.'))
+            call cursor(l:aft[0], l:aft[1]+1)
+            startinsert
+        endfunction
 
-"Shift stuff
-set shiftwidth=4 shiftround
 
-"Search stuff
-set incsearch ignorecase smartcase
+"============================================================================
+"====================  _____ __________ =====================================
+"==================== |  ___|__  /  ___|=====================================
+"==================== | |_    / /| |_   =====================================
+"==================== |  _|  / /_|  _|  =====================================
+"==================== |_|   /____|_|    =====================================
+"====================                   =====================================
+"============================================================================
+let g:fzf_preview_window = ['up:60%:hidden', 'ctrl-/']
 
-let &t_SI = "\<Esc>[6 q"
-let &t_SR = "\<Esc>[4 q"
-let &t_EI = "\<Esc>[2 q"
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
 
-"File Browsing
-set path=.,**,,
-let g:netrw_banner=0 "Disable Banner
-let g:netrw_browse_split=4 "open in prior window
-let g:netrw_liststyle=3 " tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
-" auto-completion
-"set omnifunc=syntaxcomplete#Complete
-set thesaurus=~/.vim/thesaurus/english.txt
-"Wild Menu
-set wildmenu
-set wildmode=longest,list,full
-autocmd FileType * setlocal
-    \ formatoptions-=c
-    \ formatoptions-=r
-    \ formatoptions-=o
-    \ formatoptions-=l
-
-set termguicolors
-let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
-let &t_8b = "\e[48;2;%lu;%lu;%lum" "sets background color (ANSI, true-color mode)
-let g:clrzr_startup = 0
