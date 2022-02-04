@@ -20,10 +20,10 @@
 $
 
 # Command Line History (newest to oldest):
-:wq
-|2,0,1643945310,,"wq"
 :Git push
-|2,0,1643945302,,"Git push"
+|2,0,1643945358,,"Git push"
+:wq
+|2,0,1643945350,,"wq"
 :Git pusn
 |2,0,1643945294,,"Git pusn"
 :wq!
@@ -659,30 +659,36 @@ $
 |4,77,1,11,1642019761,"~/.vim/plugged/vimwiki/doc/vimwiki.txt"
 'R  125  47  ~/S/Documents/Employment/Cover_letters/VPI_job_Radio_Frequency_Engineer_105811_v1/Brendan_resume.tex
 |4,82,125,47,1638474911,"~/S/Documents/Employment/Cover_letters/VPI_job_Radio_Frequency_Engineer_105811_v1/Brendan_resume.tex"
-'0  223  0  ~/.vim/vimrc
-|4,48,223,0,1643945310,"~/.vim/vimrc"
-'1  106  0  ~/.vim/vimrc
-|4,49,106,0,1643944984,"~/.vim/vimrc"
-'2  106  0  ~/.vim/vimrc
-|4,50,106,0,1643944984,"~/.vim/vimrc"
-'3  1  0  ~/.vim/sources/Ultisnips.vim
-|4,51,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
-'4  225  0  ~/.vim/vimrc
-|4,52,225,0,1643944264,"~/.vim/vimrc"
-'5  240  0  ~/.vim/vimrc
-|4,53,240,0,1643944264,"~/.vim/vimrc"
-'6  228  0  ~/.vim/vimrc
-|4,54,228,0,1643944264,"~/.vim/vimrc"
-'7  266  0  ~/.vim/vimrc
-|4,55,266,0,1643944264,"~/.vim/vimrc"
-'8  73  0  ~/.vim/vimrc
-|4,56,73,0,1643943042,"~/.vim/vimrc"
-'9  73  0  ~/.vim/vimrc
-|4,57,73,0,1643943042,"~/.vim/vimrc"
+'0  1  0  ~/.vim/vimrc
+|4,48,1,0,1643945363,"~/.vim/vimrc"
+'1  223  0  ~/.vim/vimrc
+|4,49,223,0,1643945310,"~/.vim/vimrc"
+'2  223  0  ~/.vim/vimrc
+|4,50,223,0,1643945310,"~/.vim/vimrc"
+'3  106  0  ~/.vim/vimrc
+|4,51,106,0,1643944984,"~/.vim/vimrc"
+'4  106  0  ~/.vim/vimrc
+|4,52,106,0,1643944984,"~/.vim/vimrc"
+'5  106  0  ~/.vim/vimrc
+|4,53,106,0,1643944984,"~/.vim/vimrc"
+'6  106  0  ~/.vim/vimrc
+|4,54,106,0,1643944984,"~/.vim/vimrc"
+'7  1  0  ~/.vim/sources/Ultisnips.vim
+|4,55,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+'8  225  0  ~/.vim/vimrc
+|4,56,225,0,1643944264,"~/.vim/vimrc"
+'9  240  0  ~/.vim/vimrc
+|4,57,240,0,1643944264,"~/.vim/vimrc"
 
 # Jumplist (newest first):
+-'  1  0  ~/.vim/vimrc
+|4,39,1,0,1643945363,"~/.vim/vimrc"
 -'  223  0  ~/.vim/vimrc
 |4,39,223,0,1643945310,"~/.vim/vimrc"
+-'  223  0  ~/.vim/vimrc
+|4,39,223,0,1643945310,"~/.vim/vimrc"
+-'  216  0  ~/.vim/vimrc
+|4,39,216,0,1643945155,"~/.vim/vimrc"
 -'  216  0  ~/.vim/vimrc
 |4,39,216,0,1643945155,"~/.vim/vimrc"
 -'  1  0  ~/.vim/vimrc
@@ -691,6 +697,12 @@ $
 |4,39,106,0,1643944984,"~/.vim/vimrc"
 -'  106  0  ~/.vim/vimrc
 |4,39,106,0,1643944984,"~/.vim/vimrc"
+-'  106  0  ~/.vim/vimrc
+|4,39,106,0,1643944984,"~/.vim/vimrc"
+-'  225  56  ~/.vim/vimrc
+|4,39,225,56,1643944665,"~/.vim/vimrc"
+-'  251  56  ~/.vim/vimrc
+|4,39,251,56,1643944665,"~/.vim/vimrc"
 -'  225  56  ~/.vim/vimrc
 |4,39,225,56,1643944665,"~/.vim/vimrc"
 -'  251  56  ~/.vim/vimrc
@@ -705,6 +717,20 @@ $
 |4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
 -'  1  0  ~/.vim/sources/Ultisnips.vim
 |4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  1  0  ~/.vim/sources/Ultisnips.vim
+|4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  1  0  ~/.vim/sources/Ultisnips.vim
+|4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  1  0  ~/.vim/sources/Ultisnips.vim
+|4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  1  0  ~/.vim/sources/Ultisnips.vim
+|4,39,1,0,1643944312,"~/.vim/sources/Ultisnips.vim"
+-'  240  0  ~/.vim/vimrc
+|4,39,240,0,1643944264,"~/.vim/vimrc"
+-'  228  0  ~/.vim/vimrc
+|4,39,228,0,1643944264,"~/.vim/vimrc"
+-'  266  0  ~/.vim/vimrc
+|4,39,266,0,1643944264,"~/.vim/vimrc"
 -'  240  0  ~/.vim/vimrc
 |4,39,240,0,1643944264,"~/.vim/vimrc"
 -'  228  0  ~/.vim/vimrc
@@ -729,6 +755,8 @@ $
 |4,39,73,0,1643943042,"~/.vim/vimrc"
 -'  73  0  ~/.vim/vimrc
 |4,39,73,0,1643943042,"~/.vim/vimrc"
+-'  73  0  ~/.vim/vimrc
+|4,39,73,0,1643943042,"~/.vim/vimrc"
 -'  70  0  ~/.vim/vimrc
 |4,39,70,0,1643943037,"~/.vim/vimrc"
 -'  70  0  ~/.vim/vimrc
@@ -741,6 +769,12 @@ $
 |4,39,70,0,1643943037,"~/.vim/vimrc"
 -'  70  0  ~/.vim/vimrc
 |4,39,70,0,1643943037,"~/.vim/vimrc"
+-'  70  0  ~/.vim/vimrc
+|4,39,70,0,1643943037,"~/.vim/vimrc"
+-'  74  0  ~/.vim/vimrc
+|4,39,74,0,1643942810,"~/.vim/vimrc"
+-'  75  0  ~/.vim/vimrc
+|4,39,75,0,1643942810,"~/.vim/vimrc"
 -'  74  0  ~/.vim/vimrc
 |4,39,74,0,1643942810,"~/.vim/vimrc"
 -'  75  0  ~/.vim/vimrc
@@ -847,46 +881,12 @@ $
 |4,39,90,0,1643942809,"~/.vim/vimrc"
 -'  91  0  ~/.vim/vimrc
 |4,39,91,0,1643942809,"~/.vim/vimrc"
--'  92  0  ~/.vim/vimrc
-|4,39,92,0,1643942809,"~/.vim/vimrc"
--'  93  0  ~/.vim/vimrc
-|4,39,93,0,1643942809,"~/.vim/vimrc"
--'  94  0  ~/.vim/vimrc
-|4,39,94,0,1643942809,"~/.vim/vimrc"
--'  95  0  ~/.vim/vimrc
-|4,39,95,0,1643942809,"~/.vim/vimrc"
--'  96  0  ~/.vim/vimrc
-|4,39,96,0,1643942809,"~/.vim/vimrc"
--'  97  0  ~/.vim/vimrc
-|4,39,97,0,1643942809,"~/.vim/vimrc"
--'  98  0  ~/.vim/vimrc
-|4,39,98,0,1643942809,"~/.vim/vimrc"
--'  99  0  ~/.vim/vimrc
-|4,39,99,0,1643942809,"~/.vim/vimrc"
--'  100  0  ~/.vim/vimrc
-|4,39,100,0,1643942809,"~/.vim/vimrc"
--'  76  0  ~/.vim/vimrc
-|4,39,76,0,1643942809,"~/.vim/vimrc"
--'  77  0  ~/.vim/vimrc
-|4,39,77,0,1643942809,"~/.vim/vimrc"
--'  78  0  ~/.vim/vimrc
-|4,39,78,0,1643942809,"~/.vim/vimrc"
--'  79  0  ~/.vim/vimrc
-|4,39,79,0,1643942809,"~/.vim/vimrc"
--'  80  0  ~/.vim/vimrc
-|4,39,80,0,1643942809,"~/.vim/vimrc"
--'  81  0  ~/.vim/vimrc
-|4,39,81,0,1643942809,"~/.vim/vimrc"
--'  82  0  ~/.vim/vimrc
-|4,39,82,0,1643942809,"~/.vim/vimrc"
--'  83  0  ~/.vim/vimrc
-|4,39,83,0,1643942809,"~/.vim/vimrc"
 
 # History of marks within files (newest to oldest):
 
 > ~/.vim/vimrc
-	*	1643945308	0
-	"	223	0
+	*	1643945360	0
+	"	1	0
 	^	70	30
 	.	225	0
 	+	225	51
