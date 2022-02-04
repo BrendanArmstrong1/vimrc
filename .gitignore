@@ -3,7 +3,7 @@ autoload/
 .*/
 .*
 !.gitignore
-settings/viminfo
+viminfo
 thesaurus/
 vimwiki/diary/
 cache
