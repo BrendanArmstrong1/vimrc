@@ -41,6 +41,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'haya14busa/incsearch-fuzzy.vim'
     Plug 'haya14busa/incsearch-easymotion.vim'
     Plug 'haya14busa/vim-asterisk'
+    Plug 'dyng/ctrlsf.vim'
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
     Plug 'justinmk/vim-sneak'
     Plug 'tpope/vim-sleuth'
@@ -140,14 +142,7 @@ map <c-h> <c-w>h
 map <c-j> <c-w>j
 map <c-k> <c-w>k
 
-let g:sneak#label = 1
-map f <Plug>Sneak_f
-map F <Plug>Sneak_F
-map t <Plug>Sneak_t
-map T <Plug>Sneak_T
-
 " Inc search stuff
-set hlsearch
 let g:incsearch#consistent_n_direction = 1
 let g:incsearch#auto_nohlsearch = 1
 let g:incsearch#separate_highlight = 1
@@ -179,9 +174,16 @@ map gz# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
 
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_startofline = 0 " keep cursor colum JK motion
+
+nmap gsb <Plug>(easymotion-overwin-f2)
+nmap gsl <Plug>(easymotion-overwin-line)
 nmap <silent><expr> gs<Space> incsearch#go(<SID>config_easyfuzzymotion())
-nmap gss <Plug>(easymotion-overwin-f2)
-nmap gsb <Plug>(easymotion-overwin-line)
+map gss <Plug>(easymotion-sn)
+
+nmap s <Plug>(easymotion-s2)
+xmap s <Plug>(easymotion-s2)
+omap z <Plug>(easymotion-s2)
+
 map gw <Plug>(easymotion-bd-wl)
 map ge <Plug>(easymotion-bd-el)
 map gsw <Plug>(easymotion-iskeyword-w)
@@ -196,12 +198,11 @@ map gsk <Plug>(easymotion-k)
 map gsJ <Plug>(easymotion-sol-j)
 map gsK <Plug>(easymotion-sol-k)
 map gs. <Plug>(easymotion-repeat)
-nmap s <Plug>(easymotion-s2)
-xmap s <Plug>(easymotion-s2)
-omap z <Plug>(easymotion-s2)
-nmap <Leader>s <Plug>(easymotion-sn)
-xmap <Leader>s <Plug>(easymotion-sn)
-omap <Leader>z <Plug>(easymotion-sn)
+
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
 
 
 
