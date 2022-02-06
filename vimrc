@@ -15,20 +15,33 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+
+    Plug 'vim-jp/vital.vim'
+
+    " File finding
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
+    Plug 'airblade/vim-rooter' " find project root auto
+    Plug 'mhinz/vim-startify' " splash screen
+    Plug 'tpope/vim-vinegar' " netrw enhancement
 
+    " Colours
     Plug 'romgrk/doom-one.vim'
     Plug 'itchyny/lightline.vim'
     Plug 'BourgeoisBear/clrzr'
-
     Plug 'machakann/vim-highlightedyank'
-    Plug 'svban/YankAssassin.vim'
 
+    " Vim heuristics (more functionality)
     Plug 'sheerun/vim-polyglot'
     Plug 'vim-syntastic/syntastic'
-
-    Plug 'vim-jp/vital.vim'
+    Plug 'tpope/vim-sleuth'
+    Plug 'tpope/vim-repeat'
+    Plug 'michaeljsmith/vim-indent-object'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'tpope/vim-scriptease'
+    Plug 'AndrewRadev/splitjoin.vim'
 
     "Git stuff
     Plug 'tpope/vim-fugitive'
@@ -36,29 +49,28 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/git-messenger.vim'
     Plug 'airblade/vim-gitgutter'
 
+    " Vim in-frame navigation
+    Plug 'svban/YankAssassin.vim' " cursor stay in place after yank
     Plug 'easymotion/vim-easymotion'
     Plug 'haya14busa/incsearch.vim'
     Plug 'haya14busa/incsearch-fuzzy.vim'
     Plug 'haya14busa/incsearch-easymotion.vim'
     Plug 'haya14busa/vim-asterisk'
+
+    " Broad file simultaneous edit
     Plug 'dyng/ctrlsf.vim'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
-    Plug 'justinmk/vim-sneak'
-    Plug 'tpope/vim-sleuth'
-    Plug 'tpope/vim-unimpaired'
-    Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-commentary'
-    Plug 'michaeljsmith/vim-indent-object'
+    " typist help
+    Plug 'tpope/vim-endwise'
     Plug 'jiangmiao/auto-pairs'
+    Plug 'tpope/vim-rsi'
+    Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 
-    Plug 'mhinz/vim-startify'
-
+    " Org mode in vim
     Plug 'vimwiki/vimwiki'
     Plug 'itchyny/calendar.vim'
 
-    Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 call plug#end()
 
 filetype plugin indent on
@@ -98,11 +110,9 @@ let mapleader="\<space>"
 nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
 nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteScript('right')<CR>
 nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteScript('bot')<CR>
-nnoremap <silent> <leader>ih <CMD>call myfunc#Resize_Execution_Term(20)<CR>
+nnoremap <silent> <leader>ih <CMD>call myfunc#Resize_Execution_Term(20)<CR
 nnoremap <silent> <leader>il <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 
-nnoremap <silent> <leader>b <Cmd>call myfunc#ToggleNetrw()<CR>
-nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
 
 nnoremap <silent> <leader>qq <CMD>call myfunc#Quitout()<CR>
 nnoremap <silent> <leader>qw <CMD>call myfunc#SaveQuitout()<CR>
@@ -111,6 +121,7 @@ nnoremap <silent> <leader>qt <CMD>call myfunc#CloseTerm()<CR>
 
 " Toggling stuff
 nnoremap <silent> <leader>ts <Cmd>setlocal spell! spelllang=en_ca<CR>
+nnoremap <silent> <leader>ec <Cmd>Calendar -position=tab<CR>
 
 nnoremap <silent> <leader>S <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>R <Cmd>e $MYVIMRC<CR>
@@ -123,6 +134,7 @@ nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
 xnoremap < <gv
 xnoremap > >gv
 
+nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
 nmap gf :edit <cfile><CR>
 nmap <C-W><C-F> :vsplit <cfile><CR>
 
@@ -135,32 +147,31 @@ nmap <leader>gp <CMD>Git push<CR>
 nmap <expr> j (v:count? 'j' : 'gj')
 nmap <expr> k (v:count? 'k' : 'gk')
 
-imap <c-x><c-k> <c-x><c-k>
-imap <c-x><c-l> <c-x><c-l>
+" Smooth scroll...
+map <C-f> <C-D><C-D>
+map <C-b> <C-U><C-U>
+map <expr> <C-U> repeat("\<C-Y>", 15)
+map <expr> <C-D> repeat("\<C-E>", 15)
+noremap <expr> <C-e> repeat("\<C-e>", 3)
+noremap <expr> <C-y> repeat("\<C-y>", 3)
+
+" Window switching
 map <c-l> <c-w>l
 map <c-h> <c-w>h
 map <c-j> <c-w>j
 map <c-k> <c-w>k
 
-" Inc search stuff
+" Navigation with IncSearch
+set hlsearch
 let g:incsearch#consistent_n_direction = 1
 let g:incsearch#auto_nohlsearch = 1
-let g:incsearch#separate_highlight = 1
-function! s:config_easyfuzzymotion(...) abort
-  return extend(copy({
-  \   'converters': [incsearch#config#fuzzyspell#converter()],
-  \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
-  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
-  \   'is_expr': 0,
-  \   'is_stay': 1
-  \ }), get(a:, 1, {}))
-endfunction
-
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-
+let g:incsearch#separate_highlight = 0
+let g:incsearch#no_inc_hlsearch = 0
+let g:incsearch#do_not_save_error_message_history = 0
 let g:asterisk#keeppos = 1
+map /  <Plug>(incsearch-nohl)<Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-nohl)<Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-nohl)<Plug>(incsearch-stay)
 map n  <Plug>(incsearch-nohl-n)
 map N  <Plug>(incsearch-nohl-N)
 map *   <Plug>(incsearch-nohl)<Plug>(asterisk-*)
@@ -172,40 +183,88 @@ map gz* <Plug>(incsearch-nohl0)<Plug>(asterisk-gz*)
 map z#  <Plug>(incsearch-nohl0)<Plug>(asterisk-z#)
 map gz# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
 
+" Navigation with Easymotion
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_startofline = 0 " keep cursor colum JK motion
+let g:EasyMotion_move_highlight = 1 " LAGGY!! turn off if ; and , lag
+let g:EasyMotion_verbose = 0
+let g:EasyMotion_keys = 'neioluy]arstzxcdqwfpb'
+function! s:config_easyfuzzymotion(...) abort
+  return extend(copy({
+  \   'converters': [incsearch#config#fuzzyspell#converter()],
+  \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+  \   'is_expr': 0,
+  \   'is_stay': 1
+  \ }), get(a:, 1, {}))
+endfunction
 
+" Searching across buffers
 nmap gsb <Plug>(easymotion-overwin-f2)
 nmap gsl <Plug>(easymotion-overwin-line)
 nmap <silent><expr> gs<Space> incsearch#go(<SID>config_easyfuzzymotion())
-map gss <Plug>(easymotion-sn)
 
-nmap s <Plug>(easymotion-s2)
-xmap s <Plug>(easymotion-s2)
-omap z <Plug>(easymotion-s2)
-
-map gw <Plug>(easymotion-bd-wl)
-map ge <Plug>(easymotion-bd-el)
-map gsw <Plug>(easymotion-iskeyword-w)
-map gsW <Plug>(easymotion-bd-W)
-map gse <Plug>(easymotion-iskeyword-e)
-map gsE <Plug>(easymotion-bd-E)
+nmap ; <Plug>(incsearch-nohl)<Plug>(easymotion-next)
+nmap , <Plug>(incsearch-nohl)<Plug>(easymotion-prev)
 map gsn <Plug>(easymotion-bd-n)
-map gst <Plug>(easymotion-bd-t)
-map gsf <Plug>(easymotion-s)
-map gsj <Plug>(easymotion-j)
-map gsk <Plug>(easymotion-k)
-map gsJ <Plug>(easymotion-sol-j)
-map gsK <Plug>(easymotion-sol-k)
 map gs. <Plug>(easymotion-repeat)
 
-map f <Plug>Sneak_f
-map F <Plug>Sneak_F
-map t <Plug>Sneak_t
-map T <Plug>Sneak_T
+" up/down course motions
+map <leader>J <Plug>(easymotion-sol-j)
+map <leader>K <Plug>(easymotion-sol-k)
+map <leader>j <Plug>(easymotion-j)
+map <leader>k <Plug>(easymotion-k)
 
+" linewise course movement
+map B <Plug>(easymotion-linebackward)
+map W <Plug>(easymotion-lineforward)
+map w <Plug>(easymotion-wl)
+map e <Plug>(easymotion-bd-el)
+map E <Plug>(easymotion-lineanywhere)
+map b <Plug>(easymotion-bl)
 
+" linewise fine movement
+map t <Plug>(incsearch-nohl)<Plug>(easymotion-bd-tl)
+map f <Plug>(incsearch-nohl)<Plug>(easymotion-sl)
 
+" bi-directional fine movement
+map T <Plug>(incsearch-nohl)<Plug>(easymotion-bd-t2)
+map F <Plug>(incsearch-nohl)<Plug>(easymotion-s2)
+map s <Plug>(incsearch-nohl)<Plug>(easymotion-sn)
+
+" Solving surround remap with Xurround pnemonic. 'X' works better for colmak
+" https://github.com/justinmk/vim-sneak/issues/268
+let g:surround_no_mappings= 1
+xmap x <Plug>VSurround
+nmap yxx <Plug>Yssurround
+nmap yx  <Plug>Ysurround
+nmap dx  <Plug>Dsurround
+nmap cx  <Plug>Csurround
+
+" Fuzzy Finder Stuff
+" Project
+let g:rooter_cd_cmd = 'lcd'
+let g:rooter_change_directory_for_non_project_files = ''
+let g:rooter_patterns = ['.git', 'Makefile', '*.sln', 'build/env.sh']
+nmap <leader>pc  <CMD>BCommits<CR>
+nmap <leader>p/  <CMD>RG<CR>
+nmap <leader>pf  <CMD>Files<CR>
+nmap <leader>pp  <CMD>GFiles<CR>
+nmap <leader>pg  <CMD>GFiles?<CR>
+nmap <leader>pl  <CMD>Lines<CR>
+nmap <leader>p]  <CMD>Tags<CR>
+" Files
+nmap <leader>fL  :Locate ""<left>
+nmap <leader>fb  <CMD>Buffers<CR>
+nmap <leader>ff  <CMD>ProjectFiles<CR>
+
+nmap <leader>gm  <CMD>GitMessenger<CR>
+" Copy the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
+vmap <leader>gb  <CMD>'<,'>GBrowse!<CR>
+" Navigate to the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
+vmap <leader>gB  <CMD>'<,'>GBrowse<CR>
+" Tag Jumping with ctags
+command! MakeTags !ctags -R .
 
 "=============================================================================
 "====================  _   _ _ _   _      ____        _            ===========
@@ -216,76 +275,108 @@ map T <Plug>Sneak_T
 "====================                                |_|           ===========
 "=============================================================================
 
-        let g:UltiSnipsExpandTrigger="<C-y>"
-        let g:UltiSnipsJumpForwardTrigger="<C-f>"
-        let g:UltiSnipsJumpBackwardTrigger="<C-b>"
-        let g:UltiSnipsEditSplit="vertical"
-        let g:UltiSnipesRemoveSelectModeMappings = 0
-        let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+let g:UltiSnipsExpandTrigger="<C-y>"
+let g:UltiSnipsJumpForwardTrigger="<C-f>"
+let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipesRemoveSelectModeMappings = 0
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 
-        let g:ulti_expand_or_jump_res = 0
-        function! Ulti_ExpandOrJump_Res() abort
-            if pumvisible()
-                return 0 "Sloppy Workaround for out of order operations
-            endif
-            call UltiSnips#ExpandSnippetOrJump()
-            return g:ulti_expand_or_jump_res
-        endfunction
-
-        function! Tab_Completion() abort
-        if pumvisible()
-            return "\<c-n>"
-        elseif Check_back_space()
-            return "\<TAB>"
-        else
-            return "\<c-n>"
-        endif
-        endfunction
-
-        function! Check_back_space() abort
-            let col = col('.') - 1
-            return !col || getline('.')[:col - 1]  =~# "^\\s*$"
-        endfunction
-        inoremap <silent> <tab> <C-R>=(Ulti_ExpandOrJump_Res() > 0) ? "" :
-            \ Tab_Completion()<CR>
-        snoremap <silent> <tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<cr>
-        xmap <tab> <C-y>
-
-
-
-
-        function! s:shift_tab_fix() abort
-            if pumvisible()
-                return "\<C-p>"
-            else
-                return "\<CMD>call Bracket_check()\<CR>"
-            endif
-        endfunction
-
-        function! Bracket_check() abort
-            let l:aft = searchpos('[{}()\[\]`''"]','cnz',line('.'))
-            call cursor(l:aft[0], l:aft[1]+1)
-            startinsert
-        endfunction
-
-
-"============================================================================
-"====================  _____ __________ =====================================
-"==================== |  ___|__  /  ___|=====================================
-"==================== | |_    / /| |_   =====================================
-"==================== |  _|  / /_|  _|  =====================================
-"==================== |_|   /____|_|    =====================================
-"====================                   =====================================
-"============================================================================
-let g:fzf_preview_window = ['up:60%:hidden', 'ctrl-/']
-
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+let g:ulti_expand_or_jump_res = 0
+function! Ulti_ExpandOrJump_Res() abort
+    if pumvisible()
+        return 0 "Sloppy Workaround for out of order operations
+    endif
+    call UltiSnips#ExpandSnippetOrJump()
+    return g:ulti_expand_or_jump_res
 endfunction
 
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+function! Check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[:col - 1]  =~# "^\\s*$"
+endfunction
 
+"==========================================================================
+"|  _____                       __     __   _____ _           _
+"| |  ___|   _ _________   _   / _|___/ _| |  ___(_)_ __   __| | ___ _ __
+"| | |_ | | | |_  /_  / | | | | ||_  / |_  | |_  | | '_ \ / _` |/ _ \ '__|
+"| |  _|| |_| |/ / / /| |_| | |  _/ /|  _| |  _| | | | | | (_| |  __/ |
+"| |_|   \__,_/___/___|\__, | |_|/___|_|   |_|   |_|_| |_|\__,_|\___|_|
+"|                     |___/
+"==========================================================================
+
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+let g:fzf_action = {
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+
+let $FZF_DEFAULT_COMMAND = "rg --files --no-ignore --hidden --follow --glob '!.git'
+            \ --glob '!*.git*'"
+let g:rg_derive_root='true'
+
+if has('win32') " Disable preview on Windows since it doesn't really work
+  let g:fzf_preview_window = []
+else
+    " Show file previews
+    command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+    function! RipgrepFzf(query, fullscreen)
+        let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case --glob "!.git/*" -- %s || true'
+        let initial_command = printf(command_fmt, shellescape(a:query))
+        let reload_command = printf(command_fmt, '{q}')
+        let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+    endfunction
+    command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+endif
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+" [[B]Commits] Customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d
+            \ %s %C(cyan)%C(bold)%cr"'
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+" [Commands] --expect expression for directly executing the command
+let g:fzf_commands_expect = 'enter'
+command! -bang ProjectFiles call fzf#vim#files('~/S', fzf#vim#with_preview(), <bang>0)
+
+
+
+" Calendar!!!
+
+function! s:prefix_zero(num) abort
+  if a:num < 10
+    return '0'.a:num
+  endif
+  return a:num
+endfunction
+
+" Callback function for Calendar.vim
+function! DiaryDay(day, month, year, week, dir, wnum) abort
+  let day = s:prefix_zero(a:day)
+  let month = s:prefix_zero(a:month)
+
+  let link = a:year.'-'.month.'-'.day
+  if winnr('$') == 1
+    if a:dir ==? 'V'
+      vsplit
+    else
+      split
+    endif
+  else
+    wincmd p
+    if !&hidden && &modified
+      new
+    endif
+  endif
+
+  call vimwiki#diary#make_note(a:wnum, 0, link)
+endfunction
+
+autocmd FileType calendar nmap <buffer> <CR>
+    \ :call DiaryDay(b:calendar.day().get_day(), b:calendar.day().get_month(),
+    \ b:calendar.day().get_year(), b:calendar.day().week(), "V", v:count1)<CR>

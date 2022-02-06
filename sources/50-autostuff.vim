@@ -18,12 +18,21 @@ augroup standard_group
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE ctermbg=NONE
 
     "Inc-Search stuff
-    autocmd ColorScheme * highlight IncSearchMatch guibg=NONE guibg=#666699 guifg=#d1d1e0
-    autocmd ColorScheme * highlight Search guibg=NONE guibg=#666699 guifg=#d1d1e0
-    autocmd ColorScheme * highlight IncSearch guibg=NONE guibg=#666699 guifg=#d1d1e0
-    autocmd ColorScheme * highlight IncSearchMatchReverse guibg=#b3b3cc guifg=#3d3d5c
-    autocmd ColorScheme * highlight IncSearchOnCursor guibg=#52527a guifg=#3d3d5c
-    autocmd ColorScheme * highlight IncSearchCursor guibg=#6600cc guifg=#cc99ff
+    autocmd ColorScheme * highlight IncSearchMatch guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight Search guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight IncSearch guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight IncSearchOnCursor guibg=NONE guifg=#ff3399
+    autocmd ColorScheme * highlight IncSearchCursor guibg=#ffffff guifg=#000000
+    "autocmd ColorScheme * highlight IncSearchMatchReverse guibg=#5200cc guifg=#d1b3ff
+
+    " EasyMotionStuff
+    autocmd ColorScheme * highlight EasyMotionTarget guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight EasyMotionTarget2First guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight EasyMotionTarget2Second guibg=NONE guifg=#ff8080
+    autocmd ColorScheme * highlight EasyMotionMoveHL guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight EasyMotionIncSearch guibg=NONE guifg=#b3ff1a
+    "autocmd User EasyMotionPromptBegin silent! CocDisable
+    "autocmd User EasyMotionPromptEnd   silent! CocEnable
 
     "Ensure files open the way that i want
     autocmd BufRead,BufNewFile *.tex set filetype=tex
