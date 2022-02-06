@@ -25,19 +25,6 @@ function! myfunc#ExecuteScript(location) abort
     w
     let l:name=expand('%:p')
     let l:exte=expand('%:e')
-    if l:exte == 'md'
-        if g:markdown_preview == 1
-            return
-        else
-            call SetMarkdown(a:location)
-            if a:location == 'right'
-                call feedkeys("\<C-w>h")
-            else
-                call feedkeys("\<C-w>k")
-            endif
-            return
-        endif
-    endif
     if !term_list()->len()
         if l:exte == 'tex' || l:exte == 'html' || l:exte == 'css'
             ter ++hidden
@@ -62,7 +49,7 @@ function! myfunc#ExecuteScript(location) abort
             call feedkeys("\<C-w>h")
         endif
     endif
-    call term_sendkeys(term_list()[0], "clear && compiler " . Quoterepl(l:name) . "\<CR>")
+    call term_sendkeys(term_list()[0], "clear && compiler " . myfunc#Quoterepl(l:name) . "\<CR>")
 endfunction
 
 function! myfunc#Quoterepl(name) abort
