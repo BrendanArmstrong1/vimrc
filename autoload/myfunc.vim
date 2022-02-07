@@ -1,16 +1,3 @@
-function! myfunc#CloseTerm() abort
-    w
-    let i = bufnr("$")
-    while (i >= 1)
-        if (bufexists(i))
-            if (getbufvar(i, "&buftype") == "terminal")
-                silent exe "bwipeout! " . i
-            endif
-        endif
-        let i-=1
-    endwhile
-    let g:markdown_preview = 0
-endfunction
 
 function! myfunc#SaveQuitout() abort
     w
@@ -21,7 +8,7 @@ function! myfunc#Quitout() abort
     execute "%bd!\|q!"
 endfunction
 
-function! myfunc#ExecuteScript(location) abort
+function! myfunc#ExecuteStuff(location) abort
     w
     let l:name=expand('%:p')
     let l:exte=expand('%:e')

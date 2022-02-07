@@ -56,6 +56,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'haya14busa/incsearch-fuzzy.vim'
     Plug 'haya14busa/incsearch-easymotion.vim'
     Plug 'haya14busa/vim-asterisk'
+    Plug 'justinmk/vim-sneak'
     Plug 'psliwka/vim-smoothie'
 
     " Broad file simultaneous edit
@@ -67,6 +68,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'jiangmiao/auto-pairs'
     Plug 'tpope/vim-rsi'
     Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
+
+    " Code Execution
+    Plug 'thinca/vim-quickrun'
 
     " Org mode in vim
     Plug 'vimwiki/vimwiki'
@@ -94,8 +98,13 @@ source $HOME/.vim/sources/50-FuzzyFind.vim
 source $HOME/.vim/sources/50-Ultisnips.vim
 source $HOME/.vim/sources/50-autostuff.vim
 
-
-
+" TODO CoC integration plus fix the autocomplete function in general
+" TODO Set up project management with vimwiki and taskwarrior
+" TODO Clean up personal scripts section of the mappings.
+" TODO Fix calendar and get it synced with google
+" TODO get better terminal motions. Its hard to move around.
+" TODO set up ctrlsf.
+" TODO FZF ripgrep needs to ignore .gitignore but also ignore .git
 
 "======================================================
 " ____                                  _
@@ -106,13 +115,13 @@ source $HOME/.vim/sources/50-autostuff.vim
 "                          |_|   |_|            |___/
 "======================================================
 
-nnoremap Q !!sh<CR>
 nnoremap <space> <NOP>
 let mapleader="\<space>"
 
+nnoremap Q !!sh<CR>
 nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
-nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteScript('right')<CR>
-nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteScript('bot')<CR>
+nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteStuff('right')<CR>
+nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
 nnoremap <silent> <leader>ih <CMD>call myfunc#Resize_Execution_Term(20)<CR
 nnoremap <silent> <leader>il <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 
@@ -120,7 +129,7 @@ nnoremap <silent> <leader>il <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 nnoremap <silent> <leader>qq <CMD>call myfunc#Quitout()<CR>
 nnoremap <silent> <leader>qw <CMD>call myfunc#SaveQuitout()<CR>
 nnoremap <silent> <leader>qf <CMD>Startify<CR>
-nnoremap <silent> <leader>qt <CMD>call myfunc#CloseTerm()<CR>
+nnoremap <silent> <leader>qt <CMD>call Terminal#CloseTerm()<CR>
 
 " Toggling stuff
 nnoremap <silent> <leader>ts <Cmd>setlocal spell! spelllang=en_ca<CR>
@@ -129,11 +138,17 @@ nnoremap <silent> <leader>ec <Cmd>Calendar -position=tab<CR>
 
 " Git Mapping
 nnoremap <silent> <leader>gg <CMD>G<CR>
-nmap <leader>gp <CMD>Git push<CR>
-nmap <silent> [g <Plug>(GitGutterPrevHunk)
-nmap <silent> ]g <Plug>(GitGutterNextHunk)
-nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
-nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
+nmap <leader>gP <CMD>Git push<CR>
+nmap <silent> ]g <Plug>(GitGutterPrevHunk)
+nmap <silent> [g <Plug>(GitGutterNextHunk)
+" nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
+" nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
+
+" Quickrun mappings
+nmap <leader>gr <Plug>(quickrun)
+xmap gr :QuickRun<CR>
+nmap gr <Plug>(quickrun-op)
+nmap grr mt^gr$g`t
 
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
@@ -148,7 +163,7 @@ nnoremap <silent> <leader>or <Cmd>e $MYVIMRC<CR>
 
 nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
 nmap gf :edit <cfile><CR>
-nmap <C-W><C-F> :vsplit <cfile><CR>
+nmap <C-W><C-F> <CMD>vsplit <cfile><CR>
 
 " Move in visual lines
 nmap <expr> j (v:count? 'j' : 'gj')
@@ -159,14 +174,22 @@ xnoremap < <gv
 xnoremap > >gv
 
 " scroll stuff
-noremap <expr> <C-e> repeat("\<C-e>", 3)
-noremap <expr> <C-y> repeat("\<C-y>", 3)
+noremap <expr> <C-e> repeat("\<C-e>", 5)
+noremap <expr> <C-y> repeat("\<C-y>", 5)
 
 " Window switching
-map <c-l> <c-w>l
-map <c-h> <c-w>h
-map <c-j> <c-w>j
-map <c-k> <c-w>k
+noremap <c-l> <c-w>l
+noremap <c-h> <c-w>h
+noremap <c-j> <c-w>j
+noremap <c-k> <c-w>k
+noremap <c-w>h <c-w>H
+noremap <c-w>l <c-w>L
+noremap <c-w>j <c-w>J
+noremap <c-w>k <c-w>K
+
+" Terminal stuff
+map <C-w><C-t> <CMD>vert ter<CR>
+tmap <leader><Esc> <C-\><C-n>
 
 " Navigation with IncSearch
 set hlsearch
@@ -205,47 +228,24 @@ function! s:config_easyfuzzymotion(...) abort
   \   'is_stay': 1
   \ }), get(a:, 1, {}))
 endfunction
-
 " Searching across buffers
-nmap gsb <Plug>(easymotion-overwin-f2)
+nmap gss <Plug>(easymotion-overwin-f2)
 nmap gsl <Plug>(easymotion-overwin-line)
 nmap <silent><expr> gs<Space> incsearch#go(<SID>config_easyfuzzymotion())
-
-nmap ; <Plug>(incsearch-nohl)<Plug>(easymotion-next)
-nmap , <Plug>(incsearch-nohl)<Plug>(easymotion-prev)
 map gsn <Plug>(easymotion-bd-n)
 map gs. <Plug>(easymotion-repeat)
 
 " up/down course motions
-map <leader>J <Plug>(easymotion-sol-j)
-map <leader>K <Plug>(easymotion-sol-k)
-map <leader>j <Plug>(easymotion-j)
-map <leader>k <Plug>(easymotion-k)
+map gsj <Plug>(easymotion-j)
+map gsk <Plug>(easymotion-k)
 
-" Correct line movement with easymotion
-let g:EasyMotion_re_line_anywhere = '\v' .
-        \       '(<.|^$)' . '|' .
-        \       '(>.|^$)' . '|' .
-        \       '(\l)\zs(\u)' . '|' .
-        \       '(_\zs.)' . '|' .
-        \       '(#\zs.)'
-
-" linewise course movement
-map b <Plug>(easymotion-linebackward)
-map B <Plug>(easymotion-bl)
-map w <Plug>(easymotion-lineforward)
-map W <Plug>(easymotion-wl)
-map E <Plug>(easymotion-bd-el)
-map e <Plug>(easymotion-lineanywhere)
-
-" linewise fine movement
-map t <Plug>(incsearch-nohl)<Plug>(easymotion-bd-tl)
-map f <Plug>(incsearch-nohl)<Plug>(easymotion-sl)
-
-" bi-directional fine movement
-map T <Plug>(incsearch-nohl)<Plug>(easymotion-bd-t2)
-map F <Plug>(incsearch-nohl)<Plug>(easymotion-s2)
-map s <Plug>(incsearch-nohl)<Plug>(easymotion-sn)
+" fine movement
+map s <Plug>Sneak_s
+map S <Plug>Sneak_S
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
 
 " Solving surround remap with Xurround pnemonic. 'X' works better for colmak
 " https://github.com/justinmk/vim-sneak/issues/268
@@ -280,7 +280,6 @@ vmap <leader>gb  <CMD>'<,'>GBrowse!<CR>
 vmap <leader>gB  <CMD>'<,'>GBrowse<CR>
 " Tag Jumping with ctags
 command! MakeTags !ctags -R .
-
 
 
 

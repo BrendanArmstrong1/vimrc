@@ -64,10 +64,10 @@ let &t_EI = "\<Esc>[2 q"
 "File Browsing
 set path=.,**,,
 "let g:netrw_banner=0 "Disable Banner
-let g:netrw_browse_split=4 "open in prior window
+"let g:netrw_browse_split=4 "open in prior window
 let g:netrw_liststyle=3 " tree view
 "let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide=',\(^\|\s\s\)\zs\.\S\+'
+"let g:netrw_list_hide=',\(^\|\s\s\)\zs\.\S\+'
 
 " auto-completion
 "set omnifunc=syntaxcomplete#Complete
