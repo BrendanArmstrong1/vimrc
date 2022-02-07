@@ -27,7 +27,9 @@ else
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
     function! RipgrepFzf(query, fullscreen)
-        let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case --glob "!.git/*" -- %s || true'
+        let command_fmt = 'rg --column --no-ignore --line-number
+                    \ --no-heading --color=always --smart-case
+                    \ --glob "!.git/*" -- %s || true'
         let initial_command = printf(command_fmt, shellescape(a:query))
         let reload_command = printf(command_fmt, '{q}')
         let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}

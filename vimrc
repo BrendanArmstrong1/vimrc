@@ -103,7 +103,7 @@ source $HOME/.vim/sources/50-autostuff.vim
 " TODO Fix calendar and get it synced with google
 " TODO get better terminal motions. Its hard to move around.
 " TODO set up ctrlsf.
-" TODO FZF ripgrep needs to ignore .gitignore but also ignore .git
+" DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
 
 "======================================================
 " ____                                  _
@@ -211,7 +211,6 @@ map z*  <Plug>(incsearch-nohl0)<Plug>(asterisk-z*)
 map gz* <Plug>(incsearch-nohl0)<Plug>(asterisk-gz*)
 map z#  <Plug>(incsearch-nohl0)<Plug>(asterisk-z#)
 map gz# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
-
 
 let g:sneak#f_reset = 1
 let g:sneak#t_reset = 1

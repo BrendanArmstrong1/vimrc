@@ -29,16 +29,7 @@ augroup standard_group
     autocmd ColorScheme * highlight Sneak guibg=NONE guifg=#ff0000
     autocmd ColorScheme * highlight SneakScope guibg=#bfbfbf guifg=#000000
     autocmd ColorScheme * highlight SneakLabel guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight SneakLabelMask guibg=NONE guifg=#ffff1a
-
-    " EasyMotionStuff
-    autocmd ColorScheme * highlight EasyMotionTarget guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight EasyMotionTarget2First guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight EasyMotionTarget2Second guibg=NONE guifg=#ff8080
-    autocmd ColorScheme * highlight EasyMotionMoveHL guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight EasyMotionIncSearch guibg=NONE guifg=#b3ff1a
-    "autocmd User EasyMotionPromptBegin silent! CocDisable
-    "autocmd User EasyMotionPromptEnd   silent! CocEnable
+    autocmd ColorScheme * highlight SneakLabelMask guibg=NONE guifg=#b3b3b3
 
     "Ensure files open the way that i want
     autocmd BufRead,BufNewFile *.tex set filetype=tex
