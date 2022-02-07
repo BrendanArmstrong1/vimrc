@@ -29,7 +29,7 @@ augroup standard_group
     autocmd ColorScheme * highlight Sneak guibg=NONE guifg=#ff0000
     autocmd ColorScheme * highlight SneakScope guibg=#bfbfbf guifg=#000000
     autocmd ColorScheme * highlight SneakLabel guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight SneakLabelMask guibg=NONE guifg=#b3b3b3
+    autocmd ColorScheme * highlight SneakLabelMask guibg=NONE guifg=#666666
 
     "Ensure files open the way that i want
     autocmd BufRead,BufNewFile *.tex set filetype=tex

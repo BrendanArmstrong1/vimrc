@@ -51,10 +51,9 @@ call plug#begin('~/.vim/plugged')
 
     " Vim in-frame navigation
     Plug 'svban/YankAssassin.vim' " cursor stay in place after yank
+    Plug 'haya14busa/vim-asterisk'
     Plug 'haya14busa/incsearch.vim'
     Plug 'haya14busa/incsearch-fuzzy.vim'
-    Plug 'haya14busa/incsearch-easymotion.vim'
-    Plug 'haya14busa/vim-asterisk'
     Plug 'justinmk/vim-sneak'
     Plug 'psliwka/vim-smoothie'
 
@@ -188,29 +187,41 @@ noremap <c-w>k <c-w>K
 
 " Terminal stuff
 map <C-w><C-t> <CMD>vert ter<CR>
-tmap <leader><Esc> <C-\><C-n>
+tmap <C-Esc> <C-\><C-n>
 
-" Navigation with IncSearch
+" Inc search stuff
+augroup incsearch-keymap
+    autocmd!
+    autocmd VimEnter * call s:incsearch_keymap()
+augroup END
+function! s:incsearch_keymap()
+    IncSearchNoreMap <Right> <Over>(incsearch-next)
+    IncSearchNoreMap <Left>  <Over>(incsearch-prev)
+    IncSearchNoreMap <Down>  <Over>(incsearch-scroll-f)
+    IncSearchNoreMap <Up>    <Over>(incsearch-scroll-b)
+endfunction
 set hlsearch
 let g:incsearch#consistent_n_direction = 1
 let g:incsearch#auto_nohlsearch = 1
-let g:incsearch#separate_highlight = 0
-let g:incsearch#no_inc_hlsearch = 0
-let g:incsearch#do_not_save_error_message_history = 0
-let g:asterisk#keeppos = 1
-map /  <Plug>(incsearch-nohl)<Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-nohl)<Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-nohl)<Plug>(incsearch-stay)
+let g:incsearch#do_not_save_error_message_history = 1
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-fuzzy-/)
+map g? <Plug>(incsearch-fuzzy-?)
+map z/ <Plug>(incsearch-fuzzyspell-/)
+map z? <Plug>(incsearch-fuzzyspell-?)
+" 'N' Searching
 map n  <Plug>(incsearch-nohl-n)
 map N  <Plug>(incsearch-nohl-N)
+" vim-asterisk integration
 map *   <Plug>(incsearch-nohl)<Plug>(asterisk-*)
 map g*  <Plug>(incsearch-nohl)<Plug>(asterisk-g*)
 map #   <Plug>(incsearch-nohl)<Plug>(asterisk-#)
 map g#  <Plug>(incsearch-nohl)<Plug>(asterisk-g#)
 map z*  <Plug>(incsearch-nohl0)<Plug>(asterisk-z*)
-map gz* <Plug>(incsearch-nohl0)<Plug>(asterisk-gz*)
+map zg* <Plug>(incsearch-nohl0)<Plug>(asterisk-gz*)
 map z#  <Plug>(incsearch-nohl0)<Plug>(asterisk-z#)
-map gz# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
+map zg# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
 
 let g:sneak#f_reset = 1
 let g:sneak#t_reset = 1
@@ -219,7 +230,7 @@ let g:sneak#absolute_dir = 1
 let g:sneak#use_ic_scs = 1 " case sensitivity
 let g:sneak#map_netrw = 1
 let g:sneak#target_labels = "nelumj]hNELUMJ}HtsrfwqTSRFWQ"
-let g:sneak#prompt = '>>>'
+let g:sneak#prompt = '>>> '
 " fine movement
 map s <Plug>Sneak_s
 map S <Plug>Sneak_S
