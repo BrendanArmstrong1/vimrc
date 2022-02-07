@@ -52,8 +52,7 @@ call plug#begin('~/.vim/plugged')
     " Vim in-frame navigation
     Plug 'svban/YankAssassin.vim' " cursor stay in place after yank
     Plug 'haya14busa/vim-asterisk'
-    Plug 'haya14busa/incsearch.vim'
-    Plug 'haya14busa/incsearch-fuzzy.vim'
+    Plug 'haya14busa/is.vim'
     Plug 'justinmk/vim-sneak'
     Plug 'psliwka/vim-smoothie'
 
@@ -101,8 +100,9 @@ source $HOME/.vim/sources/50-autostuff.vim
 " TODO Clean up personal scripts section of the mappings.
 " TODO Fix calendar and get it synced with google
 " TODO get better terminal motions. Its hard to move around.
-" TODO set up ctrlsf.
+" TODO set up ctrlsf. Fix interaction with multicursor and inc search
 " DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
+" DONE Searching movements with incsearch and sneak.
 
 "======================================================
 " ____                                  _
@@ -139,8 +139,8 @@ nnoremap <silent> <leader>gg <CMD>G<CR>
 nmap <leader>gP <CMD>Git push<CR>
 nmap <silent> ]g <Plug>(GitGutterPrevHunk)
 nmap <silent> [g <Plug>(GitGutterNextHunk)
-" nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
-" nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
+nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
+nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
 
 " Quickrun mappings
 nmap <leader>gr <Plug>(quickrun)
@@ -172,6 +172,9 @@ xnoremap < <gv
 xnoremap > >gv
 
 " scroll stuff
+let g:smoothie_no_default_mappings = 1
+nmap <unique> <C-D>      <Plug>(SmoothieDownwards)
+nmap <unique> <C-U>      <Plug>(SmoothieUpwards)
 noremap <expr> <C-e> repeat("\<C-e>", 5)
 noremap <expr> <C-y> repeat("\<C-y>", 5)
 
@@ -190,46 +193,22 @@ map <C-w><C-t> <CMD>vert ter<CR>
 tmap <C-Esc> <C-\><C-n>
 
 " Inc search stuff
-augroup incsearch-keymap
-    autocmd!
-    autocmd VimEnter * call s:incsearch_keymap()
-augroup END
-function! s:incsearch_keymap()
-    IncSearchNoreMap <Right> <Over>(incsearch-next)
-    IncSearchNoreMap <Left>  <Over>(incsearch-prev)
-    IncSearchNoreMap <Down>  <Over>(incsearch-scroll-f)
-    IncSearchNoreMap <Up>    <Over>(incsearch-scroll-b)
-endfunction
 set hlsearch
-let g:incsearch#consistent_n_direction = 1
-let g:incsearch#auto_nohlsearch = 1
-let g:incsearch#do_not_save_error_message_history = 1
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-fuzzy-/)
-map g? <Plug>(incsearch-fuzzy-?)
-map z/ <Plug>(incsearch-fuzzyspell-/)
-map z? <Plug>(incsearch-fuzzyspell-?)
-" 'N' Searching
-map n  <Plug>(incsearch-nohl-n)
-map N  <Plug>(incsearch-nohl-N)
-" vim-asterisk integration
-map *   <Plug>(incsearch-nohl)<Plug>(asterisk-*)
-map g*  <Plug>(incsearch-nohl)<Plug>(asterisk-g*)
-map #   <Plug>(incsearch-nohl)<Plug>(asterisk-#)
-map g#  <Plug>(incsearch-nohl)<Plug>(asterisk-g#)
-map z*  <Plug>(incsearch-nohl0)<Plug>(asterisk-z*)
-map zg* <Plug>(incsearch-nohl0)<Plug>(asterisk-gz*)
-map z#  <Plug>(incsearch-nohl0)<Plug>(asterisk-z#)
-map zg# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
+let g:asterisk#keeppos = 1
+map *  <Plug>(asterisk-*)<Plug>(is-nohl-1)
+map g* <Plug>(asterisk-g*)<Plug>(is-nohl-1)
+map #  <Plug>(asterisk-#)<Plug>(is-nohl-1)
+map g# <Plug>(asterisk-g#)<Plug>(is-nohl-1)
+map z*  <Plug>(asterisk-z*)<Plug>(is-nohl-1)
+map zg* <Plug>(asterisk-gz*)<Plug>(is-nohl-1)
+map z#  <Plug>(asterisk-z#)<Plug>(is-nohl-1)
+map zg# <Plug>(asterisk-gz#)<Plug>(is-nohl-1)
 
 let g:sneak#f_reset = 1
 let g:sneak#t_reset = 1
-let g:sneak#label = 1
 let g:sneak#absolute_dir = 1
 let g:sneak#use_ic_scs = 1 " case sensitivity
 let g:sneak#map_netrw = 1
-let g:sneak#target_labels = "nelumj]hNELUMJ}HtsrfwqTSRFWQ"
 let g:sneak#prompt = '>>> '
 " fine movement
 map s <Plug>Sneak_s
