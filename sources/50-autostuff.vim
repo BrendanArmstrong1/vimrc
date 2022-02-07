@@ -25,6 +25,12 @@ augroup standard_group
     autocmd ColorScheme * highlight IncSearchCursor guibg=#ffffff guifg=#000000
     "autocmd ColorScheme * highlight IncSearchMatchReverse guibg=#5200cc guifg=#d1b3ff
 
+    " Sneak Highlighting
+    autocmd ColorScheme * highlight Sneak guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight SneakScope guibg=#bfbfbf guifg=#000000
+    autocmd ColorScheme * highlight SneakLabel guibg=NONE guifg=#ff0000
+    autocmd ColorScheme * highlight SneakLabelMask guibg=NONE guifg=#ffff1a
+
     " EasyMotionStuff
     autocmd ColorScheme * highlight EasyMotionTarget guibg=NONE guifg=#ff0000
     autocmd ColorScheme * highlight EasyMotionTarget2First guibg=NONE guifg=#ff0000

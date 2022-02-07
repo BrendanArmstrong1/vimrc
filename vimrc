@@ -51,7 +51,6 @@ call plug#begin('~/.vim/plugged')
 
     " Vim in-frame navigation
     Plug 'svban/YankAssassin.vim' " cursor stay in place after yank
-    Plug 'easymotion/vim-easymotion'
     Plug 'haya14busa/incsearch.vim'
     Plug 'haya14busa/incsearch-fuzzy.vim'
     Plug 'haya14busa/incsearch-easymotion.vim'
@@ -213,32 +212,15 @@ map gz* <Plug>(incsearch-nohl0)<Plug>(asterisk-gz*)
 map z#  <Plug>(incsearch-nohl0)<Plug>(asterisk-z#)
 map gz# <Plug>(incsearch-nohl0)<Plug>(asterisk-gz#)
 
-" Navigation with Easymotion
-let g:EasyMotion_do_mapping = 0
-let g:EasyMotion_startofline = 0 " keep cursor colum JK motion
-let g:EasyMotion_move_highlight = 1 " LAGGY!! turn off if ; and , lag
-let g:EasyMotion_verbose = 0
-let g:EasyMotion_keys = 'neioluy]arstzxcdqwfpb'
-function! s:config_easyfuzzymotion(...) abort
-  return extend(copy({
-  \   'converters': [incsearch#config#fuzzyspell#converter()],
-  \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
-  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
-  \   'is_expr': 0,
-  \   'is_stay': 1
-  \ }), get(a:, 1, {}))
-endfunction
-" Searching across buffers
-nmap gss <Plug>(easymotion-overwin-f2)
-nmap gsl <Plug>(easymotion-overwin-line)
-nmap <silent><expr> gs<Space> incsearch#go(<SID>config_easyfuzzymotion())
-map gsn <Plug>(easymotion-bd-n)
-map gs. <Plug>(easymotion-repeat)
 
-" up/down course motions
-map gsj <Plug>(easymotion-j)
-map gsk <Plug>(easymotion-k)
-
+let g:sneak#f_reset = 1
+let g:sneak#t_reset = 1
+let g:sneak#label = 1
+let g:sneak#absolute_dir = 1
+let g:sneak#use_ic_scs = 1 " case sensitivity
+let g:sneak#map_netrw = 1
+let g:sneak#target_labels = "nelumj]hNELUMJ}HtsrfwqTSRFWQ"
+let g:sneak#prompt = '>>>'
 " fine movement
 map s <Plug>Sneak_s
 map S <Plug>Sneak_S
