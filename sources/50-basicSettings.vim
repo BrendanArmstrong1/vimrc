@@ -36,10 +36,12 @@ set nowrap
 set linebreak
 set showbreak=+++
 
-set completeopt=menuone,popup
-set complete+=kspell
-set complete-=i
-set completepopup=height:20,width:70
+
+
+
+
+
+
 set shortmess+=c
 set cmdheight=1
 
@@ -69,9 +71,6 @@ let g:netrw_liststyle=3 " tree view
 "let g:netrw_list_hide=netrw_gitignore#Hide()
 "let g:netrw_list_hide=',\(^\|\s\s\)\zs\.\S\+'
 
-" auto-completion
-"set omnifunc=syntaxcomplete#Complete
-set thesaurus=~/.vim/thesaurus/english.txt
 "Wild Menu
 set wildmenu
 set wildmode=longest,list,full
@@ -80,8 +79,3 @@ autocmd FileType * setlocal
     \ formatoptions-=r
     \ formatoptions-=o
     \ formatoptions-=l
-
-set termguicolors
-let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
-let &t_8b = "\e[48;2;%lu;%lu;%lum" "sets background color (ANSI, true-color mode)
-let g:clrzr_startup = 0

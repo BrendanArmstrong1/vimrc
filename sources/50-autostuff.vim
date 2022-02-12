@@ -1,3 +1,6 @@
+set termguicolors
+let &t_8f = "\e[38;2;%lu;%lu;%lum" "sets foreground color (ANSI, true-color mode)
+let &t_8b = "\e[48;2;%lu;%lu;%lum" "sets background color (ANSI, true-color mode)
 highlight MyWhiteTrails ctermbg=red guibg=red
 augroup standard_group
     autocmd!
@@ -16,20 +19,18 @@ augroup standard_group
     autocmd ColorScheme * highlight LineNr guibg=NONE ctermbg=NONE
     autocmd ColorScheme * highlight SignColumn guibg=NONE ctermbg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE ctermbg=NONE
+    autocmd ColorScheme * highlight Todo guibg=NONE guifg=#33cc33
+    autocmd ColorScheme * highlight Terminal guibg=NONE ctermbg=NONE
+    autocmd ColorScheme * highlight Comment guifg=#5C6370 ctermfg=59
 
     "Inc-Search stuff
-    autocmd ColorScheme * highlight IncSearchMatch guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight Search guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight IncSearch guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight IncSearchOnCursor guibg=NONE guifg=#ff3399
-    autocmd ColorScheme * highlight IncSearchCursor guibg=#ffffff guifg=#000000
-    "autocmd ColorScheme * highlight IncSearchMatchReverse guibg=#5200cc guifg=#d1b3ff
+    autocmd ColorScheme * highlight Search guibg=#3d3d5c guifg=#c2c2d6
 
     " Sneak Highlighting
-    autocmd ColorScheme * highlight Sneak guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight SneakScope guibg=#bfbfbf guifg=#000000
-    autocmd ColorScheme * highlight SneakLabel guibg=NONE guifg=#ff0000
-    autocmd ColorScheme * highlight SneakLabelMask guibg=NONE guifg=#666666
+    autocmd ColorScheme * highlight Sneak guibg=#800033 guifg=#ff80b3
+    autocmd ColorScheme * highlight SneakScope guibg=#3d3d5c guifg=#c2c2d6
+    autocmd ColorScheme * highlight SneakLabel guibg=#800033 guifg=#ff80b3
+    autocmd ColorScheme * highlight SneakLabelMask guibg=#800033 guifg=#ff80b3
 
     "Ensure files open the way that i want
     autocmd BufRead,BufNewFile *.tex set filetype=tex
@@ -55,6 +56,9 @@ augroup standard_group
         autocmd FocusGained,BufEnter * :silent! !
     endif
 augroup END
-colorscheme doom-one
-let g:lightline = {'colorscheme' : 'one'}
+let g:sonokai_enable_italic = 1
+let g:sonokai_transparent_background = 1
+let g:sonokai_disable_italic_comment = 1
+colorscheme sonokai
+let g:lightline = {'colorscheme' : 'sonokai'}
 highlight HighlightedyankRegion cterm=reverse gui=reverse

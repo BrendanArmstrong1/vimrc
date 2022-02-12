@@ -2,12 +2,6 @@ let g:calendar_cache_directory = expand('~/.vim/cache/calendar.vim/')
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
-let g:highlightedyank_highlight_duration = 400
-let g:yankassassin_use_mappings = 1
-nmap y <Plug>YAMotion
-xmap y <Plug>YAVisual
-nmap yy <Plug>YALine
-
 let g:vimwiki_use_calendar = 0
 let g:vimwiki_list = [
         \ {'path': '~/.vim/vimwiki/',
@@ -80,3 +74,4 @@ let g:vimwiki_list = [
             \ 'links_space_char': '_',
             \ 'auto_generate_links': 1}
         \ ]
+

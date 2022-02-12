@@ -1,8 +1,3 @@
-"==============================
-"|        _
-"| __   _(_)_ __ ___  _ __ ___
-"| \ \ / / | '_ ` _ \| '__/ __|
-"|  \ V /| | | | | | | | | (__
 "|   \_/ |_|_| |_| |_|_|  \___|
 "|
 "==============================
@@ -23,25 +18,32 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'airblade/vim-rooter' " find project root auto
     Plug 'mhinz/vim-startify' " splash screen
-    Plug 'tpope/vim-vinegar' " netrw enhancement
+    Plug 'justinmk/vim-dirvish'
+    Plug 'roginfarrer/vim-dirvish-dovish'
 
     " Colours
-    Plug 'romgrk/doom-one.vim'
+    Plug 'sainnhe/sonokai'
     Plug 'itchyny/lightline.vim'
-    Plug 'BourgeoisBear/clrzr'
     Plug 'machakann/vim-highlightedyank'
 
     " Vim heuristics (more functionality)
     Plug 'sheerun/vim-polyglot'
-    Plug 'vim-syntastic/syntastic'
-    Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-sleuth'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-scriptease'
     Plug 'AndrewRadev/splitjoin.vim'
+
+    " Auto Completion and linting
+    Plug 'prabirshrestha/vim-lsp'
+    Plug 'mattn/vim-lsp-settings'
+    Plug 'prabirshrestha/asyncomplete.vim'
+    Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+    Plug 'kitagry/asyncomplete-tabnine.vim', { 'do': './install.sh' }
+    Plug 'SirVer/ultisnips'
 
     "Git stuff
     Plug 'tpope/vim-fugitive'
@@ -64,7 +66,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-endwise'
     Plug 'jiangmiao/auto-pairs'
     Plug 'tpope/vim-rsi'
-    Plug 'SirVer/ultisnips' "Ultisnips from 'honza/vim-snippets'
 
     " Code Execution
     Plug 'thinca/vim-quickrun'
@@ -85,14 +86,11 @@ if need_to_install_plugins == 1
     q
 endif
 
+
 source $HOME/.vim/cache/calendar.vim/credentials.vim
 source $HOME/.vim/sources/50-bracketed-paste.vim
-source $HOME/.vim/sources/50-Signify.vim
-source $HOME/.vim/sources/50-pluginSettings.vim
-source $HOME/.vim/sources/50-basic-settings.vim
-source $HOME/.vim/sources/50-git.vim
-source $HOME/.vim/sources/50-FuzzyFind.vim
-source $HOME/.vim/sources/50-Ultisnips.vim
+source $HOME/.vim/sources/50-basicSettings.vim
+source $HOME/.vim/sources/50-completionSettings.vim
 source $HOME/.vim/sources/50-autostuff.vim
 
 " TODO CoC integration plus fix the autocomplete function in general
@@ -103,6 +101,9 @@ source $HOME/.vim/sources/50-autostuff.vim
 " TODO set up ctrlsf. Fix interaction with multicursor and inc search
 " DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
 " DONE Searching movements with incsearch and sneak.
+" TODO Change fzf window to a split of some sort
+" DONE SWITCH TO COLMAK regular version
+
 
 "======================================================
 " ____                                  _
@@ -116,14 +117,60 @@ source $HOME/.vim/sources/50-autostuff.vim
 nnoremap <space> <NOP>
 let mapleader="\<space>"
 
+" Completion and linting
+set omnifunc=lsp#complete
+let g:asyncomplete_auto_completeopt = 0
+source /home/brendan/.vim/sources/50-Ultisnips.vim
+" Ultisnips settings
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+    \ 'name': 'ultisnips',
+    \ 'allowlist': ['*'],
+    \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+    \ }))
+call asyncomplete#register_source(asyncomplete#sources#tabnine#get_source_options({
+  \ 'name': 'tabnine',
+  \ 'allowlist': ['*'],
+  \ 'completor': function('asyncomplete#sources#tabnine#completor'),
+  \ 'config': {
+  \   'line_limit': 1000,
+  \   'max_num_result': 10,
+  \  },
+  \ }))
+" hacky pop up close workaround
+function s:myCompletionConfirm() abort
+  let l:items = complete_info(['items', 'selected'])
+  let l:selected = l:items['items'][l:items['selected']]
+  if stridx(l:selected['menu'], "Snips:") == 0
+      echom "It's a Snippet!"
+      return "\<c-r>=asyncomplete#close_popup()\<CR>\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
+  else
+      echom "Tabby"
+      return "\<c-r>=asyncomplete#close_popup()\<CR>"
+  endif
+  return ""
+endfunction
+inoremap <expr> <CR> <c-r>=asyncomplete#cancel_popup()<CR><CR>
+inoremap <expr> <C-y> pumvisible() ? <SID>myCompletionConfirm()  : "\<C-y>"
+inoremap <expr> <C-e> pumvisible() ? asyncomplete#cancel_popup() : "\<C-e>"
+
+
+" scroll stuff
+let g:smoothie_no_default_mappings = 1
+map <C-f> <NOP>
+map <C-b> <NOP>
+nmap <C-D>      <Plug>(SmoothieDownwards)
+nmap <C-U>      <Plug>(SmoothieUpwards)
+noremap <expr> <C-e> repeat("\<C-e>", 5)
+noremap <expr> <C-y> repeat("\<C-y>", 5)
+
 nnoremap Q !!sh<CR>
 nmap <silent> <leader>cd <CMD>cd %:p:h<CR>
-nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteStuff('right')<CR>
-nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
-nnoremap <silent> <leader>ih <CMD>call myfunc#Resize_Execution_Term(20)<CR
-nnoremap <silent> <leader>il <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 
 
+source $HOME/.vim/sources/50-Signify.vim
 nnoremap <silent> <leader>qq <CMD>call myfunc#Quitout()<CR>
 nnoremap <silent> <leader>qw <CMD>call myfunc#SaveQuitout()<CR>
 nnoremap <silent> <leader>qf <CMD>Startify<CR>
@@ -131,23 +178,30 @@ nnoremap <silent> <leader>qt <CMD>call Terminal#CloseTerm()<CR>
 
 " Toggling stuff
 nnoremap <silent> <leader>ts <Cmd>setlocal spell! spelllang=en_ca<CR>
-nnoremap <silent> <leader>ec <Cmd>Calendar -position=tab<CR>
 
 
+
+source $HOME/.vim/sources/50-git.vim
 " Git Mapping
 nnoremap <silent> <leader>gg <CMD>G<CR>
 nmap <leader>gP <CMD>Git push<CR>
-nmap <silent> ]g <Plug>(GitGutterPrevHunk)
-nmap <silent> [g <Plug>(GitGutterNextHunk)
-nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
-nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
+nmap <silent> [d <Plug>(GitGutterPrevHunk)
+nmap <silent> ]d <Plug>(GitGutterNextHunk)
+nmap <silent> <leader>ds <Plug>(GitGutterStageHunk)
+nmap <silent> <leader>du <Plug>(GitGutterUndoHunk)
+
+
 
 " Quickrun mappings
-nmap <leader>gr <Plug>(quickrun)
-xmap gr :QuickRun<CR>
-nmap gr <Plug>(quickrun-op)
-nmap grr mt^gr$g`t
+nmap <leader>em <Plug>(quickrun)
+xmap <leader>er :QuickRun<CR>
+nmap <leader>er <Plug>(quickrun-op)
+nmap <leader>err mt^er$g`t
+nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteStuff('right')<CR>
+nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
 
+nnoremap <silent> [os <CMD>call myfunc#Resize_Execution_Term(20)CR
+nnoremap <silent> ]os <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
 
@@ -155,9 +209,18 @@ nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
 nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
 nnoremap <silent> <leader>T <CMD>so %<CR>
 
+source /home/brendan/.vim/sources/50-otherPrograms.vim
 " Open stuff
 nnoremap <silent> <leader>os <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>or <Cmd>e $MYVIMRC<CR>
+nnoremap <silent> <leader>oc <Cmd>Calendar -position=tab<CR>
+
+source $HOME/.vim/sources/50-YankSettings.vim
+" Yank Settings
+nmap y <Plug>YAMotion
+xmap y <Plug>YAVisual
+nmap yy <Plug>YALine
+
 
 nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
 nmap gf :edit <cfile><CR>
@@ -171,13 +234,6 @@ nmap <expr> k (v:count? 'k' : 'gk')
 xnoremap < <gv
 xnoremap > >gv
 
-" scroll stuff
-let g:smoothie_no_default_mappings = 1
-nmap <unique> <C-D>      <Plug>(SmoothieDownwards)
-nmap <unique> <C-U>      <Plug>(SmoothieUpwards)
-noremap <expr> <C-e> repeat("\<C-e>", 5)
-noremap <expr> <C-y> repeat("\<C-y>", 5)
-
 " Window switching
 noremap <c-l> <c-w>l
 noremap <c-h> <c-w>h
@@ -187,10 +243,21 @@ noremap <c-w>h <c-w>H
 noremap <c-w>l <c-w>L
 noremap <c-w>j <c-w>J
 noremap <c-w>k <c-w>K
+imap <expr> <c-j> pumvisible() ? "\<C-n>" : "\<c-j>"
+imap <expr> <c-k> pumvisible() ? "\<C-p>" : "\<c-k>"
+
+
+" Dervish
+let g:loaded_netrwPlugin = 1
+let g:dirvish_dovish_map_keys = 0
+command! -nargs=? -complete=dir Explore Dirvish <args>
+command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
+command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args>
+
 
 " Terminal stuff
 map <C-w><C-t> <CMD>vert ter<CR>
-tmap <C-Esc> <C-\><C-n>
+tmap <C-Esc> <C-w>N
 
 " Inc search stuff
 set hlsearch
@@ -204,13 +271,12 @@ map zg* <Plug>(asterisk-gz*)<Plug>(is-nohl-1)
 map z#  <Plug>(asterisk-z#)<Plug>(is-nohl-1)
 map zg# <Plug>(asterisk-gz#)<Plug>(is-nohl-1)
 
+" fine movement (Sneak Stuff)
 let g:sneak#f_reset = 1
 let g:sneak#t_reset = 1
-let g:sneak#absolute_dir = 1
 let g:sneak#use_ic_scs = 1 " case sensitivity
 let g:sneak#map_netrw = 1
-let g:sneak#prompt = '>>> '
-" fine movement
+let g:sneak#prompt = '>> '
 map s <Plug>Sneak_s
 map S <Plug>Sneak_S
 map t <Plug>Sneak_t
@@ -228,6 +294,7 @@ nmap dx  <Plug>Dsurround
 nmap cx  <Plug>Csurround
 
 " Fuzzy Finder Stuff
+source $HOME/.vim/sources/50-FuzzyFind.vim
 " Project
 let g:rooter_cd_cmd = 'lcd'
 let g:rooter_change_directory_for_non_project_files = ''
@@ -238,7 +305,7 @@ nmap <leader>pf  <CMD>Files<CR>
 nmap <leader>pp  <CMD>GFiles<CR>
 nmap <leader>pg  <CMD>GFiles?<CR>
 nmap <leader>pl  <CMD>Lines<CR>
-nmap <leader>p]  <CMD>Tags<CR>
+nmap <leader>p'  <CMD>Tags<CR>
 " Files
 nmap <leader>fL  :Locate ""<left>
 nmap <leader>fb  <CMD>Buffers<CR>
@@ -250,7 +317,6 @@ vmap <leader>gb  <CMD>'<,'>GBrowse!<CR>
 " Navigate to the GitHub deeplink for the selected lines (requires Fugitive/Rhubarb)
 vmap <leader>gB  <CMD>'<,'>GBrowse<CR>
 " Tag Jumping with ctags
-command! MakeTags !ctags -R .
 
 
 

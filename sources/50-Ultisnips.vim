@@ -7,9 +7,6 @@
 "====================                                |_|           ===========
 "=============================================================================
 
-let g:UltiSnipsExpandTrigger="<C-y>"
-let g:UltiSnipsJumpForwardTrigger="<C-l>"
-let g:UltiSnipsJumpBackwardTrigger="<C-h>"
 let g:UltiSnipsEditSplit="vertical"
 "let g:UltiSnipesRemoveSelectModeMappings = 0
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
@@ -27,4 +24,3 @@ function! Check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[:col - 1]  =~# "^\\s*$"
 endfunction
-
