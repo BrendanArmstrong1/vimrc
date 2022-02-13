@@ -3,6 +3,9 @@
 "==============================
 set nocompatible
 let need_to_install_plugins = 0
+" Disable polyglot in favour of vim sleuth
+let g:polyglot_disabled = ['autoindent']
+
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -43,6 +46,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
     Plug 'kitagry/asyncomplete-tabnine.vim', { 'do': './install.sh' }
+    Plug 'htlsne/asyncomplete-look'
     Plug 'SirVer/ultisnips'
 
     "Git stuff
@@ -93,7 +97,8 @@ source $HOME/.vim/sources/50-basicSettings.vim
 source $HOME/.vim/sources/50-completionSettings.vim
 source $HOME/.vim/sources/50-autostuff.vim
 
-" TODO CoC integration plus fix the autocomplete function in general
+" DONE CoC integration plus fix the autocomplete function in general
+"       - went with a language server  with asyncomplete instead.
 " TODO Set up project management with vimwiki and taskwarrior
 " TODO Clean up personal scripts section of the mappings.
 " TODO Fix calendar and get it synced with google
@@ -122,45 +127,47 @@ set omnifunc=lsp#complete
 let g:asyncomplete_auto_completeopt = 0
 source /home/brendan/.vim/sources/50-Ultisnips.vim
 " Ultisnips settings
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<NOP>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
 let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-    \ 'name': 'ultisnips',
-    \ 'allowlist': ['*'],
-    \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-    \ }))
-call asyncomplete#register_source(asyncomplete#sources#tabnine#get_source_options({
-  \ 'name': 'tabnine',
-  \ 'allowlist': ['*'],
-  \ 'completor': function('asyncomplete#sources#tabnine#completor'),
-  \ 'config': {
-  \   'line_limit': 1000,
-  \   'max_num_result': 10,
-  \  },
-  \ }))
+
+source /home/brendan/.vim/sources/50-Async.vim
+" Toggling stuff
+nnoremap <silent> <leader>ts <Cmd>call myAsyncFuncs#ToggleSpell()<CR>
+nnoremap <silent> <leader>ta <Cmd>call myAsyncFuncs#ToggleTabnine()<CR>
+nnoremap <silent> <leader>tu <Cmd>call myAsyncFuncs#ToggleUltisnips()<CR>
+
 " hacky pop up close workaround
 function s:myCompletionConfirm() abort
   let l:items = complete_info(['items', 'selected'])
   let l:selected = l:items['items'][l:items['selected']]
   if stridx(l:selected['menu'], "Snips:") == 0
-      echom "It's a Snippet!"
       return "\<c-r>=asyncomplete#close_popup()\<CR>\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
   else
-      echom "Tabby"
       return "\<c-r>=asyncomplete#close_popup()\<CR>"
   endif
-  return ""
 endfunction
 inoremap <expr> <CR> <c-r>=asyncomplete#cancel_popup()<CR><CR>
 inoremap <expr> <C-y> pumvisible() ? <SID>myCompletionConfirm()  : "\<C-y>"
 inoremap <expr> <C-e> pumvisible() ? asyncomplete#cancel_popup() : "\<C-e>"
+let g:AutoPairsMapCh = 0
 
+
+source /home/brendan/.vim/sources/50-AutoPairs.vim " tabing out
+" Window switching
+noremap <c-l> <c-w>l
+noremap <c-h> <c-w>h
+noremap <c-j> <c-w>j
+noremap <c-k> <c-w>k
+noremap <c-w>h <c-w>H
+noremap <c-w>l <c-w>L
+noremap <c-w>j <c-w>J
+noremap <c-w>k <c-w>K
+imap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
+imap <expr> <c-k> pumvisible() ? "\<up>" : "\<c-k>"
 
 " scroll stuff
 let g:smoothie_no_default_mappings = 1
-map <C-f> <NOP>
-map <C-b> <NOP>
 nmap <C-D>      <Plug>(SmoothieDownwards)
 nmap <C-U>      <Plug>(SmoothieUpwards)
 noremap <expr> <C-e> repeat("\<C-e>", 5)
@@ -176,8 +183,6 @@ nnoremap <silent> <leader>qw <CMD>call myfunc#SaveQuitout()<CR>
 nnoremap <silent> <leader>qf <CMD>Startify<CR>
 nnoremap <silent> <leader>qt <CMD>call Terminal#CloseTerm()<CR>
 
-" Toggling stuff
-nnoremap <silent> <leader>ts <Cmd>setlocal spell! spelllang=en_ca<CR>
 
 
 
@@ -196,7 +201,6 @@ nmap <silent> <leader>du <Plug>(GitGutterUndoHunk)
 nmap <leader>em <Plug>(quickrun)
 xmap <leader>er :QuickRun<CR>
 nmap <leader>er <Plug>(quickrun-op)
-nmap <leader>err mt^er$g`t
 nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteStuff('right')<CR>
 nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
 
@@ -234,19 +238,6 @@ nmap <expr> k (v:count? 'k' : 'gk')
 xnoremap < <gv
 xnoremap > >gv
 
-" Window switching
-noremap <c-l> <c-w>l
-noremap <c-h> <c-w>h
-noremap <c-j> <c-w>j
-noremap <c-k> <c-w>k
-noremap <c-w>h <c-w>H
-noremap <c-w>l <c-w>L
-noremap <c-w>j <c-w>J
-noremap <c-w>k <c-w>K
-imap <expr> <c-j> pumvisible() ? "\<C-n>" : "\<c-j>"
-imap <expr> <c-k> pumvisible() ? "\<C-p>" : "\<c-k>"
-
-
 " Dervish
 let g:loaded_netrwPlugin = 1
 let g:dirvish_dovish_map_keys = 0
@@ -257,7 +248,6 @@ command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args
 
 " Terminal stuff
 map <C-w><C-t> <CMD>vert ter<CR>
-tmap <C-Esc> <C-w>N
 
 " Inc search stuff
 set hlsearch
