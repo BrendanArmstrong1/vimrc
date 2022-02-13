@@ -144,14 +144,12 @@ function s:myCompletionConfirm() abort
   if stridx(l:selected['menu'], "Snips:") == 0
       return "\<c-r>=asyncomplete#close_popup()\<CR>\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
   else
-      return "\<c-r>=asyncomplete#close_popup()\<CR>"
+      return "\<c-r>=asyncomplete#close_popup()\<CR>\<c-r>=asyncomplete#cancel_popup()\<CR>"
   endif
 endfunction
 inoremap <expr> <CR> <c-r>=asyncomplete#cancel_popup()<CR><CR>
 inoremap <expr> <C-y> pumvisible() ? <SID>myCompletionConfirm()  : "\<C-y>"
 inoremap <expr> <C-e> pumvisible() ? asyncomplete#cancel_popup() : "\<C-e>"
-let g:AutoPairsMapCh = 0
-
 
 source /home/brendan/.vim/sources/50-AutoPairs.vim " tabing out
 " Window switching
