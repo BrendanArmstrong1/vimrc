@@ -1,6 +1,5 @@
 call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
     \ 'name': 'ultisnips',
-    \ 'priority': 1000,
     \ 'allowlist': ['*'],
     \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
     \ }))

@@ -1,6 +1,11 @@
+if exists('g:asyncomplete_lsp_loaded')
+    finish
+endif
+let g:asyncomplete_lsp_loaded = 1
+
 let s:servers = {} " { server_name: 1 }
 
-function! myAsyncLsp#server_initialized() abort
+function! s:server_initialized() abort
     let l:server_names = lsp#get_server_names()
     for l:server_name in l:server_names
         if has_key(s:servers, l:server_name)
@@ -38,7 +43,7 @@ function! myAsyncLsp#server_initialized() abort
     endfor
 endfunction
 
-function! myAsyncLsp#server_exited() abort
+function! s:server_exited() abort
     let l:server_names = lsp#get_server_names()
     for l:server_name in l:server_names
         if !has_key(s:servers, l:server_name)
@@ -52,11 +57,11 @@ function! myAsyncLsp#server_exited() abort
     endfor
 endfunction
 
-function! myAsyncLsp#generate_asyncomplete_name(server_name) abort
+function! s:generate_asyncomplete_name(server_name) abort
     return 'asyncomplete_lsp_' . a:server_name
 endfunction
 
-function! myAsyncLsp#completor(server, opt, ctx) abort
+function! s:completor(server, opt, ctx) abort
     let l:position = lsp#get_position()
     call lsp#send_request(a:server['name'], {
         \ 'method': 'textDocument/completion',
@@ -68,7 +73,7 @@ function! myAsyncLsp#completor(server, opt, ctx) abort
         \ })
 endfunction
 
-function! myAsyncLsp#handle_completion(server, position, opt, ctx, data) abort
+function! s:handle_completion(server, position, opt, ctx, data) abort
     if lsp#client#is_error(a:data) || !has_key(a:data, 'response') || !has_key(a:data['response'], 'result')
         return
     endif
@@ -89,4 +94,16 @@ function! myAsyncLsp#handle_completion(server, position, opt, ctx, data) abort
     let l:startcol = min([l:startcol, get(l:completion_result, 'startcol', l:startcol)])
 
     call asyncomplete#complete(a:opt['name'], a:ctx, l:startcol, l:completion_result['items'], l:completion_result['incomplete'])
+endfunction
+
+function! myAsyncLsp#ToggleLsp() abort
+    if !g:lspAsync
+        echom "Lsp On"
+        call s:server_initialized()        
+        let g:lspAsync = 1
+    else
+        echom "Lsp Off"
+        call s:server_exited()
+        let g:lspAsync = 0
+    endif
 endfunction

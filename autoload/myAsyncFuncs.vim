@@ -1,6 +1,7 @@
 
 function! myAsyncFuncs#ToggleUltisnips() abort
   if !g:ultisnipsAsync
+    echom "Snippets On"
     call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
         \ 'name': 'ultisnips',
         \ 'allowlist': ['*'],
@@ -8,6 +9,7 @@ function! myAsyncFuncs#ToggleUltisnips() abort
         \ }))
     let g:ultisnipsAsync = 1
   else
+    echom "Snippets Off"
     call asyncomplete#unregister_source('ultisnips')
     let g:ultisnipsAsync = 0
   endif
@@ -15,6 +17,7 @@ endfunction
 
 function! myAsyncFuncs#ToggleTabnine() abort
   if !g:tabnineAsync
+    echom "Tabnine On"
     call asyncomplete#register_source(asyncomplete#sources#tabnine#get_source_options({
       \ 'name': 'tabnine',
       \ 'allowlist': ['*'],
@@ -27,6 +30,7 @@ function! myAsyncFuncs#ToggleTabnine() abort
     let g:tabnineAsync = 1
     call asyncomplete#force_refresh()
   else
+    echom "Tabnine Off"
     call asyncomplete#unregister_source('tabnine')
     let g:tabnineAsync = 0
   endif
@@ -34,9 +38,7 @@ endfunction
 
 function! myAsyncFuncs#ToggleSpell() abort
     if !g:spellAsync
-        if g:tabnineAsync
-            call myAsyncFuncs#ToggleTabnine()
-        endif
+        echom "Spelling On"
         set spell! spelllang=en_ca
         call asyncomplete#register_source({
             \ 'name': 'look',
@@ -51,10 +53,8 @@ function! myAsyncFuncs#ToggleSpell() abort
         let g:spellAsync = 1
         call asyncomplete#force_refresh()
     else
+        echom "Spelling Off"
         set spell! spelllang=en_ca
-        if !g:tabnineAsync
-            call myAsyncFuncs#ToggleTabnine()
-        endif
         call asyncomplete#unregister_source('look')
         call asyncomplete#unregister_source('look_good_words')
         let g:spellAsync = 0

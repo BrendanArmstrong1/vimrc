@@ -48,6 +48,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'kitagry/asyncomplete-tabnine.vim', { 'do': './install.sh' }
     Plug 'htlsne/asyncomplete-look'
     Plug 'SirVer/ultisnips'
+    Plug 'rhysd/vim-lsp-ale'
+    Plug 'dense-analysis/ale'
 
     "Git stuff
     Plug 'tpope/vim-fugitive'
@@ -98,7 +100,8 @@ source $HOME/.vim/sources/50-completionSettings.vim
 source $HOME/.vim/sources/50-autostuff.vim
 
 " DONE CoC integration plus fix the autocomplete function in general
-"       - went with a language server  with asyncomplete instead.
+"       - ale and vim-lsp with asyncomplete for autocompletion.
+"       - ale for linting from the language server
 " TODO Set up project management with vimwiki and taskwarrior
 " TODO Clean up personal scripts section of the mappings.
 " TODO Fix calendar and get it synced with google
@@ -136,6 +139,7 @@ source /home/brendan/.vim/sources/50-Async.vim
 nnoremap <silent> <leader>ts <Cmd>call myAsyncFuncs#ToggleSpell()<CR>
 nnoremap <silent> <leader>ta <Cmd>call myAsyncFuncs#ToggleTabnine()<CR>
 nnoremap <silent> <leader>tu <Cmd>call myAsyncFuncs#ToggleUltisnips()<CR>
+nnoremap <silent> <leader>tl <Cmd>call myAsyncLsp#ToggleLsp()<CR>
 
 " hacky pop up close workaround
 function s:myCompletionConfirm() abort
@@ -202,7 +206,7 @@ nmap <leader>er <Plug>(quickrun-op)
 nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteStuff('right')<CR>
 nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
 
-nnoremap <silent> [os <CMD>call myfunc#Resize_Execution_Term(20)CR
+nnoremap <silent> [os <CMD>call myfunc#Resize_Execution_Term(20)<CR>
 nnoremap <silent> ]os <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 nnoremap <leader>rs :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
