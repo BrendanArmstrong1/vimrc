@@ -102,10 +102,10 @@ source $HOME/.vim/sources/50-autostuff.vim
 "       - ale and vim-lsp with asyncomplete for autocompletion.
 "       - ale for linting from the language server
 " TODO Set up project management with vimwiki and taskwarrior
-" TODO Clean up personal scripts section of the mappings.
+" DONE Clean up personal scripts section of the mappings.
 " TODO Fix calendar and get it synced with google
 " TODO get better terminal motions. Its hard to move around.
-" TODO set up ctrlsf. Fix interaction with multicursor and inc search
+" DONE set up ctrlsf. Fix interaction with multicursor and inc search
 " DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
 " DONE Searching movements with incsearch and sneak.
 " TODO Change fzf window to a split of some sort
