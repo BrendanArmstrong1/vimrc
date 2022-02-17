@@ -1,19 +1,19 @@
 = VIMWIKI INDEX =
 
 ==Programming==
-[[Programming|Programming]]
+[[programming|Programming]]
 
 ==Academia==
-[[Academia|Academia]]
+[[academia|Academia]]
 
 ==Linux==
-[[Linux|Linux]]
+[[linux|Linux]]
 
 ==Social==
-[[Social|Social]]
+[[social|Social]]
 
 ==Spiritual==
-[[Spiritual|Spiritual]]
+[[spiritual|Spiritual]]
 
 ==Diary==
 [[diary/diary|Diary]]

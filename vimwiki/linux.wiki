@@ -10,7 +10,7 @@ My current text editor. Works in the terminal and is highly
 I have tried to install a version of emacs that I could
 operate smoothly, but have given up due to emacs interfering
 with some esoteric key bindings.
-[[Emacs_transition]]
+[[emacs_transition|Emacs Transition]]
 
 
 

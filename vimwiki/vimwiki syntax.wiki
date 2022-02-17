@@ -1,6 +1,6 @@
 = Syntax Formatting =
 
-= Contents =
+== Contents ==
     - [[#Syntax Formatting#VimWiki Placeholders|VimWiki Placeholders]]
     - [[#Syntax Formatting#Basic Typesetting|Basic Typesetting]]
     - [[#Syntax Formatting#Extra Flashy Words|Extra Flashy Words]]
@@ -19,6 +19,7 @@
     - [[#header1#Anchors|Anchors]]
 
 ==VimWiki Placeholders==
+
     various placeholders exist for html conversion.
 
     %title Title of the page
@@ -27,6 +28,7 @@
     %date 2022 01 13
 
 ==Basic Typesetting==
+
     * *bold text*
     * _italic text_
     * *_bold italic text_*
@@ -37,6 +39,7 @@
     * sub,,script,,
 
 ==Extra Flashy Words==
+
     * TODO
     * DONE
     * STARTED
@@ -45,6 +48,7 @@
     * XXX
 
 ==Headers==
+
     = header1 =
     == header2 ==
     ===header3===
@@ -214,7 +218,6 @@
 ==Anchors==
     any header, tag, or *bold* text can be used
     as an anchor. To jump to it, use;
-        %%[[file#anchor]]
 
     ex; [[#tag-example|Tag Description]]
     Press enter and jump, then press backspace to jump back.

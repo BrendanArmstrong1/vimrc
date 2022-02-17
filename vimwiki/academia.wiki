@@ -1,4 +1,4 @@
 =Academia=
 
 == Mathamatical Physics ==
-[[Math_Phys]]
+[[math_phys]]
