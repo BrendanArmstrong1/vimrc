@@ -22,9 +22,6 @@ let g:rg_derive_root='true'
 if has('win32') " Disable preview on Windows since it doesn't really work
   let g:fzf_preview_window = []
 else
-    " Show file previews
-    command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
     function! RipgrepFzf(query, fullscreen)
         let command_fmt = 'rg --column --no-ignore --line-number

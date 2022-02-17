@@ -1,6 +1,3 @@
-"|   \_/ |_|_| |_| |_|_|  \___|
-"|
-"==============================
 set nocompatible
 let need_to_install_plugins = 0
 " Disable polyglot in favour of vim sleuth
@@ -108,7 +105,7 @@ source $HOME/.vim/sources/50-autostuff.vim
 " DONE set up ctrlsf. Fix interaction with multicursor and inc search
 " DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
 " DONE Searching movements with incsearch and sneak.
-" TODO Change fzf window to a split of some sort
+" WAIT Change fzf window to a split of some sort
 " DONE SWITCH TO COLMAK regular version
 
 
@@ -128,7 +125,7 @@ nmap <leader>cd <CMD>cd %:p:h<CR>
 nnoremap <silent> [os <CMD>call myfunc#Resize_Execution_Term(20)<CR>
 nnoremap <silent> ]os <CMD>call myfunc#Resize_Execution_Term(-20)<CR>
 nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
-" Source stuff
+" source stuff
 nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
 nnoremap <silent> <leader>T <CMD>so %<CR>
 source $HOME/.vim/sources/50-YankSettings.vim
@@ -185,7 +182,7 @@ noremap <c-w>k <c-w>K
 imap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
 imap <expr> <c-k> pumvisible() ? "\<up>" : "\<c-k>"
 
-nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
+nnoremap <silent> <c-z><c-s> <CMD>w!<CR>
 nmap <C-W><C-F> <CMD>vsplit <cfile><CR>
 " Terminal stuff
 map <C-w><C-t> <CMD>vert ter<CR>
@@ -323,6 +320,8 @@ let g:rooter_change_directory_for_non_project_files = ''
 let g:rooter_patterns = ['.git', 'Makefile', '*.sln', 'build/env.sh']
 nmap <leader>pc  <CMD>BCommits<CR>
 nmap <leader>p/  <CMD>RG<CR>
+nmap <leader>p?  :RG <c-r><c-w><CR>
+xmap <leader>p?  "vy:<c-u>RG <c-r>v<CR>
 nmap <leader>pf  <CMD>Files<CR>
 nmap <leader>pp  <CMD>GFiles<CR>
 nmap <leader>pg  <CMD>GFiles?<CR>
