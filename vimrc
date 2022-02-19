@@ -59,6 +59,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'haya14busa/is.vim'
     Plug 'justinmk/vim-sneak'
     Plug 'psliwka/vim-smoothie'
+    Plug 'easymotion/vim-easymotion'
 
     " Broad file simultaneous edit
     Plug 'dyng/ctrlsf.vim'
@@ -248,11 +249,21 @@ nmap <silent> [g <Plug>(GitGutterPrevHunk)
 nmap <silent> ]g <Plug>(GitGutterNextHunk)
 nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
 nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
-nmap gf :edit <cfile><CR>
-nmap gp `[v`]
 nmap <leader>gm  <CMD>GitMessenger<CR>
 vmap <leader>gb  <CMD>'<,'>GBrowse!<CR>
 vmap <leader>gB  <CMD>'<,'>GBrowse<CR>
+nmap gf :edit <cfile><CR>
+nmap gp `[v`]
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_keys = 'neioluy''mtsrapfwqgj'
+nmap gs <Plug>(easymotion-overwin-f2)
+nmap gw <Plug>(easymotion-lineanywhere)
+    let g:EasyMotion_re_line_anywhere = '\v' .
+        \       '(<.|^)' . '|' .
+        \       '(>.|.$)' . '|' .
+        \       '(\l)\zs(\u)' . '|' .
+        \       '(_\zs.)' . '|' .
+        \       '(#\zs.)'
 
 " Prefix e
 " Quickrun mappings
