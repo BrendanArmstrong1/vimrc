@@ -1,6 +1,7 @@
 setlocal include=^\\s*\\(from\\\|import\\)\\s*\\zs\\(\\S\\+\\s\\{-}\\)*\\ze\\($\\\|\ as\\)
 setlocal wildignore=*.pyc,*/__pycache__/*
 setlocal suffixesadd=.py,/__init__.py
+setlocal omnifunc=lsp#complete
 
 
 function! PyInclude(fname)

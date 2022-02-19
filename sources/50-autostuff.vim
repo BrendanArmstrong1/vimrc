@@ -60,5 +60,47 @@ let g:sonokai_enable_italic = 1
 let g:sonokai_transparent_background = 1
 let g:sonokai_disable_italic_comment = 1
 colorscheme sonokai
-let g:lightline = {'colorscheme' : 'sonokai'}
+" itchyny/lightline.vim --- {{{
+let g:lightline#bufferline#modified = ' ✎'
+let g:lightline = {
+      \ 'colorscheme': 'sonokai',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'gitbranch', 'relativepath', 'cocstatus' ] ],
+      \   'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ], ['lineinfo'],
+      \              ['filetype'] ]
+      \ },
+      \
+      \ 'inactive': {
+      \   'left': [ [ 'filename' ] ],
+      \   'right': [ [ 'lineinfo' ]]
+      \ },
+      \
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
+      \ },
+      \
+      \ 'component': {
+      \   'lineinfo': '%3l/%L'
+      \},
+      \
+      \ 'component_expand': {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_infos': 'lightline#ale#infos',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \
+      \  'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \  'linter_checking': 'right',
+      \  'linter_infos': 'right',
+      \  'linter_warnings': 'warning',
+      \  'linter_errors': 'error',
+      \  'linter_ok': 'success'
+      \ }
+      \ }
+" }}}
+
 highlight HighlightedyankRegion cterm=reverse gui=reverse

@@ -64,6 +64,7 @@ call plug#begin('~/.vim/plugged')
     " Broad file simultaneous edit
     Plug 'dyng/ctrlsf.vim'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+    Plug 'mileszs/ack.vim'
 
     " typist help
     Plug 'tpope/vim-endwise'
@@ -159,7 +160,7 @@ function s:myCompletionConfirm() abort
   let l:items = complete_info(['items', 'selected'])
   let l:selected = l:items['items'][l:items['selected']]
   if stridx(l:selected['menu'], "Snips:") == 0
-      return "\<c-r>=asyncomplete#close_popup()\<CR>\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
+      return "\<C-y>\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
   else
       return "\<C-y>"
   endif
@@ -190,6 +191,8 @@ map <C-w><C-t> <CMD>vert ter<CR>
 
 " scroll stuff
 let g:smoothie_no_default_mappings = 1
+nmap <C-f>      <Plug>(SmoothieForwards)
+nmap <C-b>      <Plug>(SmoothieBackwards)
 nmap <C-D>      <Plug>(SmoothieDownwards)
 nmap <C-U>      <Plug>(SmoothieUpwards)
 noremap <expr> <C-e> repeat("\<C-e>", 5)
@@ -256,6 +259,7 @@ nmap gf :edit <cfile><CR>
 nmap gp `[v`]
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_keys = 'neioluy''mtsrapfwqgj'
+let g:EasyMotion_smartcase = 1
 nmap gs <Plug>(easymotion-overwin-f2)
 nmap gw <Plug>(easymotion-lineanywhere)
     let g:EasyMotion_re_line_anywhere = '\v' .
@@ -377,3 +381,23 @@ endfunction
 autocmd FileType calendar nmap <buffer> <CR>
     \ :call DiaryDay(b:calendar.day().get_day(), b:calendar.day().get_month(),
     \ b:calendar.day().get_year(), b:calendar.day().week(), "V", v:count1)<CR>
+
+
+" ack.vim --- {{{
+" use ripgrep for searching ⚡️
+" --vimgrep -> Needed to parse the rg response properly for ack.vim
+" --type-not sql -> Avoid huge sql file dumps as it slows down the search
+" --smart-case -> Search case insensitive if all lowercase pattern, Search
+" case sensitively otherwise
+let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+" Auto close the Quickfix list after pressing '<enter>' on a list item
+let g:ack_autoclose = 1
+" Any empty ack search will search for the work the cursor is on
+let g:ack_use_cword_for_empty_search = 1
+" Don't jump to first match
+cnoreabbrev Ack Ack!
+" Maps <leader>/ so we're ready to type the search keyword
+nnoremap <Leader>/ :Ack!<Space>
+" }}}
+
+
