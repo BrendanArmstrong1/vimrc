@@ -66,7 +66,7 @@ let g:lightline = {
       \ 'colorscheme': 'sonokai',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'gitbranch', 'relativepath', 'cocstatus' ] ],
+      \             [ 'readonly', 'gitbranch', 'relativepath'] ],
       \   'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ], ['lineinfo'],
       \              ['filetype'] ]
       \ },
@@ -77,7 +77,7 @@ let g:lightline = {
       \ },
       \
       \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name'
+      \   'gitbranch': 'FugitiveHead'
       \ },
       \
       \ 'component': {

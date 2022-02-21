@@ -1,0 +1,2 @@
+
+[[vfile:~/S/CS50/index.wiki|CS50_online_course]]

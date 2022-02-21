@@ -23,6 +23,7 @@ call plug#begin('~/.vim/plugged')
     " Colours
     Plug 'sainnhe/sonokai'
     Plug 'itchyny/lightline.vim'
+    Plug 'maximbaz/lightline-ale'
     Plug 'machakann/vim-highlightedyank'
 
     " Vim heuristics (more functionality)
@@ -64,7 +65,6 @@ call plug#begin('~/.vim/plugged')
     " Broad file simultaneous edit
     Plug 'dyng/ctrlsf.vim'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-    Plug 'mileszs/ack.vim'
 
     " typist help
     Plug 'tpope/vim-endwise'
@@ -101,13 +101,14 @@ source $HOME/.vim/sources/50-autostuff.vim
 "       - ale and vim-lsp with asyncomplete for autocompletion.
 "       - ale for linting from the language server
 " TODO Set up project management with vimwiki and taskwarrior
+" TODO complete ripgrep todo finder
 " DONE Clean up personal scripts section of the mappings.
 " TODO Fix calendar and get it synced with google
 " TODO get better terminal motions. Its hard to move around.
 " DONE set up ctrlsf. Fix interaction with multicursor and inc search
 " DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
 " DONE Searching movements with incsearch and sneak.
-" WAIT Change fzf window to a split of some sort
+" DONE Change fzf window to a split of some sort
 " DONE SWITCH TO COLMAK regular version
 
 
@@ -135,9 +136,6 @@ source $HOME/.vim/sources/50-YankSettings.vim
 nmap y <Plug>YAMotion
 xmap y <Plug>YAVisual
 nmap yy <Plug>YALine
-" Move in visual lines
-nmap <expr> j (v:count? 'j' : 'gj')
-nmap <expr> k (v:count? 'k' : 'gk')
 " revisual after indent
 xnoremap < <gv
 xnoremap > >gv
@@ -169,7 +167,6 @@ inoremap <expr> <CR> <c-r>=asyncomplete#cancel_popup()<CR><CR>
 inoremap <expr> <C-y> pumvisible() ? <SID>myCompletionConfirm()  : "\<C-y>"
 " inoremap <expr> <C-e> pumvisible() ? asyncomplete#cancel_popup() : "\<C-e>"
 
-
 " Prefix CTRL
 source /home/brendan/.vim/sources/50-AutoPairs.vim " tabing out
 " Window switching
@@ -181,6 +178,12 @@ noremap <c-w>h <c-w>H
 noremap <c-w>l <c-w>L
 noremap <c-w>j <c-w>J
 noremap <c-w>k <c-w>K
+tnoremap <c-l> <c-w><C-l>
+tnoremap <c-h> <c-w><C-h>
+" remapping hack to fix FZF popup selection and terminal window switching
+tnoremap <expr><c-j> len(popup_list()) ? "\<C-n>" : "\<C-w>\<C-j>"
+tnoremap <expr><c-k> len(popup_list()) ? "\<C-p>" : "\<C-w>\<C-k>"
+tnoremap <c-z> <c-\><c-n>
 imap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
 imap <expr> <c-k> pumvisible() ? "\<up>" : "\<c-k>"
 
@@ -260,14 +263,18 @@ nmap gp `[v`]
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_keys = 'neioluy''mtsrapfwqgj'
 let g:EasyMotion_smartcase = 1
+let g:EasyMotion_startofline = 0
 nmap gs <Plug>(easymotion-overwin-f2)
-nmap gw <Plug>(easymotion-lineanywhere)
-    let g:EasyMotion_re_line_anywhere = '\v' .
-        \       '(<.|^)' . '|' .
-        \       '(>.|.$)' . '|' .
-        \       '(\l)\zs(\u)' . '|' .
-        \       '(_\zs.)' . '|' .
-        \       '(#\zs.)'
+map gj <Plug>(easymotion-j)
+map gk <Plug>(easymotion-k)
+map gn <Plug>(easymotion-bd-n)
+map gw <Plug>(easymotion-lineanywhere)
+let g:EasyMotion_re_line_anywhere = '\v' .
+    \       '(<.|^)' . '|' .
+    \       '(>.|.$)' . '|' .
+    \       '(\l)\zs(\u)' . '|' .
+    \       '(_\zs.)' . '|' .
+    \       '(#\zs.)'
 
 " Prefix e
 " Quickrun mappings
@@ -330,9 +337,6 @@ nmap cz  <Plug>Csurround
 " Fuzzy Finder Stuff
 source $HOME/.vim/sources/50-FuzzyFind.vim
 " Project Prefix p
-let g:rooter_cd_cmd = 'lcd'
-let g:rooter_change_directory_for_non_project_files = ''
-let g:rooter_patterns = ['.git', 'Makefile', '*.sln', 'build/env.sh']
 nmap <leader>pc  <CMD>BCommits<CR>
 nmap <leader>p/  <CMD>RG<CR>
 nmap <leader>p?  :RG <c-r><c-w><CR>
@@ -342,11 +346,11 @@ nmap <leader>pp  <CMD>GFiles<CR>
 nmap <leader>pg  <CMD>GFiles?<CR>
 nmap <leader>pl  <CMD>Lines<CR>
 nmap <leader>p'  <CMD>Tags<CR>
+nmap <leader>pt  <CMD>RgTODO<CR>
 " Files Prefix f
 nmap <leader>fL  :Locate ""<left>
 nmap <leader>fb  <CMD>Buffers<CR>
 nmap <leader>ff  <CMD>ProjectFiles<CR>
-
 " Calendar!!!
 
 function! s:prefix_zero(num) abort
@@ -383,21 +387,8 @@ autocmd FileType calendar nmap <buffer> <CR>
     \ b:calendar.day().get_year(), b:calendar.day().week(), "V", v:count1)<CR>
 
 
-" ack.vim --- {{{
-" use ripgrep for searching ⚡️
-" --vimgrep -> Needed to parse the rg response properly for ack.vim
-" --type-not sql -> Avoid huge sql file dumps as it slows down the search
-" --smart-case -> Search case insensitive if all lowercase pattern, Search
-" case sensitively otherwise
-let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
-" Auto close the Quickfix list after pressing '<enter>' on a list item
-let g:ack_autoclose = 1
-" Any empty ack search will search for the work the cursor is on
-let g:ack_use_cword_for_empty_search = 1
-" Don't jump to first match
-cnoreabbrev Ack Ack!
-" Maps <leader>/ so we're ready to type the search keyword
-nnoremap <Leader>/ :Ack!<Space>
-" }}}
-
-
+let g:lightline#ale#indicator_checking = "\uf110"
+let g:lightline#ale#indicator_infos = "\uf129"
+let g:lightline#ale#indicator_warnings = "\uf071"
+let g:lightline#ale#indicator_errors = "\uf05e"
+let g:lightline#ale#indicator_ok = "\uf00c"

@@ -1,5 +1,7 @@
 = VIMWIKI INDEX =
 
+[[Projects]]
+
 ==Programming==
 [[programming|Programming]]
 

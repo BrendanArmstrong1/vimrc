@@ -1,6 +1,7 @@
 nmap <buffer><silent> - :Dirvish<CR>
 nmap <buffer><silent> _ <Plug>VimwikiRemoveHeaderLevel
 
+
 function! VimwikiLinkHandler(link)
   " Use Vim to open external files with the 'vfile:' scheme.  E.g.:
   "   1) [[vfile:~/Code/PythonProject/abc123.py]]
