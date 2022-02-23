@@ -20,16 +20,53 @@ if has('win32') " Disable preview on Windows since it doesn't really work
   let g:fzf_preview_window = []
 else
     function! RipgrepTODO(query, fullscreen)
-        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case --glob "!.git/*"'
+        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case --glob "!tags" --glob "!.git/*"'
         let initial_command = command_fmt . ' ' . g:todo_list_items
         let spec = {'options': ['--query', a:query]}
         call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
     endfunction
     command! -nargs=* -bang RgTODO call RipgrepTODO(<q-args>, <bang>0)
 
+    function! s:get_visual_selection()
+        if mode()=="v"
+            let [line_start, column_start] = getpos("v")[1:2]
+            let [line_end, column_end] = getpos(".")[1:2]
+        else
+            let [line_start, column_start] = getpos("'<")[1:2]
+            let [line_end, column_end] = getpos("'>")[1:2]
+        end
+        if (line2byte(line_start)+column_start) > (line2byte(line_end)+column_end)
+            let [line_start, column_start, line_end, column_end] =
+            \   [line_end, column_end, line_start, column_start]
+        end
+        let lines = getline(line_start, line_end)
+        if len(lines) == 0
+                return ''
+        endif
+        let lines[-1] = lines[-1][: column_end - 1]
+        let lines[0] = lines[0][column_start - 1:]
+        return join(lines, "\n")
+    endfunction
+
+    function! RipgrepWordVis(query, fullscreen)
+        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case --glob "!tags" --glob "!.git/*"'
+        let initial_command = command_fmt . ' ' . s:get_visual_selection()
+        let spec = {'options': ['--query', a:query]}
+        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+    endfunction
+    command! -nargs=* -bang RgWordVis call RipgrepWordVis(<q-args>, <bang>0)
+
+    function! RipgrepWord(query, fullscreen)
+        let command_fmt = 'rg --column --no-ignore --line-number --no-heading --color=always --smart-case --glob "!tags" --glob "!.git/*"'
+        let initial_command = command_fmt . ' ' . expand("<cword>")
+        let spec = {'options': ['--query', a:query]}
+        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+    endfunction
+    command! -nargs=* -bang RgWord call RipgrepWord(<q-args>, <bang>0)
+
     function! RipgrepFzf(query, fullscreen)
         let command_fmt = 'rg --column --no-ignore --line-number
-                    \ --no-heading --color=always --smart-case
+                    \ --no-heading --color=always --smart-case --glob "!tags"
                     \ --glob "!.git/*" -- %s || true'
         let initial_command = printf(command_fmt, shellescape(a:query))
         let reload_command = printf(command_fmt, '{q}')

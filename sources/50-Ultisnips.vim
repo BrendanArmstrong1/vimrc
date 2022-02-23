@@ -8,7 +8,7 @@
 "=============================================================================
 
 let g:UltiSnipsEditSplit="vertical"
-"let g:UltiSnipesRemoveSelectModeMappings = 0
+let g:UltiSnipesRemoveSelectModeMappings = 0
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 
 let g:ulti_expand_or_jump_res = 0

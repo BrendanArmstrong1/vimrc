@@ -4,9 +4,9 @@ let need_to_install_plugins = 0
 let g:polyglot_disabled = ['autoindent']
 
 if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    let need_to_install_plugins = 1
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  let need_to_install_plugins = 1
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -77,6 +77,7 @@ call plug#begin('~/.vim/plugged')
     " Org mode in vim
     Plug 'vimwiki/vimwiki'
     Plug 'itchyny/calendar.vim'
+    Plug 'twitvim/twitvim'
 
 call plug#end()
 
@@ -112,6 +113,13 @@ source $HOME/.vim/sources/50-autostuff.vim
 " DONE SWITCH TO COLMAK regular version
 
 
+let g:twitvim_force_ssl = 1
+let g:twitvim_enable_python3 = 1
+let g:twitvim_browser_cmd = 'google-chrome-stable'
+let twitvim_token_file = "/home/brendan/.vim/cache/.twitvim.token"
+" timeline filtering with regex
+" let twitvim_filter_enable = 1
+" let twitvim_filter_regex = ''
 "======================================================
 " ____                                  _
 "|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
@@ -148,7 +156,6 @@ set omnifunc=lsp#complete
 let g:asyncomplete_auto_completeopt = 0
 source /home/brendan/.vim/sources/50-Ultisnips.vim
 " Ultisnips settings
-let g:UltiSnipsExpandTrigger="<NOP>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
@@ -181,9 +188,9 @@ noremap <c-w>k <c-w>K
 tnoremap <c-l> <c-w><C-l>
 tnoremap <c-h> <c-w><C-h>
 " remapping hack to fix FZF popup selection and terminal window switching
-tnoremap <expr><c-j> len(popup_list()) ? "\<C-n>" : "\<C-w>\<C-j>"
-tnoremap <expr><c-k> len(popup_list()) ? "\<C-p>" : "\<C-w>\<C-k>"
-tnoremap <c-z> <c-\><c-n>
+tmap <expr><c-j> len(popup_list()) ? "\<C-n>" : "\<C-w>\<C-j>"
+tmap <expr><c-k> len(popup_list()) ? "\<C-p>" : "\<C-w>\<C-k>"
+tmap <c-z> <c-\><c-n>
 imap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
 imap <expr> <c-k> pumvisible() ? "\<up>" : "\<c-k>"
 
@@ -209,6 +216,9 @@ let g:VM_show_warnings = 0
 
 " Prifix r
 let g:ctrlsf_backend = 'rg'
+let g:ctrlsf_extra_backend_args = {
+    \ 'rg': '--no-ignore --glob "!.git"'
+    \ }
 let g:ctrlsf_position = 'left_local'
 xmap <leader>r <Plug>CtrlSFVwordExec
 nmap <leader>rr <Plug>CtrlSFPrompt
@@ -245,7 +255,8 @@ nnoremap <silent> <leader>qt <CMD>call Terminal#CloseTerm()<CR>
 
 nnoremap Q !!sh<CR>
 
-
+nmap <silent> ]d <CMD>ALENext<CR> 
+nmap <silent> [d <CMD>ALEPrevious<CR> 
 " Prefix g
 source $HOME/.vim/sources/50-git.vim
 " Git Mapping
@@ -264,11 +275,11 @@ let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_keys = 'neioluy''mtsrapfwqgj'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_startofline = 0
-nmap gs <Plug>(easymotion-overwin-f2)
-map gj <Plug>(easymotion-j)
-map gk <Plug>(easymotion-k)
-map gn <Plug>(easymotion-bd-n)
-map gw <Plug>(easymotion-lineanywhere)
+nmap gs <Plug>(easymotion-bd-f2)
+nmap gj <Plug>(easymotion-j)
+nmap gk <Plug>(easymotion-k)
+nmap gn <Plug>(easymotion-bd-n)
+nmap gw <Plug>(easymotion-lineanywhere)
 let g:EasyMotion_re_line_anywhere = '\v' .
     \       '(<.|^)' . '|' .
     \       '(>.|.$)' . '|' .
@@ -339,6 +350,8 @@ source $HOME/.vim/sources/50-FuzzyFind.vim
 " Project Prefix p
 nmap <leader>pc  <CMD>BCommits<CR>
 nmap <leader>p/  <CMD>RG<CR>
+nmap <leader>?   <CMD>RgWord<CR>
+xmap <leader>?   <CMD>RgWordVis<CR>
 nmap <leader>p?  :RG <c-r><c-w><CR>
 xmap <leader>p?  "vy:<c-u>RG <c-r>v<CR>
 nmap <leader>pf  <CMD>Files<CR>
