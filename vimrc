@@ -112,14 +112,6 @@ source $HOME/.vim/sources/50-autostuff.vim
 " DONE Change fzf window to a split of some sort
 " DONE SWITCH TO COLMAK regular version
 
-
-let g:twitvim_force_ssl = 1
-let g:twitvim_enable_python3 = 1
-let g:twitvim_browser_cmd = 'google-chrome-stable'
-let twitvim_token_file = "/home/brendan/.vim/cache/.twitvim.token"
-" timeline filtering with regex
-" let twitvim_filter_enable = 1
-" let twitvim_filter_regex = ''
 "======================================================
 " ____                                  _
 "|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
@@ -236,13 +228,6 @@ let g:ctrlsf_auto_focus = { "at" : "start", }
 
 
 " Prifix t
-source /home/brendan/.vim/sources/50-Async.vim
-" Toggling stuff
-nnoremap <silent> <leader>ts <Cmd>call myAsyncFuncs#ToggleSpell()<CR>
-nnoremap <silent> <leader>ta <Cmd>call myAsyncFuncs#ToggleTabnine()<CR>
-nnoremap <silent> <leader>tu <Cmd>call myAsyncFuncs#ToggleUltisnips()<CR>
-nnoremap <silent> <leader>tL <Cmd>ALEToggle<CR>
-nnoremap <silent> <leader>tl <Cmd>call myAsyncLsp#ToggleLsp()<CR>
 
 
 
@@ -275,11 +260,11 @@ let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_keys = 'neioluy''mtsrapfwqgj'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_startofline = 0
-nmap gs <Plug>(easymotion-bd-f2)
-nmap gj <Plug>(easymotion-j)
-nmap gk <Plug>(easymotion-k)
-nmap gn <Plug>(easymotion-bd-n)
-nmap gw <Plug>(easymotion-lineanywhere)
+map gs <Plug>(easymotion-bd-f2)
+map gj <Plug>(easymotion-j)
+map gk <Plug>(easymotion-k)
+map gn <Plug>(easymotion-bd-n)
+map gw <Plug>(easymotion-lineanywhere)
 let g:EasyMotion_re_line_anywhere = '\v' .
     \       '(<.|^)' . '|' .
     \       '(>.|.$)' . '|' .
@@ -298,10 +283,58 @@ nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
 
 " Prefix o
 source /home/brendan/.vim/sources/50-otherPrograms.vim
+source /home/brendan/.vim/sources/50-Async.vim
 " Open stuff
-nnoremap <silent> <leader>os <Cmd>UltiSnipsEdit<CR>
+nnoremap <silent> <leader>on <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>or <Cmd>e $MYVIMRC<CR>
 nnoremap <silent> <leader>oc <Cmd>Calendar -position=tab<CR>
+" Toggling stuff
+nnoremap <silent> <leader>os <Cmd>call myAsyncFuncs#ToggleSpell()<CR>
+nnoremap <silent> <leader>oa <Cmd>call myAsyncFuncs#ToggleTabnine()<CR>
+nnoremap <silent> <leader>ou <Cmd>call myAsyncFuncs#ToggleUltisnips()<CR>
+nnoremap <silent> <leader>oL <Cmd>ALEToggle<CR>
+nnoremap <silent> <leader>ol <Cmd>call myAsyncLsp#ToggleLsp()<CR>
+
+source /home/brendan/.vim/sources/50-TwitVim.vim
+" Prefix t (TwitVim mappings)
+nmap <leader>tf <CMD>FriendsTwitter<CR>
+nmap <leader>tt <CMD>TrendTwitter<CR>
+nmap <leader>ta :<C-U>FollowTwitter<Space>@<c-r><c-w><CR>
+nmap <leader>tA :<C-U>UnfollowTwitter<Space>@<c-r><c-w><CR>
+nmap <leader>te :<C-u>EnableRetweetsTwitter<Space>@<c-r><c-w><CR>
+nmap <leader>tE :<C-u>DisableRetweetsTwitter<Space>@<c-r><c-w><CR>
+nmap <leader>tu <CMD>UserTwitter<CR>
+nmap <leader>tm <CMD>MentionsTwitter<CR>
+nmap <leader>td <CMD>DMTwitter<CR>
+nmap <leader>tD <CMD>DMSentTwitter<CR>
+nmap <leader>tr <CMD>RetweetedToMeTwitter<CR>
+nmap <leader>tR <CMD>RetweetedByMeTwitter<CR>
+nmap <leader>tv <CMD>FavTwitter<CR>
+nmap <leader>tb :<C-U>BlockTwitter<Space>@<c-r><c-w>
+nmap <leader>tB :<C-U>UnblockTwitter<Space>@
+nmap <leader>tq :<C-U>MuteTwitter<Space>@<c-r><c-w>
+nmap <leader>tQ :<C-U>UnmuteTwitter<Space>@
+nmap <leader>tU :<C-u>UserTwitter<Space>@<C-r><C-w>
+nmap <leader>tll :<C-u>ListTwitter<Space>
+nmap <leader>tla :<C-u>AddToListTwitter<Space>
+nmap <leader>tlA :<C-u>RemoveFromListTwitter<Space>
+nmap <leader>tlL :<C-u>ListInfoTwitter<Space>
+nmap <leader>tlf :<C-u>FollowListTwitter<Space>
+nmap <leader>tlF :<C-u>UnfollowListTwitter<Space>
+nmap <leader>tlm :<C-u>MembersOfListTwitter<Space>
+nmap <leader>tlM :<C-u>MemberListTwitter<Space>
+nmap <leader>tls :<C-u>SubsOfListTwitter<Space>
+nmap <leader>tlS :<C-u>SubsListTwitter<Space>
+nmap <leader>tlo :<C-u>OwnedListTwitter<Space>
+" Prefix ti (twitter info)
+nmap <leader>tif <CMD>FollowingTwitter<CR>
+nmap <leader>tiF <CMD>FollowersTwitter<CR>
+nmap <leader>tio <CMD>OwnedListsTwitter<CR>
+" Prefix tp (Twitter Posting)
+nmap <leader>tpp <CMD>PosttoTwitter<CR>
+nmap <leader>tpl <CMD>CPosttoTwitter<CR>
+nmap <leader>tpb <CMD>BPosttoTwitter<CR>
+nmap <leader>tpd <CMD>SendDMTwitter<CR>
 
 
 " Dervish
