@@ -297,6 +297,20 @@ nnoremap <silent> <leader>ol <Cmd>call myAsyncLsp#ToggleLsp()<CR>
 
 source /home/brendan/.vim/sources/50-TwitVim.vim
 " Prefix t (TwitVim mappings)
+" <leader>tpp to send tweets in visual
+" <leader>r starts a reply
+" <leader><c-r> starts a reply-all
+" <leader>q starts tweet with link to target
+" <leader>R retweets target
+" <leader>d starts dm
+" <leader>g goto @user | Name(infobuffer) | #hash search | trending search
+" <leader>e longer url (Broken)
+" <leader>p user profile information
+" <leader>@ retrieve tweet to which target is replying
+" <leader>f add tweet to favorites
+" <leader><c-f> remove tweet from favorites
+" <C-i> / <C-o> jump forward/backward
+" <leader><leader> refresh
 nmap <leader>tf <CMD>FriendsTwitter<CR>
 nmap <leader>tt <CMD>TrendTwitter<CR>
 nmap <leader>ta :<C-U>FollowTwitter<Space>@<c-r><c-w><CR>
@@ -305,6 +319,7 @@ nmap <leader>te :<C-u>EnableRetweetsTwitter<Space>@<c-r><c-w><CR>
 nmap <leader>tE :<C-u>DisableRetweetsTwitter<Space>@<c-r><c-w><CR>
 nmap <leader>tu <CMD>UserTwitter<CR>
 nmap <leader>tm <CMD>MentionsTwitter<CR>
+nmap <leader>t@ <CMD>RepliesTwitter<CR>
 nmap <leader>td <CMD>DMTwitter<CR>
 nmap <leader>tD <CMD>DMSentTwitter<CR>
 nmap <leader>tr <CMD>RetweetedToMeTwitter<CR>
@@ -314,7 +329,7 @@ nmap <leader>tb :<C-U>BlockTwitter<Space>@<c-r><c-w>
 nmap <leader>tB :<C-U>UnblockTwitter<Space>@
 nmap <leader>tq :<C-U>MuteTwitter<Space>@<c-r><c-w>
 nmap <leader>tQ :<C-U>UnmuteTwitter<Space>@
-nmap <leader>tU :<C-u>UserTwitter<Space>@<C-r><C-w>
+nmap <leader>tU :<C-u>UserTwitter<Space>@
 nmap <leader>tll :<C-u>ListTwitter<Space>
 nmap <leader>tla :<C-u>AddToListTwitter<Space>
 nmap <leader>tlA :<C-u>RemoveFromListTwitter<Space>
@@ -331,6 +346,7 @@ nmap <leader>tif <CMD>FollowingTwitter<CR>
 nmap <leader>tiF <CMD>FollowersTwitter<CR>
 nmap <leader>tio <CMD>OwnedListsTwitter<CR>
 " Prefix tp (Twitter Posting)
+xmap <leader>tpp <Plug>TwitvimVisual
 nmap <leader>tpp <CMD>PosttoTwitter<CR>
 nmap <leader>tpl <CMD>CPosttoTwitter<CR>
 nmap <leader>tpb <CMD>BPosttoTwitter<CR>
