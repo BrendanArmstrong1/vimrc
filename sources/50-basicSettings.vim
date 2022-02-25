@@ -39,7 +39,7 @@ set showbreak=+++
 
 
 
-
+set background=dark
 
 
 set shortmess+=c

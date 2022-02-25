@@ -78,6 +78,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vimwiki/vimwiki'
     Plug 'itchyny/calendar.vim'
     Plug 'twitvim/twitvim'
+    Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" chromedriver' }
 
 call plug#end()
 
@@ -101,11 +102,11 @@ source $HOME/.vim/sources/50-autostuff.vim
 " DONE CoC integration plus fix the autocomplete function in general
 "       - ale and vim-lsp with asyncomplete for autocompletion.
 "       - ale for linting from the language server
-" TODO Set up project management with vimwiki and taskwarrior
-" TODO complete ripgrep todo finder
+" DONE Set up project management with vimwiki and taskwarrior
+" DONE complete ripgrep todo finder
 " DONE Clean up personal scripts section of the mappings.
-" TODO Fix calendar and get it synced with google
-" TODO get better terminal motions. Its hard to move around.
+" DONE Fix calendar and get it synced with google
+" DONE get better terminal motions. Its hard to move around.
 " DONE set up ctrlsf. Fix interaction with multicursor and inc search
 " DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
 " DONE Searching movements with incsearch and sneak.
@@ -398,7 +399,7 @@ nmap cz  <Plug>Csurround
 source $HOME/.vim/sources/50-FuzzyFind.vim
 " Project Prefix p
 nmap <leader>pc  <CMD>BCommits<CR>
-nmap <leader>p/  <CMD>RG<CR>
+nmap <leader>/   <CMD>RG<CR>
 nmap <leader>?   <CMD>RgWord<CR>
 xmap <leader>?   <CMD>RgWordVis<CR>
 nmap <leader>p?  :RG <c-r><c-w><CR>
