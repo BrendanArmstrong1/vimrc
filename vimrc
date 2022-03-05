@@ -19,6 +19,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'mhinz/vim-startify' " splash screen
     Plug 'justinmk/vim-dirvish'
     Plug 'roginfarrer/vim-dirvish-dovish'
+    Plug 'kristijanhusak/vim-dirvish-git'
 
     " Colours
     Plug 'sainnhe/sonokai'
@@ -113,6 +114,18 @@ source $HOME/.vim/sources/50-autostuff.vim
 " DONE Change fzf window to a split of some sort
 " DONE SWITCH TO COLMAK regular version
 
+let g:lsp_document_code_action_signs_enabled = 0
+let g:ale_linters = { 'python': [ 'flake8', 'pylint' ] }
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': ['black'],
+      \ 'rust' : ['rustfmt'],
+      \}
+
+
+
+
 "======================================================
 " ____                                  _
 "|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
@@ -140,9 +153,6 @@ nmap yy <Plug>YALine
 " revisual after indent
 xnoremap < <gv
 xnoremap > >gv
-
-
-
 
 " Completion and linting
 set omnifunc=lsp#complete
@@ -187,7 +197,7 @@ tmap <c-z> <c-\><c-n>
 imap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
 imap <expr> <c-k> pumvisible() ? "\<up>" : "\<c-k>"
 
-nnoremap <silent> <c-z><c-s> <CMD>w!<CR>
+nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
 nmap <C-W><C-F> <CMD>vsplit <cfile><CR>
 " Terminal stuff
 map <C-w><C-t> <CMD>vert ter<CR>
@@ -215,12 +225,16 @@ let g:ctrlsf_extra_backend_args = {
 let g:ctrlsf_position = 'left_local'
 xmap <leader>r <Plug>CtrlSFVwordExec
 nmap <leader>rr <Plug>CtrlSFPrompt
-nmap <leader>rs <Plug>CtrlSFCwordExec
-nmap <leader>rS <Plug>CtrlSFCwordPath
+" search for word under cursor with 'c'
+nmap <leader>rc <Plug>CtrlSFCwordExec
+nmap <leader>rC <Plug>CtrlSFCwordPath
+" add word boundaries to search with 'b'
 nmap <leader>rb <Plug>CtrlSFCCwordExec
 nmap <leader>rB <Plug>CtrlSFCCwordPath
+" search for last search '/' term
 nmap <leader>r/ <Plug>CtrlSFPwordExec
 nmap <leader>r? <Plug>CtrlSFPwordPath
+" update, toggle open, clear hl
 nmap <leader>ru <CMD>CtrlSFUpdate<CR>
 nmap <leader>ro <CMD>CtrlSFToggle<CR>
 nmap <leader>rh <CMD>CtrlSFClearHL<CR>
@@ -288,7 +302,7 @@ source /home/brendan/.vim/sources/50-Async.vim
 " Open stuff
 nnoremap <silent> <leader>on <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>or <Cmd>e $MYVIMRC<CR>
-nnoremap <silent> <leader>oc <Cmd>Calendar -position=tab<CR>
+nnoremap <silent> <leader>oc <Cmd>Calendar<CR>
 " Toggling stuff
 nnoremap <silent> <leader>os <Cmd>call myAsyncFuncs#ToggleSpell()<CR>
 nnoremap <silent> <leader>oa <Cmd>call myAsyncFuncs#ToggleTabnine()<CR>
@@ -360,6 +374,15 @@ let g:dirvish_dovish_map_keys = 0
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
 command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args>
+let g:dirvish_git_indicators = {
+ \ 'Modified'  : '~',
+ \ 'Staged'    : '✚',
+ \ 'Untracked' : '*',
+ \ 'Renamed'   : '>',
+ \ 'Unmerged'  : '═',
+ \ 'Ignored'   : '☒',
+ \ 'Unknown'   : '?'
+ \ }
 
 " Inc search stuff
 set hlsearch
