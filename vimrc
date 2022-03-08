@@ -255,8 +255,8 @@ nnoremap <silent> <leader>qt <CMD>call Terminal#CloseTerm()<CR>
 
 nnoremap Q !!sh<CR>
 
-nmap <silent> ]d <CMD>ALENext<CR> 
-nmap <silent> [d <CMD>ALEPrevious<CR> 
+nmap <silent> ]d <CMD>ALENext<CR>
+nmap <silent> [d <CMD>ALEPrevious<CR>
 " Prefix g
 source $HOME/.vim/sources/50-git.vim
 " Git Mapping
@@ -328,6 +328,7 @@ source /home/brendan/.vim/sources/50-TwitVim.vim
 " <leader><leader> refresh
 nmap <leader>tf <CMD>FriendsTwitter<CR>
 nmap <leader>tt <CMD>TrendTwitter<CR>
+nmap <leader>tP :<C-u>ProfileTwitter<Space>
 nmap <leader>ta :<C-U>FollowTwitter<Space>@<c-r><c-w><CR>
 nmap <leader>tA :<C-U>UnfollowTwitter<Space>@<c-r><c-w><CR>
 nmap <leader>te :<C-u>EnableRetweetsTwitter<Space>@<c-r><c-w><CR>
@@ -369,20 +370,7 @@ nmap <leader>tpd <CMD>SendDMTwitter<CR>
 
 
 " Dervish
-let g:loaded_netrwPlugin = 1
-let g:dirvish_dovish_map_keys = 0
-command! -nargs=? -complete=dir Explore Dirvish <args>
-command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
-command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args>
-let g:dirvish_git_indicators = {
- \ 'Modified'  : '~',
- \ 'Staged'    : '✚',
- \ 'Untracked' : '*',
- \ 'Renamed'   : '>',
- \ 'Unmerged'  : '═',
- \ 'Ignored'   : '☒',
- \ 'Unknown'   : '?'
- \ }
+source /home/brendan/.vim/sources/50-Dirvish.vim
 
 " Inc search stuff
 set hlsearch
