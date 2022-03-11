@@ -13,7 +13,6 @@ let g:todo_list_items = 'TODO\|DONE\|WAIT'
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
 
-
 let g:rg_derive_root='true'
 
 if has('win32') " Disable preview on Windows since it doesn't really work
@@ -114,3 +113,92 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
+
+let g:fzf_checkout_use_current_buf_cwd = v:true
+let g:fzf_checkout_merge_settings= v:false
+let g:fzf_checkout_git_options = '--sort=-committerdate'
+let g:fzf_branch_actions = {
+      \ 'diff': {
+           \   'prompt': 'Diff> ',
+           \   'execute': 'Git diff {branch}',
+           \   'multiple': v:false,
+           \   'keymap': 'ctrl-f',
+           \   'required': ['branch'],
+           \   'confirm': v:false,
+           \ },
+        \ 'checkout': {
+            \   'prompt': 'Checkout> ',
+            \   'execute': 'echo system("{git} -C {cwd} checkout {branch}")',
+            \   'multiple': v:false,
+            \   'keymap': 'enter',
+            \   'required': ['branch'],
+            \   'confirm': v:false,
+            \ },
+        \ 'track': {
+        \   'prompt': 'Track> ',
+        \   'execute': 'echo system("{git} -C {cwd} checkout --track {branch}")',
+        \   'multiple': v:false,
+        \   'keymap': 'ctrl-t',
+        \   'required': ['branch'],
+        \   'confirm': v:false,
+        \ },
+        \ 'create': {
+        \   'prompt': 'Create> ',
+        \   'execute': 'echo system("{git} -C {cwd} checkout -b {input}")',
+        \   'multiple': v:false,
+        \   'keymap': 'ctrl-b',
+        \   'required': ['input'],
+        \   'confirm': v:false,
+        \ },
+        \ 'delete': {
+        \   'prompt': 'Delete> ',
+        \   'execute': 'echo system("{git} -C {cwd} branch -D {branch}")',
+        \   'multiple': v:true,
+        \   'keymap': 'ctrl-d',
+        \   'required': ['branch'],
+        \   'confirm': v:true,
+        \ },
+        \ 'merge':{
+        \   'prompt': 'Merge> ',
+        \   'execute': 'echo system("{git} -C {cwd} merge {branch}")',
+        \   'multiple': v:false,
+        \   'keymap': 'ctrl-m',
+        \   'required': ['branch'],
+        \   'confirm': v:true,
+        \ },
+        \ 'rebase':{
+        \   'prompt': 'Rebase> ',
+        \   'execute': 'echo system("{git} -C {cwd} rebase {branch}")',
+        \   'multiple': v:false,
+        \   'keymap': 'ctrl-r',
+        \   'required': ['branch'],
+        \   'confirm': v:true,
+        \ },
+      \}
+
+let g:fzf_tag_actions = {
+      \ 'checkout': {
+      \   'prompt': 'Checkout> ',
+      \   'execute': 'echo system("{git} -C {cwd} checkout {tag}")',
+      \   'multiple': v:false,
+      \   'keymap': 'enter',
+      \   'required': ['tag'],
+      \   'confirm': v:false,
+      \ },
+      \ 'create': {
+      \   'prompt': 'Create> ',
+      \   'execute': 'echo system("{git} -C {cwd} tag {input}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-b',
+      \   'required': ['input'],
+      \   'confirm': v:false,
+      \ },
+      \ 'delete': {
+      \   'prompt': 'Delete> ',
+      \   'execute': 'echo system("{git} -C {cwd} branch -D {tag}")',
+      \   'multiple': v:true,
+      \   'keymap': 'ctrl-d',
+      \   'required': ['tag'],
+      \   'confirm': v:true,
+      \ },
+      \}

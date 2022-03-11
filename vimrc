@@ -20,6 +20,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'justinmk/vim-dirvish'
     Plug 'roginfarrer/vim-dirvish-dovish'
     Plug 'kristijanhusak/vim-dirvish-git'
+    Plug 'stsewd/fzf-checkout.vim'
 
     " Colours
     Plug 'sainnhe/sonokai'
@@ -54,6 +55,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/git-messenger.vim'
     Plug 'airblade/vim-gitgutter'
+    Plug 'junegunn/gv.vim'
+    Plug 'sodapopcan/vim-twiggy'
 
     " Vim in-frame navigation
     Plug 'svban/YankAssassin.vim' " cursor stay in place after yank
@@ -115,13 +118,16 @@ source $HOME/.vim/sources/50-autostuff.vim
 " DONE SWITCH TO COLMAK regular version
 
 let g:lsp_document_code_action_signs_enabled = 0
-let g:ale_linters = { 'python': [ 'flake8', 'pylint' ] }
+let g:ale_linters = { 'python': [ 'flake8', 'pylint' ],
+      \ 'rust': ['analyzer', 'cargo', 'cspell', 'rls', 'rustc']}
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'python': ['black'],
       \ 'rust' : ['rustfmt'],
       \}
+let g:lsp_ale_auto_config_ale = v:false
+let lsp_ale_diagnostics_severity = "warning"
 
 
 
@@ -241,11 +247,6 @@ nmap <leader>rh <CMD>CtrlSFClearHL<CR>
 let g:ctrlsf_mapping = { "vsplit": "<C-v>", }
 let g:ctrlsf_auto_focus = { "at" : "start", }
 
-
-" Prifix t
-
-
-
 " Prefix q
 source $HOME/.vim/sources/50-Signify.vim
 nnoremap <silent> <leader>qq <CMD>call myfunc#Quitout()<CR>
@@ -260,15 +261,23 @@ nmap <silent> [d <CMD>ALEPrevious<CR>
 " Prefix g
 source $HOME/.vim/sources/50-git.vim
 " Git Mapping
-nnoremap <silent> <leader>gg <CMD>G<CR>
-nmap <leader>gP <CMD>Git push<CR>
-nmap <silent> [g <Plug>(GitGutterPrevHunk)
-nmap <silent> ]g <Plug>(GitGutterNextHunk)
+nnoremap <silent> <leader>gg <CMD>Git<CR>
+nnoremap <silent> <leader>gl <CMD>Git log<CR>
+nnoremap <silent> <leader>gb <CMD>Git blame<CR>
+nnoremap <silent> <leader>gd <CMD>Gdiffsplit<CR>
+nnoremap <silent> <leader>gt <CMD>Twiggy<CR>
+nnoremap <leader>gP <CMD>Git push<CR>
+nmap <silent> <leader>gv <CMD>GV<CR>
+nmap <silent> <leader>gV <CMD>GV!<CR>
+nmap <silent> <leader>go <CMD>diffget //3<CR>
+nmap <silent> <leader>gn <CMD>diffget //2<CR>
+nmap <silent> [& <Plug>(GitGutterPrevHunk)
+nmap <silent> ]& <Plug>(GitGutterNextHunk)
 nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
 nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
-nmap <leader>gm  <CMD>GitMessenger<CR>
-vmap <leader>gb  <CMD>'<,'>GBrowse!<CR>
-vmap <leader>gB  <CMD>'<,'>GBrowse<CR>
+nmap <leader>gr  <CMD>GBrowse<CR>
+vmap <leader>gr  :GBrowse<CR>
+vmap <leader>gR  :GBrowse!<CR>
 nmap gf :edit <cfile><CR>
 nmap gp `[v`]
 let g:EasyMotion_do_mapping = 0
@@ -413,11 +422,13 @@ nmap <leader>pc  <CMD>BCommits<CR>
 nmap <leader>/   <CMD>RG<CR>
 nmap <leader>?   <CMD>RgWord<CR>
 xmap <leader>?   <CMD>RgWordVis<CR>
-nmap <leader>p?  :RG <c-r><c-w><CR>
-xmap <leader>p?  "vy:<c-u>RG <c-r>v<CR>
-nmap <leader>pf  <CMD>Files<CR>
-nmap <leader>pp  <CMD>GFiles<CR>
+nmap <leader>p/  :RG <c-r><c-w><CR>
+xmap <leader>p/  "vy:<c-u>RG <c-r>v<CR>
+nmap <leader>pF  <CMD>Files<CR>
+nmap <leader>pf  <CMD>GFiles<CR>
 nmap <leader>pg  <CMD>GFiles?<CR>
+nmap <leader>pb  <CMD>GBranches<CR>
+nmap <leader>pT  <CMD>GTags<CR>
 nmap <leader>pl  <CMD>Lines<CR>
 nmap <leader>p'  <CMD>Tags<CR>
 nmap <leader>pt  <CMD>RgTODO<CR>
