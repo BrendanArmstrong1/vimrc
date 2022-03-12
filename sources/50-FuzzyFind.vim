@@ -162,7 +162,7 @@ let g:fzf_branch_actions = {
         \   'prompt': 'Merge> ',
         \   'execute': 'echo system("{git} -C {cwd} merge {branch}")',
         \   'multiple': v:false,
-        \   'keymap': 'ctrl-m',
+        \   'keymap': 'ctrl-e',
         \   'required': ['branch'],
         \   'confirm': v:true,
         \ },

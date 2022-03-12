@@ -265,12 +265,13 @@ nnoremap <silent> <leader>gg <CMD>Git<CR>
 nnoremap <silent> <leader>gl <CMD>Git log<CR>
 nnoremap <silent> <leader>gb <CMD>Git blame<CR>
 nnoremap <silent> <leader>gd <CMD>Gdiffsplit<CR>
+nnoremap <silent> <leader>gD <CMD>Gdiffsplit!<CR>
 nnoremap <silent> <leader>gt <CMD>Twiggy<CR>
 nnoremap <leader>gP <CMD>Git push<CR>
 nmap <silent> <leader>gv <CMD>GV<CR>
 nmap <silent> <leader>gV <CMD>GV!<CR>
 nmap <silent> <leader>go <CMD>diffget //3<CR>
-nmap <silent> <leader>gn <CMD>diffget //2<CR>
+nmap <silent> <leader>ga <CMD>diffget //2<CR>
 nmap <silent> [& <Plug>(GitGutterPrevHunk)
 nmap <silent> ]& <Plug>(GitGutterNextHunk)
 nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
