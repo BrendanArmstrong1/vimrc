@@ -56,7 +56,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/git-messenger.vim'
     Plug 'airblade/vim-gitgutter'
     Plug 'junegunn/gv.vim'
-    Plug 'sodapopcan/vim-twiggy'
 
     " Vim in-frame navigation
     Plug 'svban/YankAssassin.vim' " cursor stay in place after yank
@@ -126,7 +125,7 @@ let g:ale_fixers = {
       \ 'python': ['black'],
       \ 'rust' : ['rustfmt'],
       \}
-let g:lsp_ale_auto_config_ale = v:false
+"let g:lsp_ale_auto_config_ale = v:false
 let lsp_ale_diagnostics_severity = "warning"
 
 
@@ -153,6 +152,7 @@ nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
 nnoremap <silent> <leader>T <CMD>so %<CR>
 source $HOME/.vim/sources/50-YankSettings.vim
 " Yank Settings
+nmap Y y$
 nmap y <Plug>YAMotion
 xmap y <Plug>YAVisual
 nmap yy <Plug>YALine
@@ -171,16 +171,24 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
 " hacky pop up close workaround
 function s:myCompletionConfirm() abort
-  let l:items = complete_info(['items', 'selected'])
-  let l:selected = l:items['items'][l:items['selected']]
-  if stridx(l:selected['menu'], "Snips:") == 0
-      return "\<C-y>\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
-  else
-      return "\<C-y>"
-  endif
+    if pumvisible()
+        let l:items = complete_info(['items', 'selected'])
+        let l:selected = l:items['items'][l:items['selected']]
+        if stridx(l:selected['menu'], "Snips:") == 0
+            return "\<C-y>\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
+        else
+            return "\<C-y>"
+        endif
+    else
+        if UltiSnips#CanExpandSnippet()
+            return "\<c-r>=UltiSnips#ExpandSnippet()\<CR>"
+        else
+            return "\<C-y>"
+        endif
+    endif
 endfunction
 inoremap <expr> <CR> <c-r>=asyncomplete#cancel_popup()<CR><CR>
-inoremap <expr> <C-y> pumvisible() ? <SID>myCompletionConfirm()  : "\<C-y>"
+inoremap <expr> <C-y> <SID>myCompletionConfirm()
 " inoremap <expr> <C-e> pumvisible() ? asyncomplete#cancel_popup() : "\<C-e>"
 
 " Prefix CTRL
@@ -203,7 +211,9 @@ tmap <c-z> <c-\><c-n>
 imap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
 imap <expr> <c-k> pumvisible() ? "\<up>" : "\<c-k>"
 
-nnoremap <silent> <c-x><c-s> <CMD>w!<CR>
+nnoremap <silent> <c-z><c-s> <CMD>w!<CR>
+nnoremap <silent> <c-w><c-q> ZQ
+nnoremap <silent> <c-w><c-w> ZZ
 nmap <C-W><C-F> <CMD>vsplit <cfile><CR>
 " Terminal stuff
 map <C-w><C-t> <CMD>vert ter<CR>
@@ -266,7 +276,6 @@ nnoremap <silent> <leader>gl <CMD>Git log<CR>
 nnoremap <silent> <leader>gb <CMD>Git blame<CR>
 nnoremap <silent> <leader>gd <CMD>Gdiffsplit<CR>
 nnoremap <silent> <leader>gD <CMD>Gdiffsplit!<CR>
-nnoremap <silent> <leader>gt <CMD>Twiggy<CR>
 nnoremap <leader>gP <CMD>Git push<CR>
 nmap <silent> <leader>gv <CMD>GV<CR>
 nmap <silent> <leader>gV <CMD>GV!<CR>

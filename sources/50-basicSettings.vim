@@ -1,11 +1,7 @@
 set encoding=utf-8
 set backspace=indent,eol,start
 set laststatus=2
-if has("macunix") || has('win32')
-  set clipboard=unnamed
-elseif has("unix")
-  set clipboard=unnamedplus
-endif
+set clipboard=unnamed
 
 set viminfo=<800,'100,/50,:100,h,n~/.vim/viminfo
 "            |    |    |   |    | + viminfo file path
@@ -32,10 +28,9 @@ set hidden
 let &titleold="Terminal"
 set signcolumn=yes
 "Line wrapping
-set nowrap
+set wrap
 set linebreak
-set showbreak=+++
-
+set showbreak=∵∴∵
 
 
 
@@ -64,7 +59,7 @@ let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 "File Browsing
-set path=.,**,,
+set path=.,**
 "let g:netrw_banner=0 "Disable Banner
 "let g:netrw_browse_split=4 "open in prior window
 let g:netrw_liststyle=3 " tree view

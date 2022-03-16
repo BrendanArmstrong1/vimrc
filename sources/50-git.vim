@@ -9,10 +9,3 @@ function! s:setup_git_messenger_popup() abort
     nmap <buffer><C-i> O
 endfunction
 autocmd FileType gitmessengerpopup call <SID>setup_git_messenger_popup()
-
-
-let g:twiggy_group_locals_by_slash = 0
-let g:twiggy_local_branch_sort = 'mru'
-let g:twiggy_remote_branch_sort = 'date'
-let g:twiggy_split_position = 'topleft'
-let g:twiggy_icons = ['*', '✓', '↑', '↓', '↕', '%', 'x']
