@@ -15,24 +15,19 @@ function! myAsyncFuncs#ToggleUltisnips() abort
   endif
 endfunction
 
-function! myAsyncFuncs#ToggleTabnine() abort
-  if !g:tabnineAsync
-    echom "Tabnine On"
-    call asyncomplete#register_source(asyncomplete#sources#tabnine#get_source_options({
-      \ 'name': 'tabnine',
-      \ 'allowlist': ['*'],
-      \ 'completor': function('asyncomplete#sources#tabnine#completor'),
-      \ 'config': {
-      \   'line_limit': 1000,
-      \   'max_num_result': 10,
-      \  },
-      \ }))
-    let g:tabnineAsync = 1
+function! myAsyncFuncs#ToggleALE() abort
+  if !g:ALEAsync
+    echom "ALE On"
+    call asyncomplete#ale#register_source({
+        \ 'name': 'reason',
+        \ 'linter': 'flow',
+        \ })
+    let g:ALEAsync = 1
     call asyncomplete#force_refresh()
   else
-    echom "Tabnine Off"
-    call asyncomplete#unregister_source('tabnine')
-    let g:tabnineAsync = 0
+    echom "ALE Off"
+    call asyncomplete#unregister_source('reason')
+    let g:ALEAsync = 0
   endif
 endfunction
 

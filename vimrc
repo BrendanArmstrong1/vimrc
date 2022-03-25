@@ -1,7 +1,4 @@
-set nocompatible
 let need_to_install_plugins = 0
-" Disable polyglot in favour of vim sleuth
-let g:polyglot_disabled = ['autoindent']
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -31,7 +28,6 @@ call plug#begin('~/.vim/plugged')
     " Vim heuristics (more functionality)
     Plug 'sheerun/vim-polyglot'
     Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-sleuth'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
@@ -44,9 +40,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'mattn/vim-lsp-settings'
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-    Plug 'kitagry/asyncomplete-tabnine.vim', { 'do': './install.sh' }
+    Plug 'andreypopp/asyncomplete-ale.vim'
     Plug 'htlsne/asyncomplete-look'
-    Plug 'SirVer/ultisnips'
     Plug 'rhysd/vim-lsp-ale'
     Plug 'dense-analysis/ale'
 
@@ -58,12 +53,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/gv.vim'
 
     " Vim in-frame navigation
-    Plug 'svban/YankAssassin.vim' " cursor stay in place after yank
     Plug 'haya14busa/vim-asterisk'
     Plug 'haya14busa/is.vim'
     Plug 'justinmk/vim-sneak'
-    Plug 'psliwka/vim-smoothie'
-    Plug 'easymotion/vim-easymotion'
 
     " Broad file simultaneous edit
     Plug 'dyng/ctrlsf.vim'
@@ -73,13 +65,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-endwise'
     Plug 'jiangmiao/auto-pairs'
     Plug 'tpope/vim-rsi'
-
-    " Code Execution
-    Plug 'thinca/vim-quickrun'
+    Plug 'SirVer/ultisnips'
 
     " Org mode in vim
     Plug 'vimwiki/vimwiki'
-    Plug 'itchyny/calendar.vim'
     Plug 'twitvim/twitvim'
     Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" chromedriver' }
 
@@ -96,40 +85,44 @@ if need_to_install_plugins == 1
 endif
 
 
-source $HOME/.vim/cache/calendar.vim/credentials.vim
 source $HOME/.vim/sources/50-bracketed-paste.vim
 source $HOME/.vim/sources/50-basicSettings.vim
 source $HOME/.vim/sources/50-completionSettings.vim
 source $HOME/.vim/sources/50-autostuff.vim
 
-" DONE CoC integration plus fix the autocomplete function in general
-"       - ale and vim-lsp with asyncomplete for autocompletion.
-"       - ale for linting from the language server
-" DONE Set up project management with vimwiki and taskwarrior
-" DONE complete ripgrep todo finder
-" DONE Clean up personal scripts section of the mappings.
-" DONE Fix calendar and get it synced with google
-" DONE get better terminal motions. Its hard to move around.
-" DONE set up ctrlsf. Fix interaction with multicursor and inc search
-" DONE FZF ripgrep needs to ignore .gitignore but also ignore .git
-" DONE Searching movements with incsearch and sneak.
-" DONE Change fzf window to a split of some sort
-" DONE SWITCH TO COLMAK regular version
 
 let g:lsp_document_code_action_signs_enabled = 0
-let g:ale_linters = { 'python': [ 'flake8', 'pylint' ],
-      \ 'rust': ['analyzer', 'cargo', 'cspell', 'rls', 'rustc']}
+let g:ale_linters = {
+            \ 'python': [ 'flake8', 'pylint --disable=C', 'pyright' ],
+            \ 'rust': ['rust-analyzer', 'cargo', 'rustc', 'rls'],
+            \ }
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
-      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'python': ['black'],
       \ 'rust' : ['rustfmt'],
       \}
-"let g:lsp_ale_auto_config_ale = v:false
 let lsp_ale_diagnostics_severity = "warning"
+let g:lsp_settings_enable_suggestions = 0
+let g:ale_floating_preview = 1
+let g:ale_hover_to_floating_preview = 1
+
+let g:vimwiki_auto_chdir = 1
+let g:vimwiki_list = [
+        \ {'path': '~/.vim/vimwiki/',
+            \ 'name': 'Main',
+            \ 'index': 'Index',
+            \ 'syntax': 'markdown',
+            \ 'ext': '.md',
+            \ 'auto_tags': 1,
+            \ 'auto_generate_tags': 1,
+            \ 'links_space_char': '_',
+            \ 'auto_generate_links': 1}
+        \ ]
 
 
 
+let g:highlightedyank_highlight_duration = 400
 
 "======================================================
 " ____                                  _
@@ -150,18 +143,13 @@ nnoremap <silent> <leader>ic :<C-U>%s/\<<c-r><c-w>\>//gn<CR>g``
 " source stuff
 nnoremap <silent> <leader>R <CMD>so$MYVIMRC<CR>
 nnoremap <silent> <leader>T <CMD>so %<CR>
-source $HOME/.vim/sources/50-YankSettings.vim
 " Yank Settings
 nmap Y y$
-nmap y <Plug>YAMotion
-xmap y <Plug>YAVisual
-nmap yy <Plug>YALine
-" revisual after indent
+
 xnoremap < <gv
 xnoremap > >gv
 
 " Completion and linting
-set omnifunc=lsp#complete
 let g:asyncomplete_auto_completeopt = 0
 source /home/brendan/.vim/sources/50-Ultisnips.vim
 " Ultisnips settings
@@ -219,11 +207,6 @@ nmap <C-W><C-F> <CMD>vsplit <cfile><CR>
 map <C-w><C-t> <CMD>vert ter<CR>
 
 " scroll stuff
-let g:smoothie_no_default_mappings = 1
-nmap <C-f>      <Plug>(SmoothieForwards)
-nmap <C-b>      <Plug>(SmoothieBackwards)
-nmap <C-D>      <Plug>(SmoothieDownwards)
-nmap <C-U>      <Plug>(SmoothieUpwards)
 noremap <expr> <C-e> repeat("\<C-e>", 5)
 noremap <expr> <C-y> repeat("\<C-y>", 5)
 
@@ -266,8 +249,6 @@ nnoremap <silent> <leader>qt <CMD>call Terminal#CloseTerm()<CR>
 
 nnoremap Q !!sh<CR>
 
-nmap <silent> ]d <CMD>ALENext<CR>
-nmap <silent> [d <CMD>ALEPrevious<CR>
 " Prefix g
 source $HOME/.vim/sources/50-git.vim
 " Git Mapping
@@ -281,8 +262,6 @@ nmap <silent> <leader>gv <CMD>GV<CR>
 nmap <silent> <leader>gV <CMD>GV!<CR>
 nmap <silent> <leader>go <CMD>diffget //3<CR>
 nmap <silent> <leader>ga <CMD>diffget //2<CR>
-nmap <silent> [& <Plug>(GitGutterPrevHunk)
-nmap <silent> ]& <Plug>(GitGutterNextHunk)
 nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
 nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
 nmap <leader>gr  <CMD>GBrowse<CR>
@@ -290,41 +269,61 @@ vmap <leader>gr  :GBrowse<CR>
 vmap <leader>gR  :GBrowse!<CR>
 nmap gf :edit <cfile><CR>
 nmap gp `[v`]
-let g:EasyMotion_do_mapping = 0
-let g:EasyMotion_keys = 'neioluy''mtsrapfwqgj'
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_startofline = 0
-map gs <Plug>(easymotion-bd-f2)
-map gj <Plug>(easymotion-j)
-map gk <Plug>(easymotion-k)
-map gn <Plug>(easymotion-bd-n)
-map gw <Plug>(easymotion-lineanywhere)
-let g:EasyMotion_re_line_anywhere = '\v' .
-    \       '(<.|^)' . '|' .
-    \       '(>.|.$)' . '|' .
-    \       '(\l)\zs(\u)' . '|' .
-    \       '(_\zs.)' . '|' .
-    \       '(#\zs.)'
+" nmap K <CMD>LspPeekDefinition<CR>
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=ale#completion#OmniFunc
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <CMD>ALEGoToDefinition -vsplit<CR>
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gI <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> ]> <CMD>ALENext<CR>
+    nmap <buffer> [> <CMD>ALEPrevious<CR>
+    nmap <buffer> K  <CMD>ALEHover<CR>
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-b> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+nmap <silent> [& <Plug>(GitGutterPrevHunk)
+nmap <silent> ]& <Plug>(GitGutterNextHunk)
+nmap <silent> [` <CMD>cprevious<CR>
+nmap <silent> ]` <CMD>cnext<CR>
+nmap <silent> [\ <CMD>bprevious<CR>
+nmap <silent> ]\ <CMD>bnext<CR>
+nmap <silent> [_ <CMD>previous<CR>
+nmap <silent> ]_ <CMD>next<CR>
+
+
+
 
 " Prefix e
-" Quickrun mappings
-nmap <leader>em <Plug>(quickrun)
-xmap <leader>er :QuickRun<CR>
-nmap <leader>er <Plug>(quickrun-op)
 nnoremap <silent> <leader>en <CMD>call myfunc#ExecuteStuff('right')<CR>
 nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
 
 
 " Prefix o
-source /home/brendan/.vim/sources/50-otherPrograms.vim
 source /home/brendan/.vim/sources/50-Async.vim
 " Open stuff
 nnoremap <silent> <leader>on <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>or <Cmd>e $MYVIMRC<CR>
-nnoremap <silent> <leader>oc <Cmd>Calendar<CR>
 " Toggling stuff
 nnoremap <silent> <leader>os <Cmd>call myAsyncFuncs#ToggleSpell()<CR>
-nnoremap <silent> <leader>oa <Cmd>call myAsyncFuncs#ToggleTabnine()<CR>
+nnoremap <silent> <leader>oa <Cmd>call myAsyncFuncs#ToggleALE()<CR>
 nnoremap <silent> <leader>ou <Cmd>call myAsyncFuncs#ToggleUltisnips()<CR>
 nnoremap <silent> <leader>oL <Cmd>ALEToggle<CR>
 nnoremap <silent> <leader>ol <Cmd>call myAsyncLsp#ToggleLsp()<CR>
@@ -409,8 +408,6 @@ let g:sneak#t_reset = 1
 let g:sneak#use_ic_scs = 1 " case sensitivity
 let g:sneak#map_netrw = 1
 let g:sneak#prompt = '>> '
-map s <Plug>Sneak_s
-map S <Plug>Sneak_S
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 map f <Plug>Sneak_f
@@ -446,40 +443,6 @@ nmap <leader>pt  <CMD>RgTODO<CR>
 nmap <leader>fL  :Locate ""<left>
 nmap <leader>fb  <CMD>Buffers<CR>
 nmap <leader>ff  <CMD>ProjectFiles<CR>
-" Calendar!!!
-
-function! s:prefix_zero(num) abort
-  if a:num < 10
-    return '0'.a:num
-  endif
-  return a:num
-endfunction
-
-" Callback function for Calendar.vim
-function! DiaryDay(day, month, year, week, dir, wnum) abort
-  let day = s:prefix_zero(a:day)
-  let month = s:prefix_zero(a:month)
-
-  let link = a:year.'-'.month.'-'.day
-  if winnr('$') == 1
-    if a:dir ==? 'V'
-      vsplit
-    else
-      split
-    endif
-  else
-    wincmd p
-    if !&hidden && &modified
-      new
-    endif
-  endif
-
-  call vimwiki#diary#make_note(a:wnum, 0, link)
-endfunction
-
-autocmd FileType calendar nmap <buffer> <CR>
-    \ :call DiaryDay(b:calendar.day().get_day(), b:calendar.day().get_month(),
-    \ b:calendar.day().get_year(), b:calendar.day().week(), "V", v:count1)<CR>
 
 
 let g:lightline#ale#indicator_checking = "\uf110"

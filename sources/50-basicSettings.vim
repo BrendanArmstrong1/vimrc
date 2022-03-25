@@ -59,7 +59,6 @@ let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 "File Browsing
-set path=.,**
 "let g:netrw_banner=0 "Disable Banner
 "let g:netrw_browse_split=4 "open in prior window
 let g:netrw_liststyle=3 " tree view
