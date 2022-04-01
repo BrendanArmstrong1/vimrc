@@ -277,9 +277,9 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> gd <CMD>ALEGoToDefinition -vsplit<CR>
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
     nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gr <CMD>ALEFindReferences<CR>
     nmap <buffer> gI <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> gt <CMD>ALEGoToTypeDefinition -vsplit<CR>
     nmap <buffer> <leader>rn <plug>(lsp-rename)
     nmap <buffer> ]> <CMD>ALENext<CR>
     nmap <buffer> [> <CMD>ALEPrevious<CR>
