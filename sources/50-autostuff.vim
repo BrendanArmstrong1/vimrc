@@ -102,5 +102,3 @@ let g:lightline = {
       \ }
       \ }
 " }}}
-
-highlight HighlightedyankRegion cterm=reverse gui=reverse

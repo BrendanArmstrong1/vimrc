@@ -1,14 +1,11 @@
 function! Terminal#CloseTerm() abort
     w
-    let i = bufnr("$")
-    while (i >= 1)
-        if (bufexists(i))
-            if (getbufvar(i, "&buftype") == "terminal")
-                silent exe "bwipeout! " . i
-            endif
+    let l:list = getbufinfo({'buflisted': 1, 'bufloaded': 1})
+    for item in l:list
+      if item.name =~? "\!\/usr\/bin\/zsh"
+        if (getbufvar(item.name, "&buftype") == "terminal")
+            silent exe "bwipeout! zsh"
         endif
-        let i-=1
-    endwhile
-    let g:markdown_preview = 0
+      endif
+    endfor
 endfunction
-

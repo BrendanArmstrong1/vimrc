@@ -1,5 +1,4 @@
 let need_to_install_plugins = 0
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
       \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -9,14 +8,12 @@ endif
 call plug#begin('~/.vim/plugged')
 
     Plug 'vim-jp/vital.vim'
-
     " File finding
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'mhinz/vim-startify' " splash screen
     Plug 'justinmk/vim-dirvish'
     Plug 'roginfarrer/vim-dirvish-dovish'
-    Plug 'kristijanhusak/vim-dirvish-git'
     Plug 'stsewd/fzf-checkout.vim'
 
     " Colours
@@ -39,9 +36,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'prabirshrestha/vim-lsp'
     Plug 'mattn/vim-lsp-settings'
     Plug 'prabirshrestha/asyncomplete.vim'
+    Plug 'prabirshrestha/asyncomplete-lsp.vim'
     Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-    Plug 'andreypopp/asyncomplete-ale.vim'
-    Plug 'htlsne/asyncomplete-look'
     Plug 'rhysd/vim-lsp-ale'
     Plug 'dense-analysis/ale'
 
@@ -70,6 +66,7 @@ call plug#begin('~/.vim/plugged')
     " Org mode in vim
     Plug 'vimwiki/vimwiki'
     Plug 'twitvim/twitvim'
+    Plug 'superevilmegaco/Screenshot.nvim'
     Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" chromedriver' }
 
 call plug#end()
@@ -94,9 +91,8 @@ source $HOME/.vim/sources/50-autostuff.vim
 let g:lsp_document_code_action_signs_enabled = 0
 let g:ale_linters = {
             \ 'python': [ 'flake8', 'pylint --disable=C', 'pyright' ],
-            \ 'rust': ['rust-analyzer', 'cargo', 'rustc', 'rls'],
+            \ 'rust': ['rust-analyzer', 'cargo'],
             \ }
-let g:ale_fix_on_save = 1
 let g:ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'python': ['black'],
@@ -123,7 +119,7 @@ let g:vimwiki_list = [
 
 
 let g:highlightedyank_highlight_duration = 400
-
+let g:asyncomplete_auto_popup = 0
 "======================================================
 " ____                                  _
 "|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
@@ -150,7 +146,6 @@ xnoremap < <gv
 xnoremap > >gv
 
 " Completion and linting
-let g:asyncomplete_auto_completeopt = 0
 source /home/brendan/.vim/sources/50-Ultisnips.vim
 " Ultisnips settings
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
@@ -175,7 +170,6 @@ function s:myCompletionConfirm() abort
         endif
     endif
 endfunction
-inoremap <expr> <CR> <c-r>=asyncomplete#cancel_popup()<CR><CR>
 inoremap <expr> <C-y> <SID>myCompletionConfirm()
 " inoremap <expr> <C-e> pumvisible() ? asyncomplete#cancel_popup() : "\<C-e>"
 
@@ -198,13 +192,14 @@ tmap <expr><c-k> len(popup_list()) ? "\<C-p>" : "\<C-w>\<C-k>"
 tmap <c-z> <c-\><c-n>
 imap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
 imap <expr> <c-k> pumvisible() ? "\<up>" : "\<c-k>"
+imap <c-n> <Plug>(asyncomplete_force_refresh)
 
 nnoremap <silent> <c-z><c-s> <CMD>w!<CR>
 nnoremap <silent> <c-w><c-q> ZQ
 nnoremap <silent> <c-w><c-w> ZZ
 nmap <C-W><C-F> <CMD>vsplit <cfile><CR>
 " Terminal stuff
-map <C-w><C-t> <CMD>vert ter<CR>
+map <C-w><C-t> <CMD>vert ter ++kill=hup<CR>
 
 " scroll stuff
 noremap <expr> <C-e> repeat("\<C-e>", 5)
@@ -269,26 +264,35 @@ vmap <leader>gr  :GBrowse<CR>
 vmap <leader>gR  :GBrowse!<CR>
 nmap gf :edit <cfile><CR>
 nmap gp `[v`]
-" nmap K <CMD>LspPeekDefinition<CR>
 
 function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=ale#completion#OmniFunc
+    setlocal omnifunc=lsp#complete
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <CMD>ALEGoToDefinition -vsplit<CR>
+    nmap <buffer> gd <plug>(lsp-peek-definition)
+    nmap <buffer> gD <plug>(lsp-definition)
+    nmap <buffer> ge <CMD>ALEDetail<CR>
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
     nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <CMD>ALEFindReferences<CR>
+    nmap <buffer> gC <plug>(lsp-code-action)
+    vmap <buffer> gC :LspCodeAction<CR>
+    nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gI <plug>(lsp-implementation)
-    nmap <buffer> gt <CMD>ALEGoToTypeDefinition -vsplit<CR>
+    nmap <buffer> gt <plug>(lsp-peek-type-definition)
+    nmap <buffer> gT <plug>(lsp-type-definition)
     nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> ]> <CMD>ALENext<CR>
-    nmap <buffer> [> <CMD>ALEPrevious<CR>
-    nmap <buffer> K  <CMD>ALEHover<CR>
+    nmap <buffer> <leader>F <plug>(lsp-document-format)
+    vmap <buffer> <leader>F <plug>(lsp-document-format)
+    nmap <buffer> ]> <plug>(lsp-next-diagnostic-nowrap)
+    nmap <buffer> [> <plug>(lsp-previous-diagnostic-nowrap)
+    nmap <buffer> K  <plug>(lsp-hover)
+    nmap <buffer> gk  <plug>(lsp-hover-float)
+    nmap <buffer> gK  <plug>(lsp-hover-preview)
+    nmap <buffer> <c-k> <plug>(lsp-signature-help)
     nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
     nnoremap <buffer> <expr><c-b> lsp#scroll(-4)
 
     let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    " autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 
     " refer to doc to add more commands
 endfunction
@@ -317,16 +321,22 @@ nnoremap <silent> <leader>eh <CMD>call myfunc#ExecuteStuff('bot')<CR>
 
 
 " Prefix o
-source /home/brendan/.vim/sources/50-Async.vim
 " Open stuff
+function ToggleAuto() abort
+    if g:asyncomplete_auto_popup
+        echo "Lsp Off"
+        let g:asyncomplete_auto_popup = 0
+    else
+        echo "Lsp On"
+        let g:asyncomplete_auto_popup = 1
+    endif
+endfunction
+
+nnoremap <silent> <leader>ol <Cmd>call ToggleAuto()<CR>
 nnoremap <silent> <leader>on <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>or <Cmd>e $MYVIMRC<CR>
 " Toggling stuff
-nnoremap <silent> <leader>os <Cmd>call myAsyncFuncs#ToggleSpell()<CR>
-nnoremap <silent> <leader>oa <Cmd>call myAsyncFuncs#ToggleALE()<CR>
-nnoremap <silent> <leader>ou <Cmd>call myAsyncFuncs#ToggleUltisnips()<CR>
 nnoremap <silent> <leader>oL <Cmd>ALEToggle<CR>
-nnoremap <silent> <leader>ol <Cmd>call myAsyncLsp#ToggleLsp()<CR>
 
 source /home/brendan/.vim/sources/50-TwitVim.vim
 " Prefix t (TwitVim mappings)
@@ -389,6 +399,8 @@ nmap <leader>tpd <CMD>SendDMTwitter<CR>
 
 " Dervish
 source /home/brendan/.vim/sources/50-Dirvish.vim
+" unmap all default mappings
+let g:dirvish_dovish_map_keys = 0
 
 " Inc search stuff
 set hlsearch

@@ -14,24 +14,26 @@ function! myfunc#ExecuteStuff(location) abort
     let l:exte=expand('%:e')
     if !term_list()->len()
         if l:exte == 'tex' || l:exte == 'html' || l:exte == 'css'
-            ter ++hidden
+            let s:myjob = job_start('bash -c "compiler "' .. myfunc#Quoterepl(l:name))
+            return
         elseif l:exte == 'js'
             let l:path=expand('%:p:h')
             if glob(l:path . "/index.html") != ""
-                ter ++hidden
+                let s:myjob = job_start('bash -c "compiler "' .. myfunc#Quoterepl(l:name))
+                return
             else
                 if a:location == 'right'
-                    vert ter
+                    vert ter ++kill=hup
                 else
-                    ter
+                    ter ++kill=hup
                 endif
                 call feedkeys("\<C-w>h")
             endif
         else
             if a:location == 'right'
-                vert ter
+                vert ter ++kill=hup
             else
-                ter
+                ter ++kill=hup
             endif
             call feedkeys("\<C-w>h")
         endif
@@ -56,26 +58,8 @@ function! myfunc#Resize_Execution_Term(amount) abort
     endif
 endfunction
 
-let g:NetrwIsOpen=0
-function! myfunc#ToggleNetrw() abort
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
-    else
-        let g:NetrwIsOpen=1
-        silent Lexplore
-    endif
-endfunction
-
 function! myfunc#Bracket_check() abort
     let l:aft = searchpos('[<>{}()\[\]`''"]','cnz',line('.'))
     call cursor(l:aft[0], l:aft[1]+1)
     startinsert
 endfunction
-

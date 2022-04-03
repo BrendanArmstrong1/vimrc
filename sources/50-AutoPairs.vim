@@ -27,4 +27,3 @@ endfunction
 
 imap <silent> <C-l> <c-r>=<SID>tabout(1)<CR>
 imap <silent> <C-h> <C-r>=<SID>tabout(0)<CR>
-
