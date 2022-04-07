@@ -1,3 +1,4 @@
+let g:loaded_matchit = 1
 let need_to_install_plugins = 0
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -28,6 +29,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
+    Plug 'andymass/vim-matchup'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-scriptease'
     Plug 'AndrewRadev/splitjoin.vim'
@@ -303,6 +305,9 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
+nnoremap <silent> <bar>= z=
+nmap <unique><silent> ]* ]s
+nmap <unique><silent> [* [s
 nmap <silent> [& <Plug>(GitGutterPrevHunk)
 nmap <silent> ]& <Plug>(GitGutterNextHunk)
 nmap <silent> [` <CMD>cprevious<CR>

@@ -23,7 +23,6 @@ function! XTermPasteBegin(ret)
     return a:ret
 endfunction
 
-execute "set <f28>=\<Esc>[200~"
 execute "set <f29>=\<Esc>[201~"
 map <expr> <f28> XTermPasteBegin("i")
 imap <expr> <f28> XTermPasteBegin("")
