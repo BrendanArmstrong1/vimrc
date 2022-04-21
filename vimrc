@@ -99,6 +99,7 @@ let g:ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'python': ['black'],
       \ 'rust' : ['rustfmt'],
+      \ 'go' : ['gofmt'],
       \}
 let lsp_ale_diagnostics_severity = "warning"
 let g:lsp_settings_enable_suggestions = 0
@@ -459,6 +460,7 @@ nmap <leader>pt  <CMD>RgTODO<CR>
 " Files Prefix f
 nmap <leader>fL  :Locate ""<left>
 nmap <leader>fb  <CMD>Buffers<CR>
+nmap <leader>fB  <CMD>BD<CR>
 nmap <leader>ff  <CMD>ProjectFiles<CR>
 
 
