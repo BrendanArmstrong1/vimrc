@@ -8,6 +8,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+
     Plug 'vim-jp/vital.vim'
     " File finding
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -122,7 +123,7 @@ let g:vimwiki_list = [
 
 
 let g:highlightedyank_highlight_duration = 400
-let g:asyncomplete_auto_popup = 0
+let g:asyncomplete_auto_popup = 1
 "======================================================
 " ____                                  _
 "|  _ \ ___ _ __ ___   __ _ _ __  _ __ (_)_ __   __ _
