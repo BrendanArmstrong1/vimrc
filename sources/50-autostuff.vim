@@ -50,6 +50,8 @@ augroup standard_group
     " https://vi.stackexchange.com/a/206
     autocmd VimResized * tabdo wincmd =
 
+    au FileType html let b:AutoPairs = AutoPairsDefine({'<!--' : '-->'})
+
     " Reload file on focus/enter. This seems to break in Windows.
     " https://stackoverflow.com/a/20418591
     if !has("win32")
@@ -102,3 +104,4 @@ let g:lightline = {
       \ }
       \ }
 " }}}
+
