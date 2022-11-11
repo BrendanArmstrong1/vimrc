@@ -24,18 +24,20 @@ function! myfunc#ExecuteStuff(location) abort
             else
                 if a:location == 'right'
                     vert ter ++kill=hup
+                    call feedkeys("\<C-w>h")
                 else
                     ter ++kill=hup
+                    call feedkeys("\<C-w>k")
                 endif
-                call feedkeys("\<C-w>h")
             endif
         else
             if a:location == 'right'
                 vert ter ++kill=hup
+                call feedkeys("\<C-w>h")
             else
                 ter ++kill=hup
+                call feedkeys("\<C-w>k")
             endif
-            call feedkeys("\<C-w>h")
         endif
     endif
     call term_sendkeys(term_list()[0], "clear && compiler " . myfunc#Quoterepl(l:name) . "\<CR>")

@@ -1,7 +1,7 @@
 set encoding=utf-8
 set backspace=indent,eol,start
 set laststatus=2
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 set viminfo=<800,'100,/50,:100,h,n~/.vim/viminfo
 "            |    |    |   |    | + viminfo file path

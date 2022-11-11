@@ -67,8 +67,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'SirVer/ultisnips'
 
     " Org mode in vim
-    Plug 'vimwiki/vimwiki'
-    Plug 'twitvim/twitvim'
     Plug 'superevilmegaco/Screenshot.nvim'
     Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" chromedriver' }
 
@@ -319,7 +317,8 @@ nmap <silent> ]\ <CMD>bnext<CR>
 nmap <silent> [_ <CMD>previous<CR>
 nmap <silent> ]_ <CMD>next<CR>
 
-
+nmap <silent> } }zz
+nmap <silent> { {zz
 
 
 " Prefix e
@@ -344,64 +343,6 @@ nnoremap <silent> <leader>on <Cmd>UltiSnipsEdit<CR>
 nnoremap <silent> <leader>or <Cmd>e $MYVIMRC<CR>
 " Toggling stuff
 nnoremap <silent> <leader>oL <Cmd>ALEToggle<CR>
-
-source /home/brendan/.vim/sources/50-TwitVim.vim
-" Prefix t (TwitVim mappings)
-" <leader>tpp to send tweets in visual
-" <leader>r starts a reply
-" <leader><c-r> starts a reply-all
-" <leader>q starts tweet with link to target
-" <leader>R retweets target
-" <leader>d starts dm
-" <leader>g goto @user | Name(infobuffer) | #hash search | trending search
-" <leader>e longer url (Broken)
-" <leader>p user profile information
-" <leader>@ retrieve tweet to which target is replying
-" <leader>f add tweet to favorites
-" <leader><c-f> remove tweet from favorites
-" <C-i> / <C-o> jump forward/backward
-" <leader><leader> refresh
-nmap <leader>tf <CMD>FriendsTwitter<CR>
-nmap <leader>tt <CMD>TrendTwitter<CR>
-nmap <leader>tP :<C-u>ProfileTwitter<Space>
-nmap <leader>ta :<C-U>FollowTwitter<Space>@<c-r><c-w><CR>
-nmap <leader>tA :<C-U>UnfollowTwitter<Space>@<c-r><c-w><CR>
-nmap <leader>te :<C-u>EnableRetweetsTwitter<Space>@<c-r><c-w><CR>
-nmap <leader>tE :<C-u>DisableRetweetsTwitter<Space>@<c-r><c-w><CR>
-nmap <leader>tu <CMD>UserTwitter<CR>
-nmap <leader>tm <CMD>MentionsTwitter<CR>
-nmap <leader>t@ <CMD>RepliesTwitter<CR>
-nmap <leader>td <CMD>DMTwitter<CR>
-nmap <leader>tD <CMD>DMSentTwitter<CR>
-nmap <leader>tr <CMD>RetweetedToMeTwitter<CR>
-nmap <leader>tR <CMD>RetweetedByMeTwitter<CR>
-nmap <leader>tv <CMD>FavTwitter<CR>
-nmap <leader>tb :<C-U>BlockTwitter<Space>@<c-r><c-w>
-nmap <leader>tB :<C-U>UnblockTwitter<Space>@
-nmap <leader>tq :<C-U>MuteTwitter<Space>@<c-r><c-w>
-nmap <leader>tQ :<C-U>UnmuteTwitter<Space>@
-nmap <leader>tU :<C-u>UserTwitter<Space>@
-nmap <leader>tll :<C-u>ListTwitter<Space>
-nmap <leader>tla :<C-u>AddToListTwitter<Space>
-nmap <leader>tlA :<C-u>RemoveFromListTwitter<Space>
-nmap <leader>tlL :<C-u>ListInfoTwitter<Space>
-nmap <leader>tlf :<C-u>FollowListTwitter<Space>
-nmap <leader>tlF :<C-u>UnfollowListTwitter<Space>
-nmap <leader>tlm :<C-u>MembersOfListTwitter<Space>
-nmap <leader>tlM :<C-u>MemberListTwitter<Space>
-nmap <leader>tls :<C-u>SubsOfListTwitter<Space>
-nmap <leader>tlS :<C-u>SubsListTwitter<Space>
-nmap <leader>tlo :<C-u>OwnedListTwitter<Space>
-" Prefix ti (twitter info)
-nmap <leader>tif <CMD>FollowingTwitter<CR>
-nmap <leader>tiF <CMD>FollowersTwitter<CR>
-nmap <leader>tio <CMD>OwnedListsTwitter<CR>
-" Prefix tp (Twitter Posting)
-xmap <leader>tpp <Plug>TwitvimVisual
-nmap <leader>tpp <CMD>PosttoTwitter<CR>
-nmap <leader>tpl <CMD>CPosttoTwitter<CR>
-nmap <leader>tpb <CMD>BPosttoTwitter<CR>
-nmap <leader>tpd <CMD>SendDMTwitter<CR>
 
 
 " Dervish
@@ -435,7 +376,7 @@ map F <Plug>Sneak_F
 " Solving surround remap with Zurround pnemonic. 'Z' works better for colmak
 " https://github.com/justinmk/vim-sneak/issues/268
 let g:surround_no_mappings= 1
-xmap z <Plug>VSurround
+xmap Z <Plug>VSurround
 nmap yzz <Plug>Yssurround
 nmap yz  <Plug>Ysurround
 nmap dz  <Plug>Dsurround
@@ -461,7 +402,7 @@ nmap <leader>pt  <CMD>RgTODO<CR>
 " Files Prefix f
 nmap <leader>fL  :Locate ""<left>
 nmap <leader>fb  <CMD>Buffers<CR>
-nmap <leader>fB  <CMD>BD<CR>
+nmap <leader>fd  <CMD>BD<CR>
 nmap <leader>ff  <CMD>ProjectFiles<CR>
 
 
