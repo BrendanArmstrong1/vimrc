@@ -67,8 +67,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'SirVer/ultisnips'
 
     " Org mode in vim
-    Plug 'superevilmegaco/Screenshot.nvim'
-    Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" chromedriver' }
+    " Plug 'superevilmegaco/Screenshot.nvim'
+    " Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" chromedriver' }
 
 call plug#end()
 
@@ -104,20 +104,6 @@ let lsp_ale_diagnostics_severity = "warning"
 let g:lsp_settings_enable_suggestions = 0
 let g:ale_floating_preview = 1
 let g:ale_hover_to_floating_preview = 1
-
-let g:vimwiki_auto_chdir = 1
-let g:vimwiki_list = [
-        \ {'path': '~/.vim/vimwiki/',
-            \ 'name': 'Main',
-            \ 'index': 'Index',
-            \ 'syntax': 'markdown',
-            \ 'ext': '.md',
-            \ 'auto_tags': 1,
-            \ 'auto_generate_tags': 1,
-            \ 'links_space_char': '_',
-            \ 'auto_generate_links': 1}
-        \ ]
-
 
 
 let g:highlightedyank_highlight_duration = 400
@@ -316,9 +302,6 @@ nmap <silent> [\ <CMD>bprevious<CR>
 nmap <silent> ]\ <CMD>bnext<CR>
 nmap <silent> [_ <CMD>previous<CR>
 nmap <silent> ]_ <CMD>next<CR>
-
-nmap <silent> } }zz
-nmap <silent> { {zz
 
 
 " Prefix e
