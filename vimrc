@@ -134,7 +134,7 @@ xnoremap < <gv
 xnoremap > >gv
 
 " Completion and linting
-source /home/brendan/.vim/sources/50-Ultisnips.vim
+source $HOME/.vim/sources/50-Ultisnips.vim
 " Ultisnips settings
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
@@ -162,7 +162,7 @@ inoremap <expr> <C-y> <SID>myCompletionConfirm()
 " inoremap <expr> <C-e> pumvisible() ? asyncomplete#cancel_popup() : "\<C-e>"
 
 " Prefix CTRL
-source /home/brendan/.vim/sources/50-AutoPairs.vim " tabing out
+source $HOME/.vim/sources/50-AutoPairs.vim " tabing out
 " Window switching
 noremap <c-l> <c-w>l
 noremap <c-h> <c-w>h
@@ -329,7 +329,7 @@ nnoremap <silent> <leader>oL <Cmd>ALEToggle<CR>
 
 
 " Dervish
-source /home/brendan/.vim/sources/50-Dirvish.vim
+source $HOME/.vim/sources/50-Dirvish.vim
 " unmap all default mappings
 let g:dirvish_dovish_map_keys = 0
 
