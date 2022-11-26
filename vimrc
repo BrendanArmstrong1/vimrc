@@ -243,10 +243,10 @@ nnoremap <silent> <leader>gD <CMD>Gdiffsplit!<CR>
 nnoremap <leader>gP <CMD>Git push<CR>
 nmap <silent> <leader>gv <CMD>GV<CR>
 nmap <silent> <leader>gV <CMD>GV!<CR>
-nmap <silent> <leader>go <CMD>diffget //3<CR>
-nmap <silent> <leader>ga <CMD>diffget //2<CR>
+nmap <silent> <leader>gu <CMD>diffget //3<CR>
+nmap <silent> <leader>gh <CMD>diffget //2<CR>
 nmap <silent> <leader>gs <Plug>(GitGutterStageHunk)
-nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
+nmap <silent> <leader>gl <Plug>(GitGutterUndoHunk)
 nmap <leader>gr  <CMD>GBrowse<CR>
 vmap <leader>gr  :GBrowse<CR>
 vmap <leader>gR  :GBrowse!<CR>
